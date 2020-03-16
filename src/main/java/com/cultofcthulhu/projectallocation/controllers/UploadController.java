@@ -1,5 +1,6 @@
 package com.cultofcthulhu.projectallocation.controllers;
 
+import com.cultofcthulhu.projectallocation.CSVParser;
 import com.cultofcthulhu.projectallocation.storage.StorageFileNotFoundException;
 import com.cultofcthulhu.projectallocation.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,15 +16,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.stream.Collectors;
 
 @Controller
 public class UploadController {
 
     private final StorageService storageService;
+    public static CSVParser parser;
 
     @Autowired
     public UploadController(StorageService storageService) {
@@ -52,9 +51,11 @@ public class UploadController {
     }
 
     @PostMapping(value = "/upload")
-    public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+    public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
         storageService.store(file);
         redirectAttributes.addFlashAttribute("message", "You successfully uploaded '" + file.getOriginalFilename() + "'");
+        File convFile = new File(String.valueOf(storageService.load(file.getOriginalFilename())));
+        parser = new CSVParser(convFile);
         return "redirect:/uploadStatus";
     }
     @ExceptionHandler(StorageFileNotFoundException.class)

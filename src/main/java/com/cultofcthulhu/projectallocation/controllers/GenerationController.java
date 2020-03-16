@@ -17,16 +17,10 @@ public class GenerationController {
 
     @PostMapping(value = "numStudents")
     public void numStudents(@RequestParam("number") Integer number) {
-        switch (number) {
-            case 60:
-                return;
-            case 120:
-                return;
-            case 240:
-                return;
-            case 500:
-                return;
-        }
+        generateProjects(number);
+    }
 
+    public void generateProjects(int number) {
+        //TODO: Generate projects based on how many students there are
     }
 }
