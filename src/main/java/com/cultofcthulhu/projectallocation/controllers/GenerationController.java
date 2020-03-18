@@ -2,16 +2,24 @@ package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.CSVParser;
 import com.cultofcthulhu.projectallocation.RandomGenerator;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Controller
@@ -24,8 +32,26 @@ public class GenerationController {
     }
 
     @PostMapping(value = "numStudents")
-    public void numStudents(@RequestParam("number") Integer number) throws IOException {
+    public String numStudents(@RequestParam("number") Integer number) throws IOException {
         generateProjects(number);
+        return "redirect:downloadProjects";
+    }
+
+    @RequestMapping(value = "downloadProjects")
+        public String downloadProjects() {
+            return "downloadProjects";
+        }
+
+    @RequestMapping(value = "download")
+    public ResponseEntity download() {
+        Path path = Paths.get("files/" + "projects.txt");
+        Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/txt")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
     public void generateProjects(int number) throws IOException {
