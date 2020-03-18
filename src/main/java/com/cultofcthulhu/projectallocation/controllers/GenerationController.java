@@ -46,6 +46,14 @@ public class GenerationController {
                 }
                 else newLine[2] = "CS";
                 newLines.add(newLine);
+
+                if(line[line.length-1].equals("Dagon Studies")) {
+                    newLine[2] = "DS";
+                }
+                else if(ThreadLocalRandom.current().nextInt(0, 11) % 2 == 0) {
+                    newLine[2] = "CS";
+                }
+                else newLine[2] = "CS+DS";
             }
         }
         UploadController.parser.writeCSV(newLines);
