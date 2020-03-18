@@ -1,9 +1,6 @@
 package com.cultofcthulhu.projectallocation;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,8 +23,22 @@ public class CSVParser {
         }
     }
 
-    public void writeCSV(List<String[]> lines) {
+    public void writeCSV(List<String[]> lines) throws IOException {
+        File writeTo = new File("projects.txt");
+        if(writeTo.createNewFile()) {
+            System.out.println("Created file");
+        }
+        else {
+            System.out.println("File already exists");
+        }
 
+        FileWriter writer = new FileWriter("projects.txt");
+        for(String[] line : lines) {
+            writer.write(Arrays.toString(line));
+            writer.write("\n");
+        }
+        writer.close();
+        System.out.println("Wrote to file");
     }
 }
 
