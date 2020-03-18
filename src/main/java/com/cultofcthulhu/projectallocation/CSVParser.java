@@ -24,7 +24,7 @@ public class CSVParser {
     }
 
     public void writeCSV(List<String[]> lines) throws IOException {
-        File writeTo = new File("projects.txt");
+        File writeTo = new File("files/projects.txt");
         if(writeTo.createNewFile()) {
             System.out.println("Created file");
         }
@@ -32,9 +32,11 @@ public class CSVParser {
             System.out.println("File already exists");
         }
 
-        FileWriter writer = new FileWriter("projects.txt");
+        FileWriter writer = new FileWriter("files/projects.txt");
         for(String[] line : lines) {
-            writer.write(Arrays.toString(line));
+            String string = Arrays.toString(line);
+            string = string.substring(1, string.length()-1);
+            writer.write(string);
             writer.write("\n");
         }
         writer.close();
