@@ -2,6 +2,7 @@ package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.CSVParser;
 import com.cultofcthulhu.projectallocation.RandomGenerator;
+import com.cultofcthulhu.projectallocation.Student;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -55,7 +56,7 @@ public class GenerationController {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/txt")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
-    public List<String[]> generateStudent(int number) throws IOException {
+    public List<Student> generateStudent(int number) throws IOException {
         Random rand = new Random();
 
         String firstName_file= "files/student_firstname_base.csv";
@@ -67,7 +68,7 @@ public class GenerationController {
         List<String> lastnames = new ArrayList<>();
 
         Scanner inputStream;
-        List<String[]> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
 
         try{
             inputStream = new Scanner(firstfile);
@@ -109,9 +110,15 @@ public class GenerationController {
             } else {
                 line[3] = "DS";
             }
-            students.add(line);
+            students.add(new Student(line[0], line[1], line[2], line[3]));
         }
         return students;
+    }
+
+    public List<List<String[]>> assingProjects(List<String[]> students, List<String[]>  projects){
+
+
+        return null;
     }
 
     public void generateProjects(int number) throws IOException {
