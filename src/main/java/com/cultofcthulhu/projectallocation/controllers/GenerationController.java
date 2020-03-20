@@ -78,8 +78,6 @@ public class GenerationController {
                 String line= inputStream.next();
                 firstnames.add(line);
             }
-
-
             inputStream.close();
         }catch (FileNotFoundException e) { }
 
