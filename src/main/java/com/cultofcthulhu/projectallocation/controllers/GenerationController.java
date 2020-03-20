@@ -34,8 +34,8 @@ public class GenerationController {
 
     @PostMapping(value = "numStudents")
     public String numStudents(@RequestParam("number") Integer number) throws IOException {
-        generateProjects(number);
-        generateStudent(number);
+        List<String[]> projects = generateProjects(number);
+        generateStudent(number, projects);
         return "redirect:downloadProjects";
     }
 
@@ -68,7 +68,7 @@ public class GenerationController {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/txt")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
-    public void generateStudent(int number) throws IOException {
+    public void generateStudent(int number, List<String[]> projects) throws IOException {
         Random rand = new Random();
 
         File firstfile= new File("input-files/student_firstname_base.csv");
@@ -123,21 +123,26 @@ public class GenerationController {
             } else {
                 line[3] = "DS";
             }
-            students.add(new Student(line[0], line[1], line[2], line[3]));
+            Student student = new Student(line[0], line[1], line[2], line[3]);
+            assignProjects(student, projects);
+            students.add(student);
         }
         UploadController.parser.writeStudents(students, "user-files/students.txt");
     }
 
-    public void assignProjects(List<Student> students, List<String[]>  projects){
+    public void assignProjects(Student student, List<String[]> projects){
         Random rand = new Random();
 
-        for (int i = 0 ; i < students.size() ; i++)
-            for (int x = 0 ; x < NUMBER_OF_PREFERENCES ; x++){
-                students.get(x).addProject(rand.nextInt(projects.size()));
-            }
+        for (int x = 0 ; x < NUMBER_OF_PREFERENCES ; x++) {
+            int val;
+            do {
+                val = (int) Math.round(rand.nextGaussian() * (projects.size() / 3) + (projects.size() / 2));
+            }while(val <= 0 || val >= projects.size()-1);
+            student.addProject(projects.get(val));
+        }
     }
 
-    public void generateProjects(int number) throws IOException {
+    public List<String[]> generateProjects(int number) throws IOException {
         List<String[]> lines = UploadController.parser.lines;
         List<String[]> newLines = new ArrayList<>();
         for(int i=0;i<number/2;i++) {
@@ -166,5 +171,6 @@ public class GenerationController {
             }
         }
         UploadController.parser.writeCSV(newLines, "user-files/projects.txt");
+        return newLines;
     }
 }

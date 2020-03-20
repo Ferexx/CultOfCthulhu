@@ -1,5 +1,7 @@
 package com.cultofcthulhu.projectallocation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Student {
@@ -7,7 +9,7 @@ public class Student {
     String lastname;
     String studentNo;
     String stream;
-    List<Integer> projects;
+    List<String[]> projects = new ArrayList<>();
 
     public Student(String firstname, String lastname, String studentNo, String stream){
         this.firstname = firstname;
@@ -32,12 +34,15 @@ public class Student {
         return stream;
     }
 
-    public void addProject(Integer i){
+    public void addProject(String[] i){
         projects.add(i);
     }
 
     @Override
     public String toString(){
-        return firstname + "," + lastname + "," + studentNo + "," + stream;
+        StringBuilder sb = new StringBuilder();
+        for(String[] project : projects)
+            sb.append(project[1]).append(",");
+        return firstname + " " + lastname + "," + studentNo + "," + stream + "," + sb;
     }
 }

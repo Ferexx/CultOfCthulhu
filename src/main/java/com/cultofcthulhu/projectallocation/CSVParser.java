@@ -53,8 +53,8 @@ public class CSVParser {
         }
 
         FileWriter writer = new FileWriter(file);
-        for(Student line : lines) {
-            String string = line.toString();
+        for(Student student : lines) {
+            String string = student.toString();
             writer.write(string);
             writer.write("\n");
         }
