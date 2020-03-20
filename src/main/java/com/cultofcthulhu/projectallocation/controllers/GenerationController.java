@@ -26,6 +26,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Controller
 public class GenerationController {
+    private static final int NUMBER_OF_PREFERENCES = 10;
 
     @RequestMapping(value = "/howManyStudents")
     public String howManyStudents(Model model) {
@@ -115,10 +116,13 @@ public class GenerationController {
         return students;
     }
 
-    public List<List<String[]>> assingProjects(List<String[]> students, List<String[]>  projects){
+    public void assignProjects(List<Student> students, List<String[]>  projects){
+        Random rand = new Random();
 
-
-        return null;
+        for (int i = 0 ; i < students.size() ; i++)
+            for (int x = 0 ; x < NUMBER_OF_PREFERENCES ; x++){
+                students.get(x).addProject(rand.nextInt(projects.size()));
+            }
     }
 
     public void generateProjects(int number) throws IOException {
