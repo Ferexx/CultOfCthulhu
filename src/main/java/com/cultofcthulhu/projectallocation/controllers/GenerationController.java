@@ -58,11 +58,11 @@ public class GenerationController {
     public List<String[]> generateStudent(int number) throws IOException {
         Random rand = new Random();
 
-        String firstName_file= "student_firstname_base.csv";
+        String firstName_file= "files/student_firstname_base.csv";
         File firstfile= new File(firstName_file);
         List<String> firstnames = new ArrayList<>();
 
-        String lastName_file= "student_lastname_base.csv";
+        String lastName_file= "files/student_lastname_base.csv";
         File lastfile= new File(lastName_file);
         List<String> lastnames = new ArrayList<>();
 
@@ -109,7 +109,6 @@ public class GenerationController {
             } else {
                 line[3] = "DS";
             }
-
             students.add(line);
         }
         return students;
