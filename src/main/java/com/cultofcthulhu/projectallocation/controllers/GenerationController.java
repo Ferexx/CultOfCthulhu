@@ -55,7 +55,7 @@ public class GenerationController {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/txt")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
-    public void generateStudent(int number) throws IOException {
+    public List<String[]> generateStudent(int number) throws IOException {
         Random rand = new Random();
 
         String firstName_file= "student_firstname_base.csv";
@@ -67,6 +67,7 @@ public class GenerationController {
         List<String> lastnames = new ArrayList<>();
 
         Scanner inputStream;
+        List<String[]> students = new ArrayList<>();
 
         try{
             inputStream = new Scanner(firstfile);
@@ -109,8 +110,9 @@ public class GenerationController {
                 line[3] = "DS";
             }
 
-            System.out.println(line[0] + " " + line[1] + " " + line[2] + " " + line[3]);
+            students.add(line);
         }
+        return students;
     }
 
     public void generateProjects(int number) throws IOException {
