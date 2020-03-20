@@ -1,6 +1,5 @@
 package com.cultofcthulhu.projectallocation.controllers;
 
-import com.cultofcthulhu.projectallocation.CSVParser;
 import com.cultofcthulhu.projectallocation.RandomGenerator;
 import com.cultofcthulhu.projectallocation.Student;
 import org.springframework.core.io.Resource;
@@ -13,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,7 +34,8 @@ public class GenerationController {
 
     @PostMapping(value = "numStudents")
     public String numStudents(@RequestParam("number") Integer number) throws IOException {
-        generateProjects(number);
+        List<String[]> projects = generateProjects(number);
+        generateStudent(number, projects);
         return "redirect:downloadProjects";
     }
 
@@ -45,9 +44,9 @@ public class GenerationController {
             return "downloadProjects";
         }
 
-    @RequestMapping(value = "download")
-    public ResponseEntity download() {
-        Path path = Paths.get("files/" + "projects.txt");
+    @RequestMapping(value = "downloadP")
+    public ResponseEntity downloadP() {
+        Path path = Paths.get("user-files/" + "projects.txt");
         Resource resource = null;
         try {
             resource = new UrlResource(path.toUri());
@@ -57,15 +56,25 @@ public class GenerationController {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/txt")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
-    public List<Student> generateStudent(int number) throws IOException {
+    @RequestMapping(value = "downloadS")
+    public ResponseEntity downloadS() {
+        Path path = Paths.get("user-files/" + "students.txt");
+        Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/txt")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+    }
+
+    public void generateStudent(int number, List<String[]> projects) throws IOException {
         Random rand = new Random();
 
-        String firstName_file= "files/student_firstname_base.csv";
-        File firstfile= new File(firstName_file);
+        File firstfile= new File("input-files/student_firstname_base.csv");
         List<String> firstnames = new ArrayList<>();
 
-        String lastName_file= "files/student_lastname_base.csv";
-        File lastfile= new File(lastName_file);
+        File lastfile= new File("input-files/student_lastname_base.csv");
         List<String> lastnames = new ArrayList<>();
 
         Scanner inputStream;
@@ -79,7 +88,9 @@ public class GenerationController {
                 firstnames.add(line);
             }
             inputStream.close();
-        }catch (FileNotFoundException e) { }
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         try{
             inputStream = new Scanner(lastfile);
@@ -89,12 +100,13 @@ public class GenerationController {
                 lastnames.add(line);
             }
             inputStream.close();
-        }catch (FileNotFoundException e) { }
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         String fname;
         String lname;
         int n = 0;
-        String Str;
         String[] line = new String[4];
 
         for (int i = 0; i < number; i++) {
@@ -109,24 +121,29 @@ public class GenerationController {
             } else {
                 line[3] = "DS";
             }
-            students.add(new Student(line[0], line[1], line[2], line[3]));
+            Student student = new Student(line[0], line[1], line[2], line[3]);
+            assignProjects(student, projects);
+            students.add(student);
         }
-        return students;
+        UploadController.parser.writeStudents(students, "user-files/students.txt");
     }
 
-    public void assignProjects(List<Student> students, List<String[]>  projects){
+    public void assignProjects(Student student, List<String[]> projects){
         Random rand = new Random();
 
-        for (int i = 0 ; i < students.size() ; i++)
-            for (int x = 0 ; x < NUMBER_OF_PREFERENCES ; x++){
-                students.get(x).addProject(rand.nextInt(projects.size()));
-            }
+        for (int x = 0 ; x < NUMBER_OF_PREFERENCES ; x++) {
+            int val;
+            do {
+                val = (int) Math.round(rand.nextGaussian() * (projects.size() / 3) + (projects.size() / 2));
+            }while(val <= 0 || val >= projects.size()-1);
+            student.addProject(projects.get(val));
+        }
     }
 
-    public void generateProjects(int number) throws IOException {
+    public List<String[]> generateProjects(int number) throws IOException {
         List<String[]> lines = UploadController.parser.lines;
         List<String[]> newLines = new ArrayList<>();
-        for(int i=0;i<number;i++) {
+        for(int i=0;i<number/2;i++) {
             int lineNumber = ThreadLocalRandom.current().nextInt(0, lines.size() + 1);
             String[] line = lines.get(lineNumber-1);
             for(int j=0;j<3;j++) {
@@ -151,6 +168,7 @@ public class GenerationController {
                 else newLine[2] = "CS+DS";
             }
         }
-        UploadController.parser.writeCSV(newLines);
+        UploadController.parser.writeCSV(newLines, "user-files/projects.txt");
+        return newLines;
     }
 }
