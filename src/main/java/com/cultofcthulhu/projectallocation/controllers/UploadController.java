@@ -41,7 +41,7 @@ public class UploadController {
         return "index";
     }
 
-    @GetMapping("/files/{filename:.+}")
+    @GetMapping("/user-files/{filename:.+}")
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 

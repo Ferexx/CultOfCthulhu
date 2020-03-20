@@ -38,6 +38,6 @@ public class Student {
 
     @Override
     public String toString(){
-        return firstname + " " + lastname + " " + studentNo + " " + stream;
+        return firstname + "," + lastname + "," + studentNo + "," + stream;
     }
 }
