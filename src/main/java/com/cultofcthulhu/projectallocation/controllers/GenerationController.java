@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.w3c.dom.Text;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Controller
@@ -52,6 +53,64 @@ public class GenerationController {
             e.printStackTrace();
         }
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/txt")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+    }
+
+    public void generateStudent(int number) throws IOException {
+        Random rand = new Random();
+
+        String firstName_file= "student_firstname_base.csv";
+        File firstfile= new File(firstName_file);
+        List<String> firstnames = new ArrayList<>();
+
+        String lastName_file= "student_lastname_base.csv";
+        File lastfile= new File(lastName_file);
+        List<String> lastnames = new ArrayList<>();
+
+        Scanner inputStream;
+
+        try{
+            inputStream = new Scanner(firstfile);
+
+            while(inputStream.hasNext()){
+                String line= inputStream.next();
+                firstnames.add(line);
+            }
+
+
+            inputStream.close();
+        }catch (FileNotFoundException e) { }
+
+        try{
+            inputStream = new Scanner(lastfile);
+
+            while(inputStream.hasNext()){
+                String line= inputStream.next();
+                lastnames.add(line);
+            }
+            inputStream.close();
+        }catch (FileNotFoundException e) { }
+
+        String fname;
+        String lname;
+        int n = 0;
+        String Str;
+        String[] line = new String[4];
+
+        for (int i = 0; i < number; i++) {
+            fname = firstnames.get(rand.nextInt(200));
+            line[0] = fname;
+            lname = lastnames.get(rand.nextInt(200));
+            line[1] = lname;
+            line[2] = String.valueOf(n++);
+
+            if (rand.nextInt(10) < 6){
+                line[3] = "CS";
+            } else {
+                line[3] = "DS";
+            }
+
+            System.out.println(line[0] + " " + line[1] + " " + line[2] + " " + line[3]);
+        }
     }
 
     public void generateProjects(int number) throws IOException {
