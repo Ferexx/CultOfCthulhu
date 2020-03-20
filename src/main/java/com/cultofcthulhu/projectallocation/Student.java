@@ -13,6 +13,22 @@ public class Student {
         this.stream = stream;
     }
 
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public String getStudentNo() {
+        return studentNo;
+    }
+
+    public String getStream() {
+        return stream;
+    }
+
     @Override
     public String toString(){
         return firstname + " " + lastname + " " + studentNo + " " + stream;
