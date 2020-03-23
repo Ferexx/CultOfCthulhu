@@ -136,7 +136,7 @@ public class GenerationController {
             do {
                 val = (int) Math.round(rand.nextGaussian() * (projects.size() / 3) + (projects.size() / 2));
             }while(val <= 0 || val >= projects.size()-1);
-            student.addProject(projects.get(val));
+            student.addPreference(projects.get(val));
         }
     }
 

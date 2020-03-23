@@ -9,7 +9,7 @@ public class Student {
     String lastname;
     String studentNo;
     String stream;
-    List<String[]> projects = new ArrayList<>();
+    List<String[]> preferences = new ArrayList<>();
 
     public Student(String firstname, String lastname, String studentNo, String stream){
         this.firstname = firstname;
@@ -34,15 +34,15 @@ public class Student {
         return stream;
     }
 
-    public void addProject(String[] i){
-        projects.add(i);
+    public void addPreference(String[] i){
+        preferences.add(i);
     }
 
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        for(String[] project : projects)
-            sb.append(project[1]).append(",");
+        for(String[] preference : preferences)
+            sb.append(preference[1]).append(",");
         return firstname + " " + lastname + "," + studentNo + "," + stream + "," + sb;
     }
 }
