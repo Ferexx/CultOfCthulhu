@@ -5,25 +5,25 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Student {
-    String firstname;
-    String lastname;
-    String studentNo;
-    String stream;
-    List<String[]> preferences = new ArrayList<>();
+    private String firstName;
+    private String lastName;
+    private String studentNo;
+    private String stream;
+    private List<String[]> preferences = new ArrayList<>();
 
-    public Student(String firstname, String lastname, String studentNo, String stream){
-        this.firstname = firstname;
-        this.lastname = lastname;
+    public Student(String firstName, String lastName, String studentNo, String stream){
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.studentNo = studentNo;
         this.stream = stream;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
     public String getStudentNo() {
@@ -43,6 +43,6 @@ public class Student {
         StringBuilder sb = new StringBuilder();
         for(String[] preference : preferences)
             sb.append(preference[1]).append(",");
-        return firstname + " " + lastname + "," + studentNo + "," + stream + "," + sb;
+        return firstName + " " + lastName + "," + studentNo + "," + stream + "," + sb;
     }
 }
