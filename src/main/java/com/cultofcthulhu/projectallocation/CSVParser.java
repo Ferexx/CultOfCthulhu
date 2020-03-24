@@ -1,5 +1,7 @@
 package com.cultofcthulhu.projectallocation;
 
+import com.cultofcthulhu.projectallocation.models.Student;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;

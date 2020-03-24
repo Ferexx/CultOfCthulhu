@@ -1,21 +1,31 @@
-package com.cultofcthulhu.projectallocation;
+package com.cultofcthulhu.projectallocation.models;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import javax.persistence.*;
+import java.util.Map;
 
+@Entity
 public class Student {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     private String firstName;
     private String lastName;
     private String studentNo;
     private String stream;
-    private List<String[]> preferences = new ArrayList<>();
+    @ElementCollection
+    private Map<Integer, Integer> preferences;
 
+    public Student() {}
     public Student(String firstName, String lastName, String studentNo, String stream){
         this.firstName = firstName;
         this.lastName = lastName;
         this.studentNo = studentNo;
         this.stream = stream;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getFirstName() {
@@ -34,15 +44,15 @@ public class Student {
         return stream;
     }
 
-    public void addPreference(String[] i){
-        preferences.add(i);
+    public void addPreference(int i){
+        preferences.put(preferences.size(), i);
     }
 
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        for(String[] preference : preferences)
-            sb.append(preference[1]).append(",");
+        for(int preference : preferences.values())
+            sb.append(preference).append(",");
         return firstName + " " + lastName + "," + studentNo + "," + stream + "," + sb;
     }
 }

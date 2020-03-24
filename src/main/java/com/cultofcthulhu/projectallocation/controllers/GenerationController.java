@@ -1,7 +1,7 @@
 package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.RandomGenerator;
-import com.cultofcthulhu.projectallocation.Student;
+import com.cultofcthulhu.projectallocation.models.Student;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
