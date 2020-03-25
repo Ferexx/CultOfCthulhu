@@ -1,10 +1,12 @@
 package com.cultofcthulhu.projectallocation.models;
 
+import com.cultofcthulhu.projectallocation.interfaces.Personable;
+
 import javax.persistence.*;
 import java.util.Map;
 
 @Entity
-public class Student {
+public class Student implements Personable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,9 +42,18 @@ public class Student {
         return studentNo;
     }
 
+    public String getName() { return firstName + " " + lastName; }
+
+    public void setName(String name) {
+        firstName = name.substring(0,name.indexOf(" "));
+        lastName = name.substring(name.indexOf(" ") + 1);
+    }
+
     public String getStream() {
         return stream;
     }
+
+    public void setStream(String stream) { this.stream = stream; }
 
     public void addPreference(int i){
         preferences.put(preferences.size(), i);

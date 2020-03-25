@@ -1,10 +1,12 @@
 package com.cultofcthulhu.projectallocation.models;
 
+import com.cultofcthulhu.projectallocation.interfaces.Personable;
+
 import javax.persistence.*;
 import java.util.Map;
 
 @Entity
-public class StaffMember {
+public class StaffMember implements Personable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
