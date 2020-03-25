@@ -13,16 +13,14 @@ public class Student implements Personable {
     private int id;
     private String firstName;
     private String lastName;
-    private String studentNo;
     private String stream;
     @ElementCollection
     private Map<Integer, Integer> preferences;
 
     public Student() {}
-    public Student(String firstName, String lastName, String studentNo, String stream){
+    public Student(String firstName, String lastName, String stream){
         this.firstName = firstName;
         this.lastName = lastName;
-        this.studentNo = studentNo;
         this.stream = stream;
     }
 
@@ -36,10 +34,6 @@ public class Student implements Personable {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public String getStudentNo() {
-        return studentNo;
     }
 
     public String getName() { return firstName + " " + lastName; }
@@ -64,6 +58,6 @@ public class Student implements Personable {
         StringBuilder sb = new StringBuilder();
         for(int preference : preferences.values())
             sb.append(preference).append(",");
-        return firstName + " " + lastName + "," + studentNo + "," + stream + "," + sb;
+        return firstName + " " + lastName + "," + id + "," + stream + "," + sb;
     }
 }

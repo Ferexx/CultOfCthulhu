@@ -48,8 +48,8 @@ public class GenerationController {
 
     @PostMapping(value = "numStudents")
     public String numStudents(@RequestParam("number") Integer number) throws IOException {
-        List<String[]> projects = generateProjects(number);
-        generateStudent(number, projects);
+        generateProjects(number);
+        generateStudents(number, projectDAO.findAll());
         return "redirect:downloadProjects";
     }
 
@@ -82,64 +82,55 @@ public class GenerationController {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/txt")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
-    public void generateStudent(int number, List<String[]> projects) throws IOException {
+    public void generateStudents(int number, List<Project> projects) {
         Random rand = new Random();
-
-        File firstfile= new File("input-files/student_firstname_base.csv");
+        File firstNameFile = new File("input-files/student_firstname_base.csv");
         List<String> firstnames = new ArrayList<>();
-
-        File lastfile= new File("input-files/student_lastname_base.csv");
+        File lastNameFile = new File("input-files/student_lastname_base.csv");
         List<String> lastnames = new ArrayList<>();
-
         Scanner inputStream;
         List<Student> students = new ArrayList<>();
 
-        try{
-            inputStream = new Scanner(firstfile);
-
-            while(inputStream.hasNext()){
-                String line= inputStream.next();
+        //Read first and last names into their respective lists
+        try {
+            inputStream = new Scanner(firstNameFile);
+            while(inputStream.hasNext()) {
+                String line = inputStream.next();
                 firstnames.add(line);
             }
             inputStream.close();
-        }catch (FileNotFoundException e) {
+        } catch(FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        try{
-            inputStream = new Scanner(lastfile);
-
-            while(inputStream.hasNext()){
-                String line= inputStream.next();
+        try {
+            inputStream = new Scanner(lastNameFile);
+            while(inputStream.hasNext()) {
+                String line = inputStream.next();
                 lastnames.add(line);
             }
             inputStream.close();
-        }catch (FileNotFoundException e) {
+        } catch(FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        String fname;
-        String lname;
-        int n = 0;
-        String[] line = new String[4];
-
-        for (int i = 0; i < number; i++) {
-            fname = firstnames.get(rand.nextInt(200));
-            line[0] = fname;
-            lname = lastnames.get(rand.nextInt(200));
-            line[1] = lname;
-            line[2] = String.valueOf(n++);
-
-            if (rand.nextInt(10) < 6){
-                line[3] = "CS";
-            } else {
-                line[3] = "DS";
-            }
-            Student student = new Student(line[0], line[1], line[2], line[3]);
-            assignProjects(student, projects);
-            students.add(student);
+        //Now randomly choose first and last name, and generate student
+        String firstname, lastname, stream;
+        for(int i = 0; i < number; i++) {
+            firstname = firstnames.get(rand.nextInt(200));
+            lastname = lastnames.get(rand.nextInt(200));
+            if(rand.nextInt(10) < 6) stream = "CS";
+            else stream = "DS";
+            Student student = new Student(firstname, lastname, stream);
+            //Generate this student's preferences with Gaussian distribution
+            assignPreferences(student, projects);
         }
-        UploadController.parser.writeStudents(students, "user-files/students.txt");
+
+        //Finally, write to CSV
+        try {
+            UploadController.parser.writeStudents(studentDAO.findAll(), "user-files/students.csv");
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void assignProjects(Student student, List<String[]> projects){
