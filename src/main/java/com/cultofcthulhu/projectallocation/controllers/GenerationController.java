@@ -1,7 +1,13 @@
 package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.RandomGenerator;
+import com.cultofcthulhu.projectallocation.models.Project;
+import com.cultofcthulhu.projectallocation.models.StaffMember;
 import com.cultofcthulhu.projectallocation.models.Student;
+import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
+import com.cultofcthulhu.projectallocation.models.data.StaffMemberDAO;
+import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -24,6 +30,14 @@ import java.util.concurrent.ThreadLocalRandom;
 
 @Controller
 public class GenerationController {
+
+    @Autowired
+    private StaffMemberDAO staffMemberDAO;
+    @Autowired
+    private ProjectDAO projectDAO;
+    @Autowired
+    private StudentDAO studentDAO;
+
     private static final int NUMBER_OF_PREFERENCES = 10;
 
     @RequestMapping(value = "/howManyStudents")
@@ -140,35 +154,43 @@ public class GenerationController {
         }
     }
 
-    public List<String[]> generateProjects(int number) throws IOException {
+    public void generateProjects(int number) {
         List<String[]> lines = UploadController.parser.lines;
-        List<String[]> newLines = new ArrayList<>();
-        for(int i=0;i<number/2;i++) {
+
+        for(int i = 0; i < number / 2; i++) {
+            //First, generate a staff member
             int lineNumber = ThreadLocalRandom.current().nextInt(0, lines.size() + 1);
             String[] line = lines.get(lineNumber-1);
-            for(int j=0;j<3;j++) {
-                String[] newLine = new String[3];
-                newLine[0] = line[0];
-                newLine[1] = RandomGenerator.generateString();
-                if(line[line.length-1].equals("Dagon Studies") && ThreadLocalRandom.current().nextInt(0, 11) % 2 == 0) {
-                    newLine[2] = "CS+DS";
-                }
-                else if (line[line.length-1].equals("Dagon Studies") && ThreadLocalRandom.current().nextInt(0, 11) % 2 == 1) {
-                    newLine[2] = "CS";
-                }
-                else newLine[2] = "CS";
-                newLines.add(newLine);
+            String name = line[0];
+            String[] interests = line[1].substring(1, line[1].length()-1).split(",");
+            Map<Integer, String> interestsMap = new HashMap<>();
+            for(String string: interests)
+                interestsMap.put(interestsMap.size(), string);
+            String stream = line[3];
+            StaffMember member = new StaffMember(name, interestsMap, stream);
 
-                if(line[line.length-1].equals("Dagon Studies")) {
-                    newLine[2] = "DS";
-                }
-                else if(ThreadLocalRandom.current().nextInt(0, 11) % 2 == 0) {
-                    newLine[2] = "CS";
-                }
-                else newLine[2] = "CS+DS";
+            //Next, generate three projects that they "propose"
+            for(int j = 0; j < 3; j++) {
+                String projectTitle = RandomGenerator.generateString();
+                String projectStream;
+                if(member.getStream().equals("Dagon Studies"))
+                    projectStream = "DS";
+                //Generate a random integer to decide if it's CS or CS+DS
+                else if(ThreadLocalRandom.current().nextInt(0, 11) % 2 == 0)
+                    projectStream = "CS";
+                else projectStream = "CS+DS";
+                Project project = new Project(projectTitle, member.getId(), projectStream);
+                member.addProject_proposal(project.getId());
+                projectDAO.save(project);
             }
+            staffMemberDAO.save(member);
         }
-        UploadController.parser.writeCSV(newLines, "user-files/projects.txt");
-        return newLines;
+
+        //Now write to a CSV
+        try {
+            UploadController.parser.writeProjects(projectDAO.findAll(), "user-files/projects.csv");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

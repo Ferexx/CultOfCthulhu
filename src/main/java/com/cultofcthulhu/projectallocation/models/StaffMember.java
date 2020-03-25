@@ -10,6 +10,8 @@ public class StaffMember implements Personable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     private String name;
     @ElementCollection
     private Map<Integer, String> research_interests;
@@ -23,6 +25,10 @@ public class StaffMember implements Personable {
         this.name = name;
         this.research_interests = research_interests;
         this. stream = stream;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setName(String name) {

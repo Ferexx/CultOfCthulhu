@@ -24,6 +24,10 @@ public class Project {
         this.suitable_for_streams = suitable_for_streams;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public String getProject_title() {
         return project_title;
     }
@@ -46,6 +50,11 @@ public class Project {
 
     public void setSuitable_for_streams(String suitable_for_streams) {
         this.suitable_for_streams = suitable_for_streams;
+    }
+
+    @Override
+    public String toString() {
+        return proposed_by + "," + project_title + "," + suitable_for_streams;
     }
 
 }

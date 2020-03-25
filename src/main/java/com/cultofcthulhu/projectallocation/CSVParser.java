@@ -1,5 +1,6 @@
 package com.cultofcthulhu.projectallocation;
 
+import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.Student;
 
 import java.io.*;
@@ -25,7 +26,7 @@ public class CSVParser {
         }
     }
 
-    public void writeCSV(List<String[]> lines, String file) throws IOException {
+    public void writeProjects(List<Project> projects, String file) throws IOException {
         File writeTo = new File(file);
         if(writeTo.createNewFile()) {
             System.out.println("Created file");
@@ -35,9 +36,8 @@ public class CSVParser {
         }
 
         FileWriter writer = new FileWriter(file);
-        for(String[] line : lines) {
-            String string = Arrays.toString(line);
-            string = string.substring(1, string.length()-1);
+        for(Project project : projects) {
+            String string = project.toString();
             writer.write(string);
             writer.write("\n");
         }
