@@ -3,6 +3,7 @@ package com.cultofcthulhu.projectallocation.models;
 import com.cultofcthulhu.projectallocation.interfaces.Personable;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.Map;
 
 @Entity
@@ -14,10 +15,10 @@ public class StaffMember implements Personable {
 
     private String name;
     @ElementCollection
-    private Map<Integer, String> research_interests;
+    private Map<Integer, String> research_interests = new HashMap<>();
     private String stream;
     @ElementCollection
-    private Map<Integer, Integer> project_proposals;
+    private Map<Integer, Integer> project_proposals = new HashMap<>();
 
     public StaffMember() {}
 
@@ -65,5 +66,10 @@ public class StaffMember implements Personable {
 
     public void addProject_proposal(int projectProposal){
        project_proposals.put(project_proposals.size(), projectProposal);
+    }
+
+    @Override
+    public String toString() {
+        return id + "," + name + "," + stream + "," + research_interests.toString();
     }
 }

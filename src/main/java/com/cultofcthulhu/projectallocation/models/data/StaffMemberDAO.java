@@ -9,4 +9,5 @@ import javax.transaction.Transactional;
 @Repository
 @Transactional
 public interface StaffMemberDAO extends JpaRepository<StaffMember, Integer> {
+    StaffMember findByName(String name);
 }

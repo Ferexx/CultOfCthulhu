@@ -5,7 +5,6 @@ import com.cultofcthulhu.projectallocation.models.Student;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class CSVParser {
@@ -36,6 +35,8 @@ public class CSVParser {
         }
 
         FileWriter writer = new FileWriter(file);
+        writer.write("Staff Member ID,Project Title,Stream");
+        writer.write("\n");
         for(Project project : projects) {
             String string = project.toString();
             writer.write(string);
@@ -55,6 +56,8 @@ public class CSVParser {
         }
 
         FileWriter writer = new FileWriter(file);
+        writer.write("Student Name,Student Number,Stream,Project Preferences");
+        writer.write("\n");
         for(Student student : lines) {
             String string = student.toString();
             writer.write(string);

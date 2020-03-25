@@ -47,7 +47,7 @@ public class GenerationController {
     }
 
     @PostMapping(value = "numStudents")
-    public String numStudents(@RequestParam("number") Integer number) throws IOException {
+    public String numStudents(@RequestParam("number") Integer number) {
         generateProjects(number);
         generateStudents(number, projectDAO.findAll());
         return "redirect:downloadProjects";
@@ -60,26 +60,26 @@ public class GenerationController {
 
     @RequestMapping(value = "downloadP")
     public ResponseEntity downloadP() {
-        Path path = Paths.get("user-files/" + "projects.txt");
+        Path path = Paths.get("user-files/" + "projects.csv");
         Resource resource = null;
         try {
             resource = new UrlResource(path.toUri());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/txt")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/csv")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
     @RequestMapping(value = "downloadS")
     public ResponseEntity downloadS() {
-        Path path = Paths.get("user-files/" + "students.txt");
+        Path path = Paths.get("user-files/" + "students.csv");
         Resource resource = null;
         try {
             resource = new UrlResource(path.toUri());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/txt")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/csv")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
     public void generateStudents(int number, List<Project> projects) {
@@ -89,7 +89,6 @@ public class GenerationController {
         File lastNameFile = new File("input-files/student_lastname_base.csv");
         List<String> lastnames = new ArrayList<>();
         Scanner inputStream;
-        List<Student> students = new ArrayList<>();
 
         //Read first and last names into their respective lists
         try {
@@ -133,7 +132,7 @@ public class GenerationController {
         }
     }
 
-    public void assignProjects(Student student, List<String[]> projects){
+    public void assignPreferences(Student student, List<Project> projects) {
         Random rand = new Random();
 
         for (int x = 0 ; x < NUMBER_OF_PREFERENCES ; x++) {
@@ -141,24 +140,41 @@ public class GenerationController {
             do {
                 val = (int) Math.round(rand.nextGaussian() * (projects.size() / 3) + (projects.size() / 2));
             }while(val <= 0 || val >= projects.size()-1);
-            student.addPreference(projects.get(val));
+            student.addPreference(projects.get(val).getId());
         }
+        studentDAO.save(student);
     }
 
     public void generateProjects(int number) {
         List<String[]> lines = UploadController.parser.lines;
 
+        //List for making sure we don't add the same staff member twice
+        List<Integer> already = new ArrayList<>();
+
         for(int i = 0; i < number / 2; i++) {
             //First, generate a staff member
-            int lineNumber = ThreadLocalRandom.current().nextInt(0, lines.size() + 1);
+            int lineNumber;
+            do {
+                lineNumber = ThreadLocalRandom.current().nextInt(0, lines.size() + 1);
+            } while (already.contains(lineNumber));
+            already.add(lineNumber);
+
             String[] line = lines.get(lineNumber-1);
             String name = line[0];
-            String[] interests = line[1].substring(1, line[1].length()-1).split(",");
             Map<Integer, String> interestsMap = new HashMap<>();
-            for(String string: interests)
-                interestsMap.put(interestsMap.size(), string);
-            String stream = line[3];
+            //Some staff members have no interests
+            if(line[1] != null) {
+                String[] interests = line[1].substring(1, line[1].length() - 1).split(",");
+                for (String string : interests)
+                    interestsMap.put(interestsMap.size(), string);
+            }
+            String stream;
+            if(line[line.length-1].equals("Dagon Studies")) stream = "Dagon Studies";
+            else stream = "Cthulhu Studies";
             StaffMember member = new StaffMember(name, interestsMap, stream);
+            //Store and retrieve it in database so that an ID is generated
+            staffMemberDAO.save(member);
+            member = staffMemberDAO.findByName(member.getName());
 
             //Next, generate three projects that they "propose"
             for(int j = 0; j < 3; j++) {
