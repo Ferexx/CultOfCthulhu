@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.stream.Collectors;
 
 @Controller
@@ -51,12 +50,15 @@ public class UploadController {
     }
 
     @PostMapping(value = "/upload")
-    public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) throws IOException {
-        storageService.store(file);
-        redirectAttributes.addFlashAttribute("message", "You successfully uploaded '" + file.getOriginalFilename() + "'");
-        File convFile = new File(String.valueOf(storageService.load(file.getOriginalFilename())));
-        parser = new CSVParser(convFile);
-        return "redirect:/uploadStatus";
+    public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+        if(file.getOriginalFilename().substring(file.getOriginalFilename().length()-3, file.getOriginalFilename().length()).equals("csv") || file.getOriginalFilename().substring(file.getOriginalFilename().length()-3, file.getOriginalFilename().length()).equals("tsv")) {
+            storageService.store(file);
+            redirectAttributes.addFlashAttribute("message", "You successfully uploaded '" + file.getOriginalFilename() + "'");
+            File convFile = new File(String.valueOf(storageService.load(file.getOriginalFilename())));
+            parser = new CSVParser(convFile);
+            return "redirect:/uploadStatus";
+        }
+        else return "error";
     }
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {

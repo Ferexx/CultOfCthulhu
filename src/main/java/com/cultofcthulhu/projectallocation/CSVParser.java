@@ -13,10 +13,14 @@ public class CSVParser {
 
     public CSVParser(File toParse) {
         String line = "";
+        String split;
+        if (toParse.getName().substring(toParse.getName().length()-3, toParse.getName().length()).equals("csv"))
+            split=",";
+        else split="\t";
         try {
             BufferedReader br = new BufferedReader(new FileReader(toParse));
             while((line = br.readLine())!=null) {
-                String[] values = line.split(",");
+                String[] values = line.split(split);
                 lines.add(values);
             }
         } catch (IOException e) {

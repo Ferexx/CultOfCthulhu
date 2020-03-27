@@ -9,6 +9,7 @@ import java.util.Map;
 @Entity
 public class Student implements Personable {
 
+    //Variable declaration and constructors
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -25,6 +26,7 @@ public class Student implements Personable {
         this.stream = stream;
     }
 
+    //Getters and setters
     public int getId() {
         return id;
     }
@@ -54,6 +56,11 @@ public class Student implements Personable {
         preferences.put(preferences.size(), i);
     }
 
+    public Map<Integer, Integer> getPreferences() {
+        return preferences;
+    }
+
+    //Extra methods
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();

@@ -12,3 +12,10 @@ Student generation is done by taking a first name and a last name from two stati
 Project preference generation:
 Project preferences are generated on a per-student basis. What this means is that each time we create a student, we make a call to the project assignment function. This function uses the nextGaussian method of Random, with the values adjusted to suit our needs.
 We found this page explaining how to do this: https://www.javamex.com/tutorials/random_numbers/gaussian_distribution_2.shtml
+
+
+Sprint 2:
+
+We added new classes for staff members and Projects. This required some significant restructuring of the parsing code to load the information into their relevant classes instead of storing it as lists of strings.
+
+The work was tested using the csv uploaded in Sprint 1. A catch-all error page was added that redirected users to the beginning of the process in case something went wrong.

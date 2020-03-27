@@ -8,6 +8,7 @@ import javax.persistence.Id;
 @Entity
 public class Project {
 
+    //Variable declaration and constructors
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -24,6 +25,7 @@ public class Project {
         this.suitable_for_streams = suitable_for_streams;
     }
 
+    //Getters and setters
     public int getId() {
         return id;
     }
@@ -52,6 +54,7 @@ public class Project {
         this.suitable_for_streams = suitable_for_streams;
     }
 
+    //Extra methods
     @Override
     public String toString() {
         return proposed_by + "," + project_title + "," + suitable_for_streams;

@@ -9,6 +9,7 @@ import java.util.Map;
 @Entity
 public class StaffMember implements Personable {
 
+    //Variable declaration and constructors
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -28,6 +29,7 @@ public class StaffMember implements Personable {
         this. stream = stream;
     }
 
+    //Getters and setters
     public int getId() {
         return id;
     }
@@ -68,6 +70,8 @@ public class StaffMember implements Personable {
        project_proposals.put(project_proposals.size(), projectProposal);
     }
 
+
+    //Extra methods
     @Override
     public String toString() {
         return id + "," + name + "," + stream + "," + research_interests.toString();
