@@ -18,6 +18,7 @@ public class Student implements Personable {
     private String stream;
     @ElementCollection
     private Map<Integer, Integer> preferences = new HashMap<>();
+    private int projectAssigned;
 
     public Student() {}
     public Student(String firstName, String lastName, String stream){

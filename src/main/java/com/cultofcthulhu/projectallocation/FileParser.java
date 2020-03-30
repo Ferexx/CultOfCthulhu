@@ -1,5 +1,6 @@
 package com.cultofcthulhu.projectallocation;
 
+import com.cultofcthulhu.projectallocation.exceptions.ParseException;
 import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.Student;
 
@@ -7,21 +8,25 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CSVParser {
+public class FileParser {
 
     public List<String[]> lines = new ArrayList<>();
 
-    public CSVParser(File toParse) {
-        String line = "";
+    public FileParser(File toParse) throws ParseException {
+        String line;
         String split;
-        if (toParse.getName().substring(toParse.getName().length()-3, toParse.getName().length()).equals("csv"))
-            split=",";
-        else split="\t";
+        if (toParse.getName().substring(toParse.getName().length()-3).equals("csv"))
+            split=",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";      //Regex to ignore ", basically checks ahead for how many ", and splits on the comma if that comma has zero or even number of quotes ahead of it
+        else if(toParse.getName().substring(toParse.getName().length()-3).equals("csv")) split="\t";
+        else throw new ParseException("Please make sure your file is in .csv or .tsv format, and saved as such.");
         try {
             BufferedReader br = new BufferedReader(new FileReader(toParse));
+            int i = 1;
             while((line = br.readLine())!=null) {
-                String[] values = line.split(split);
+                String[] values = line.split(split, -1);
+                if(values.length!=4) throw new ParseException("Your file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 4)");
                 lines.add(values);
+                i++;
             }
         } catch (IOException e) {
             e.printStackTrace();

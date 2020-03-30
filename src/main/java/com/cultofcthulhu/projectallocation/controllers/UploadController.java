@@ -1,6 +1,7 @@
 package com.cultofcthulhu.projectallocation.controllers;
 
-import com.cultofcthulhu.projectallocation.CSVParser;
+import com.cultofcthulhu.projectallocation.FileParser;
+import com.cultofcthulhu.projectallocation.exceptions.ParseException;
 import com.cultofcthulhu.projectallocation.storage.StorageFileNotFoundException;
 import com.cultofcthulhu.projectallocation.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 public class UploadController {
 
     private final StorageService storageService;
-    public static CSVParser parser;
+    public static FileParser parser;
 
     @Autowired
     public UploadController(StorageService storageService) {
@@ -50,15 +51,17 @@ public class UploadController {
     }
 
     @PostMapping(value = "/upload")
-    public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
-        if(file.getOriginalFilename().substring(file.getOriginalFilename().length()-3, file.getOriginalFilename().length()).equals("csv") || file.getOriginalFilename().substring(file.getOriginalFilename().length()-3, file.getOriginalFilename().length()).equals("tsv")) {
-            storageService.store(file);
-            redirectAttributes.addFlashAttribute("message", "You successfully uploaded '" + file.getOriginalFilename() + "'");
-            File convFile = new File(String.valueOf(storageService.load(file.getOriginalFilename())));
-            parser = new CSVParser(convFile);
-            return "redirect:/uploadStatus";
+    public String singleFileUpload(@RequestParam("file") MultipartFile file, Model model) {
+        storageService.store(file);
+        model.addAttribute("message", "You successfully uploaded '" + file.getOriginalFilename() + "'");
+        File convFile = new File(String.valueOf(storageService.load(file.getOriginalFilename())));
+        try {
+            parser = new FileParser(convFile);
+            return "uploadStatus";
+        } catch (ParseException e) {
+            model.addAttribute("error", e.getMessage());
+            return "error";
         }
-        else return "error";
     }
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {

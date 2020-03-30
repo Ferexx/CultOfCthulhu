@@ -16,6 +16,7 @@ public class Project {
     private String project_title;
     private int proposed_by;
     private String suitable_for_streams;
+    private int studentAssigned;
 
     public Project() {}
 
