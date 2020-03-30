@@ -9,15 +9,13 @@
 </head>
 <body>
 
-<div class="container text-center">
-
     <div class="jumbotron text-center" style="margin-bottom:0">
-        <h1>Welcome</h1>
-        <p>Please upload your .csv/.tsv file containing your staff members</p>
+            <h1>Welcome</h1>
     </div>
 
-    <div class="card">
+    <div class="card text-center">
         <br><br>
+        <h4>Choose a .csv or .tsv file type to upload</h4><br>
         <form method="POST" action="/upload" enctype="multipart/form-data">
             <div class="form-group">
                 <input style="display: inline-block;" type="file" name="file">
@@ -27,8 +25,13 @@
                 <button class="btn btn-default" type="submit" value="submit">Submit</button>
             </div>
         </form>
+        <br><br>
     </div>
-</div>
+
+<footer class="text-center">
+    <br>
+    <p>&copy; MoRoJack</p>
+</footer>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

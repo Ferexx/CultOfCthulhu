@@ -1,0 +1,13 @@
+.jumbotron.text-center {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
+
+.card.text-center {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+}
