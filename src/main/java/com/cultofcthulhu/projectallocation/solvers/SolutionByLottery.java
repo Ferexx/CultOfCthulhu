@@ -16,7 +16,7 @@ public class SolutionByLottery implements Solutionable {
         Integer[] student_project_assignment_order = new Integer[((int) studentDAO.count())];
         Boolean[] takenProjects = new Boolean[(int) projectDAO.count()];
 
-        for (int i = 0; i < takenProjects.length ; i++) { takenProjects[i] = false; }
+        Arrays.fill(takenProjects, false);
 
         for (int i = 0; i < student_project_assignment_order.length; i++) { student_project_assignment_order[i] = i; }
 
