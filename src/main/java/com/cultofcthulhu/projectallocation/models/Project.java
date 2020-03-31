@@ -55,6 +55,14 @@ public class Project {
         this.suitable_for_streams = suitable_for_streams;
     }
 
+    public void setStudentAssigned(int studentAssigned) {
+        this.studentAssigned = studentAssigned;
+    }
+
+    public int getStudentAssigned() {
+        return studentAssigned;
+    }
+
     //Extra methods
     @Override
     public String toString() {

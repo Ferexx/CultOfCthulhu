@@ -145,6 +145,8 @@ public class GenerationController {
         studentDAO.save(student);
     }
 
+
+
     public void generateProjects(int number) {
         List<String[]> lines = UploadController.parser.lines;
 

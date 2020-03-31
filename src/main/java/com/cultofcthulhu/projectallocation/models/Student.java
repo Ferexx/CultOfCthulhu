@@ -58,6 +58,22 @@ public class Student implements Personable {
         preferences.put(preferences.size(), i);
     }
 
+    public void setAssignedProjectID(int i){
+        assignedProjectID = i;
+    }
+
+    public int getAssignedProjectID() {
+        return assignedProjectID;
+    }
+
+    public void setWorkingUnderStaffID(int i){
+        workingUnderStaffID = i;
+    }
+
+    public int getWorkingUnderStaffID() {
+        return workingUnderStaffID;
+    }
+
     public Map<Integer, Integer> getPreferences() {
         return preferences;
     }
