@@ -1,6 +1,7 @@
 package com.cultofcthulhu.projectallocation.solvers;
 
 import com.cultofcthulhu.projectallocation.interfaces.Solutionable;
+import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
@@ -23,19 +24,32 @@ public class SolutionByLottery implements Solutionable {
         Collections.shuffle(Arrays.asList(student_project_assignment_order));
         System.out.println(Arrays.toString(student_project_assignment_order));
 
-        for (int i = 0; i < student_project_assignment_order.length; i++) {
-            Student student = studentDAO.getOne(student_project_assignment_order[i]);
+        for (Integer integer : student_project_assignment_order) {
+            Student student = studentDAO.getOne(integer+1);
             Map<Integer, Integer> preferences = student.getPreferences();
 
-            for (int x = 0; x < preferences.size(); x++){
-                if (!takenProjects[preferences.get(x)]){ //If project of preference x is not taken
-                    student.setAssignedProjectID(preferences.get(x)); //Assign project to this student
-                    projectDAO.getOne(preferences.get(x)).setStudentAssigned(student.getId()); //Assign student to project x
-                    takenProjects[preferences.get(x)] = true; //record that project is now taken in this solution
+            for (int x = 0; x < preferences.size(); x++) {
+                int preferenceX = preferences.get(x);
+                if (!takenProjects[preferenceX]) { //If project of preference x is not taken
+                    student.setAssignedProjectID(preferenceX); //Assign project to this student
+                    Project project = projectDAO.getOne(preferenceX);
+                    project.setStudentAssigned(student.getId()); //Assign student to project x
+                    projectDAO.save(project);
+                    takenProjects[preferenceX] = true; //record that project is now taken in this solution
+                    break; //Exit loop since we've assigned a student their highest preference possible
                 }
+            }
 
-                if (x == preferences.size()){
-                    //Need to write code that finds a free project if all preferences are taken
+            //If we haven't assigned a student a project in the loop, just give them the first one that isn't taken
+            if(student.getAssignedProjectID() == -1) {
+                for(int x = 0; x < takenProjects.length; x++) {
+                    if(!takenProjects[x]) {
+                        student.setAssignedProjectID(x);
+                        Project project = projectDAO.getOne(x);
+                        project.setStudentAssigned(student.getId());
+                        projectDAO.save(project);
+                        takenProjects[x] = true;
+                    }
                 }
             }
         }
