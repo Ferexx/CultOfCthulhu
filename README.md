@@ -19,3 +19,7 @@ Sprint 2:
 We added new classes for staff members and Projects. This required some significant restructuring of the parsing code to load the information into their relevant classes instead of storing it as lists of strings.
 
 The work was tested using the csv uploaded in Sprint 1. A catch-all error page was added that redirected users to the beginning of the process in case something went wrong.
+
+Sprint 3:
+
+While the function used to generate a solution in our SolutionByLottery class returns a map, that map is only used as a Thymeleaf attribute for the html page. Aside from that, it is discarded right away. The mapping of students to projects is done within each instance of the student and project class. Student has a field contains the ID of the project to which they were assigned. Similarly, Project has a field which contains the ID of the student it was assigned to.  
