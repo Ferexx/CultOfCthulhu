@@ -48,4 +48,9 @@ public class Solution {
     public Map<Integer, Integer> getSolution() {
         return solution;
     }
+
+    public Map<Integer, Integer> change(int key, int value) {
+        solution.replace(key, value);
+        return solution;
+    }
 }

@@ -7,5 +7,5 @@ import javax.transaction.Transactional;
 
 @Repository
 @Transactional
-public interface SolutionDAO extends JpaRepository<Integer, Solution> {
+public interface SolutionDAO extends JpaRepository<Solution, Integer> {
 }
