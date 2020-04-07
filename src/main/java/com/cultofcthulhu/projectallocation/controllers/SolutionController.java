@@ -2,6 +2,8 @@ package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
+import com.cultofcthulhu.projectallocation.models.data.Solution;
+import com.cultofcthulhu.projectallocation.models.data.SolutionDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.solvers.SolutionByLottery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class SolutionController {
     private StudentDAO studentDAO;
     @Autowired
     private ProjectDAO projectDAO;
+    @Autowired
+    private SolutionDAO solutionDAO;
 
     @RequestMapping(value = "/solutionByLottery")
     public String solutionByLottery(Model model) {
@@ -32,9 +36,12 @@ public class SolutionController {
     public Map<String, String> generateMap() {
         List<Student> students = studentDAO.findAll();
         Map<String, String> map = new HashMap<>();
+        Map<Integer, Integer> solution = new HashMap<>();
         for (Student student : students) {
             map.put(student.getName(), projectDAO.findById(student.getAssignedProjectID()).get().getProject_title());
+            solution.put(student.getId(), student.getAssignedProjectID());
         }
+        solutionDAO.save(new Solution(solution));
         return map;
     }
 }
