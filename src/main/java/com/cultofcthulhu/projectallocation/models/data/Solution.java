@@ -22,6 +22,11 @@ public class Solution {
     public Solution(Map<Integer, Integer> map) {
         solution = map;
     }
+    public Solution(Map<Integer, Integer> map, double energy) {
+        solution = map;
+        this.energy = energy;
+        fitness = 1/energy;
+    }
     public Solution() {}
 
     public double getEnergy() {
