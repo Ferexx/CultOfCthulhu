@@ -20,7 +20,7 @@ public class SimulatedAnnealing {
         this.studentDAO = studentDAO;
     }
 
-    public double assessSolution(Solution solution) {
+    public double assessSolution(Solution solution, boolean constraint_GPA) {
         double energy = 0;
 
         Map<Student, Project> studentProjectMap = createDirectMap(solution.getSolution());
@@ -29,9 +29,15 @@ public class SimulatedAnnealing {
             Map<Integer, Integer> entryPreferences = entry.getKey().getPreferences();
             for (int i = 0; i < entryPreferences.size() ; i++){
                 if (entryPreferences.get(i) == entry.getValue().getId()){
-                    energy = energy + i;
+                    energy = energy + i; //adds the place in the preference list to the total energy
+                } else if (i == entryPreferences.size() && entryPreferences.get(i) != entry.getValue().getId()){ //if a student has a project not on their preference list increase energy
+                    energy = energy + i + 1; //increase energy by 1 more then if they had gotten their last preference
                 }
             }
+        }
+
+        if (constraint_GPA){
+
         }
 
         return energy;
