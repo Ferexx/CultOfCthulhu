@@ -13,13 +13,11 @@ public class SimulatedAnnealing {
     private Solution currentBest;
     private ProjectDAO projectDAO;
     private StudentDAO studentDAO;
-    private Map<Student, Project> map;
 
     public SimulatedAnnealing(Solution solution, ProjectDAO projectDAO, StudentDAO studentDAO) {
         currentBest = solution;
         this.projectDAO = projectDAO;
         this.studentDAO = studentDAO;
-        this.map = createDirectMap(solution.getSolution());
     }
 
     public double assessSolution(Solution solution) {
