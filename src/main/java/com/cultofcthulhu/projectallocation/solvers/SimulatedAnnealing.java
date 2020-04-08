@@ -21,10 +21,10 @@ public class SimulatedAnnealing {
     }
 
     public double assessSolution(Solution solution) {
-        double energy = 1;
-        if(violatesHardConstraints(solution)) return energy;
+        double energy = 0;
 
-        //Soft constraints code here
+        Map<Student, Project> studentProjectMap = createDirectMap(solution.getSolution());
+
         return energy;
     }
 
