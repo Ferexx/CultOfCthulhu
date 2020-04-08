@@ -9,31 +9,6 @@
 </head>
 <body>
 
-    <div class="jumbotron text-center" style="margin-bottom:0">
-            <h1>Welcome</h1>
-    </div>
-
-    <div class="card text-center">
-        <br><br>
-        <h4>Choose a .csv or .tsv file type to upload</h4><br>
-        <form method="POST" action="/upload" enctype="multipart/form-data">
-            <div class="form-group">
-                <input style="display: inline-block;" type="file" name="file">
-
-            </div>
-            <div class="form-group">
-                <button class="btn btn-default" type="submit" value="submit">Submit</button>
-            </div>
-        </form>
-        <br><br>
-    </div>
-
-    <p>Student? Enter your student number to go submit your preferences</p>
-    <form method="POST" action="/preferences">
-        <label for="studentNum">Student Number</label>
-        <input type="number" id="studentNum" name="studentNum"/>
-        <button type="submit">Submit</button>
-    </form>
 
 <footer class="text-center">
     <br>
