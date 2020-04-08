@@ -17,12 +17,13 @@ public class Student implements Personable {
     private String lastName;
     private String stream;
     /* The map is structured so that the key is the position in the preference list, and the value
-    // is the ID of the project in that position
+       is the ID of the project in that position
      */
     @ElementCollection
     private Map<Integer, Integer> preferences = new HashMap<>();
     private int assignedProjectID = -1;
     private int workingUnderStaffID;
+    private int gpa;
 
     public Student() {}
     public Student(String firstName, String lastName, String stream){
@@ -79,6 +80,14 @@ public class Student implements Personable {
 
     public Map<Integer, Integer> getPreferences() {
         return preferences;
+    }
+
+    public int getGpa() {
+        return gpa;
+    }
+
+    public void setGpa(int gpa) {
+        this.gpa = gpa;
     }
 
     //Extra methods

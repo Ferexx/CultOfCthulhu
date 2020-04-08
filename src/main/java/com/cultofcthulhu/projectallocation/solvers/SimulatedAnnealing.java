@@ -38,7 +38,13 @@ public class SimulatedAnnealing {
             //If a student got a project not in their preferences list, add significantly more energy
             if(!entry.getKey().getPreferences().containsValue(entry.getKey().getAssignedProjectID())) energy += 50;
 
-            //Next, add energy based on whether students with a higher GPA got preferences that were higher in their list
+            /* Next, check our GPA constraint:
+            For each student, get the projects that they were not assigned, that were above the project they were assigned in their preference list.
+            So if a student was assigned their 5th preference, find their 1st, 2nd, 3rd, and 4th preference.
+            Next, find the students that were assigned these projects. Check if their GPA is higher than our current student.
+            If their GPA is lower than our current student, then this violates our GPA constraint, so add energy based on how much the user has chosen
+            GPA to impact the outcome.
+             */
         }
 
         return energy;
