@@ -16,6 +16,9 @@ public class Student implements Personable {
     private String firstName;
     private String lastName;
     private String stream;
+    /* The map is structured so that the key is the position in the preference list, and the value
+    // is the ID of the project in that position
+     */
     @ElementCollection
     private Map<Integer, Integer> preferences = new HashMap<>();
     private int assignedProjectID = -1;

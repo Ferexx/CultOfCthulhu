@@ -20,37 +20,37 @@ public class SimulatedAnnealing {
         this.studentDAO = studentDAO;
     }
 
-    public double assessSolution(Solution solution, boolean constraint_GPA) {
+    public double assessSolution(Solution solution, int constraint_GPA) {
         double energy = 0;
 
         Map<Student, Project> studentProjectMap = createDirectMap(solution.getSolution());
+        if(violatesHardConstraints(studentProjectMap)) energy += 100;
 
+        //Main loop to iterate through all students, and the projects assigned to them
         for (Map.Entry<Student, Project> entry : studentProjectMap.entrySet()) {
-            Map<Integer, Integer> entryPreferences = entry.getKey().getPreferences();
-            for (int i = 0; i < entryPreferences.size() ; i++){
-                if (entryPreferences.get(i) == entry.getValue().getId()){
-                    energy = energy + i; //adds the place in the preference list to the total energy
-                } else if (i == entryPreferences.size() && entryPreferences.get(i) != entry.getValue().getId()){ //if a student has a project not on their preference list increase energy
-                    energy = energy + i + 1; //increase energy by 1 more then if they had gotten their last preference
-                }
+
+            //First, add energy based on how far down in each students preference list their assigned project is
+            for(Map.Entry<Integer, Integer> preference : entry.getKey().getPreferences().entrySet()) {
+                //The lower in the preference list something is, the more energy we add.
+                //The preference list map starts at 0, so someone getting their first preference adds 0 energy.
+                if(preference.getValue() == entry.getKey().getAssignedProjectID()) energy += preference.getKey();
             }
-        }
+            //If a student got a project not in their preferences list, add significantly more energy
+            if(!entry.getKey().getPreferences().containsValue(entry.getKey().getAssignedProjectID())) energy += 50;
 
-        if (constraint_GPA){
-
+            //Next, add energy based on whether students with a higher GPA got preferences that were higher in their list
         }
 
         return energy;
     }
 
-    public boolean violatesHardConstraints(Solution solution) {
+    public boolean violatesHardConstraints(Map<Student, Project> map) {
         /*Need to do a few checks here:
         Check if more than one person has the same project
         Check everyone has a project
         Self-specified project can only be assigned to that student
         Maybe more
          */
-        Map<Student, Project> map = createDirectMap(solution.getSolution());
         for(Map.Entry<Student, Project> entry : map.entrySet()) {
             //First check if a project has been assigned to more than one person
             for (Map.Entry<Student, Project> entry2 : map.entrySet())
