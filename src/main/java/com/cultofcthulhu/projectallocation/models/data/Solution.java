@@ -2,6 +2,7 @@ package com.cultofcthulhu.projectallocation.models.data;
 
 import javax.persistence.*;
 import java.util.Map;
+import java.util.Random;
 
 @Entity
 public class Solution {
@@ -49,8 +50,20 @@ public class Solution {
         return solution;
     }
 
-    public Map<Integer, Integer> change(int key, int value) {
-        solution.replace(key, value);
+    public Map<Integer, Integer> change(int degree) {
+        Random rand = new Random();
+        for(int i = 0; i < degree; i++) {
+            int randInt;
+            int randInt2;
+            do {
+                randInt = rand.nextInt(solution.size() - 1);
+                randInt2 = rand.nextInt(solution.size() - 1);
+            }while (randInt != randInt2);
+            int temp = solution.get(randInt);
+            int temp2 = solution.get(randInt2);
+            solution.replace(randInt, temp2);
+            solution.replace(randInt2, temp);
+        }
         return solution;
     }
 }
