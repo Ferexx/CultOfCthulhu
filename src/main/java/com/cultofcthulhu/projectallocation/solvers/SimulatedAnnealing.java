@@ -17,12 +17,9 @@ public class SimulatedAnnealing {
 
     public SimulatedAnnealing(Solution solution, ProjectDAO projectDAO, StudentDAO studentDAO) {
         currentBest = solution;
-        //Generate map of students to projects
-        Map<Student, Project> map = new HashMap<>();
-        for(Map.Entry<Integer, Integer> entry : solution.getSolution().entrySet()) {
-            map.put(studentDAO.getOne(entry.getKey()), projectDAO.getOne(entry.getValue()));
-        }
-        this.map = map;
+        this.projectDAO = projectDAO;
+        this.studentDAO = studentDAO;
+        this.map = createDirectMap(solution.getSolution());
     }
 
     public double assessSolution(Solution solution) {
@@ -41,5 +38,13 @@ public class SimulatedAnnealing {
         Maybe more
          */
         return false;
+    }
+
+    public Map<Student, Project> createDirectMap(Map<Integer, Integer> map) {
+        Map<Student, Project> newMap = new HashMap<>();
+        for(Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            newMap.put(studentDAO.getOne(entry.getKey()), projectDAO.getOne(entry.getValue()));
+        }
+        return newMap;
     }
 }
