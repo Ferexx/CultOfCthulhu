@@ -25,6 +25,15 @@ public class SimulatedAnnealing {
 
         Map<Student, Project> studentProjectMap = createDirectMap(solution.getSolution());
 
+        for (Map.Entry<Student, Project> entry : studentProjectMap.entrySet()) {
+            Map<Integer, Integer> entryPreferences = entry.getKey().getPreferences();
+            for (int i = 0; i < entryPreferences.size() ; i++){
+                if (entryPreferences.get(i) == entry.getValue().getId()){
+                    energy = energy + i;
+                }
+            }
+        }
+
         return energy;
     }
 
