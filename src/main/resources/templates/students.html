@@ -11,18 +11,36 @@
 
     <div th:insert="navbar.html"></div>
 
-    <div class="jumbotron text-center" style="margin-bottom:0"></div>
+    <div class="jumbotron text-center" style="margin-bottom:0">
+        <h5></h5>
+    </div>
 
     <div class="card text-center" style="height: auto;">
         <br><br>
 
-        <h4>Enter your student number to submit your preferences</h4><br>
-        <form method="POST" action="/preferences">
-            <label for="studentNum">Student Number</label>
-            <input type="number" id="studentNum" name="studentNum"/>
-            <button class="btn btn-default" type="submit">Submit</button>
-        </form>
+        <div class="card container bg-light border-dark mb-3" style="max-width: 500px;">
+            <br>
+            <h4 class="card-title text-center">Enter your student number to submit your preferences</h4>
+            <hr>
 
+            <form method="POST" action="/preferences">
+                <div class="form-group">
+                    <div class="d-flex justify-content-start input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </span>
+                        </div>
+                        <input class="form-control" placeholder="Student Number" type="number" id="studentNum" name="StudentNum">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <button class="btn btn-default" type="submit">Submit</button>
+                </div>
+                <br>
+            </form>
+        </div>
         <br><br>
     </div>
 

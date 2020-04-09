@@ -32,4 +32,10 @@ public class StudentController {
         model.addAttribute("title", "About");
         return "about";
     }
+
+    @RequestMapping(value = "/index")
+    public String indexPage(Model model) {
+        model.addAttribute("title", "Home");
+        return "index";
+    }
 }

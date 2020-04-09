@@ -17,16 +17,26 @@
 
     <div class="card text-center" style="height: auto;">
         <br><br>
-        <h4>Choose a .csv or .tsv file type to upload</h4><br>
-        <form method="POST" action="/upload" enctype="multipart/form-data">
-            <div class="form-group">
-                <input style="display: inline-block;" type="file" name="file">
 
-            </div>
-            <div class="form-group">
-                <button class="btn btn-default" type="submit" value="submit">Submit</button>
-            </div>
-        </form>
+        <div class="card container bg-light border-dark mb-3" style="max-width: 500px;">
+            <br>
+            <h4 class="card-title text-center">Choose a .csv or .tsv file type to upload</h4>
+            <hr>
+
+            <form method="POST" action="/upload" enctype="multipart/form-data">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input style="display: inline-block;" type="file" name="file">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <button class="btn btn-default" type="submit">Submit</button>
+                </div>
+                <br>
+            </form>
+        </div>
+
         <br><br>
     </div>
 
