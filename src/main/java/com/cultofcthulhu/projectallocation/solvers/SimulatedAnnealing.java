@@ -20,7 +20,7 @@ public class SimulatedAnnealing {
         this.studentDAO = studentDAO;
     }
 
-    public double assessSolution(Solution solution, boolean constraint_GPA) {
+    public double assessSolution(Solution solution, boolean constraint_GPA, double constraint_GPA_impact) {
         double energy = 0;
 
         Map<Student, Project> studentProjectMap = createDirectMap(solution.getSolution());
@@ -36,9 +36,30 @@ public class SimulatedAnnealing {
             }
         }
 
-        if (constraint_GPA){
 
+
+        if (constraint_GPA){
+            int preference_number = 0;
+            for (Map.Entry<Student, Project> entry : studentProjectMap.entrySet()){
+
+                Map<Integer, Integer> entryPreferences = entry.getKey().getPreferences();
+                preference_number = entryPreferences.size();
+
+                for (int i = 0; i < entryPreferences.size() ; i++){
+                    if (entryPreferences.get(i) == entry.getKey().getAssignedProjectID()){
+                        preference_number = i;
+                    }
+                }
+
+                for (int i = preference_number; i > 0 ; i--){
+                    if (studentDAO.getOne(projectDAO.getOne(entryPreferences.get(i)).getStudentAssigned()).getGpa() < entry.getKey().getGpa()){
+                        energy = energy + (10 * constraint_GPA_impact);
+                    }
+                }
+            }
         }
+
+
 
         return energy;
     }

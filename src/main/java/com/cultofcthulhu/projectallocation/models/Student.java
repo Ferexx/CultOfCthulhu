@@ -16,6 +16,7 @@ public class Student implements Personable {
     private String firstName;
     private String lastName;
     private String stream;
+    private double gpa = 0.00;
     @ElementCollection
     private Map<Integer, Integer> preferences = new HashMap<>();
     private int assignedProjectID = -1;
@@ -53,6 +54,10 @@ public class Student implements Personable {
     }
 
     public void setStream(String stream) { this.stream = stream; }
+
+    public double getGpa() { return gpa; }
+
+    public void setGpa(double gpa) { this.gpa = gpa; }
 
     public void addPreference(int i){
         preferences.put(preferences.size(), i);
