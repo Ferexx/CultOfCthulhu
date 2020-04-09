@@ -11,6 +11,36 @@
 
     <div th:insert="navbar.html"></div>
 
+    <div class="jumbotron text-center" style="margin-bottom:0">
+        <h4>Here is a list of your project choices</h4>
+    </div>
+
+    <div class="card text-center" style="height: auto;">
+        <br><br>
+
+        <table class="table table-light">
+            <thead>
+            <tr>
+                <th>Project Name</th>
+                <th>Preference</th>
+            </tr>
+            </thead>
+            <tbody class="text-left">
+            <tr th:each="">
+                <th scope="row" th:text="${}"></th>
+                <td>
+                    <form>
+                        <input type="number" min="1" max="20">
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <br><br>
+    </div>
+
+
     <footer class="text-center">
         <br>
         <p>&copy; MoRoJack</p>
