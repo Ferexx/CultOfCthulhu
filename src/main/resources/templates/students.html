@@ -11,6 +11,13 @@
 
     <div th:insert="navbar.html"></div>
 
+    <h4>Student? Enter your student number to submit your preferences</h4><br>
+    <form method="POST" action="/preferences">
+        <label for="studentNum">Student Number</label>
+        <input type="number" id="studentNum" name="studentNum"/>
+        <button class="btn btn-default" type="submit">Submit</button>
+    </form>
+
     <footer class="text-center">
         <br>
         <p>&copy; MoRoJack</p>
