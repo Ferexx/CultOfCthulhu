@@ -36,8 +36,6 @@ public class SimulatedAnnealing {
             }
         }
 
-
-
         if (constraint_GPA){
             int preference_number = 0;
             for (Map.Entry<Student, Project> entry : studentProjectMap.entrySet()){
@@ -52,15 +50,12 @@ public class SimulatedAnnealing {
                 }
 
                 for (int i = preference_number; i > 0 ; i--){
-                    if (studentDAO.getOne(projectDAO.getOne(entryPreferences.get(i)).getStudentAssigned()).getGpa() < entry.getKey().getGpa()){
+                    if (studentDAO.getOne(projectDAO.getOne(entryPreferences.get(i)).getStudentAssigned()).getGpa() < entry.getKey().getGpa() ){
                         energy = energy + (10 * constraint_GPA_impact);
                     }
                 }
             }
         }
-
-
-
         return energy;
     }
 
