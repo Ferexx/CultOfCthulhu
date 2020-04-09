@@ -11,6 +11,47 @@
 
     <div th:insert="navbar.html"></div>
 
+    <div class="jumbotron text-center" style="margin-bottom:0"></div>
+
+    <div class="card text-center" style="height: auto;">
+        <br><br>
+
+        <div class="card container bg-light border-dark mb-3" style="max-width: 500px;">
+            <br>
+            <h4 class="card-title text-center">Log In</h4>
+            <hr>
+
+            <form method="POST" action="login">
+                <div class="form-group">
+                    <div class="d-flex justify-content-start input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="glyphicon glyphicon-user"></i>
+                            </span>
+                        </div>
+                        <input class="form-control" placeholder="Email" type="email" id="username" name="username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="d-flex justify-content-start input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="glyphicon glyphicon-lock"></i>
+                            </span>
+                        </div>
+                        <input class="form-control" placeholder="Password" type="password" id="password" name="password">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-default">Log In</button>
+                </div>
+            </form>
+        </div>
+
+        <br><br>
+    </div>
+
     <footer class="text-center">
         <br>
         <p>&copy; MoRoJack</p>

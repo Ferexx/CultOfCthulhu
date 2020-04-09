@@ -20,4 +20,16 @@ public class StudentController {
         model.addAttribute("title", "Log In");
         return "login";
     }
+
+    @RequestMapping(value = "/students")
+    public String studentPage(Model model) {
+        model.addAttribute("title", "Student");
+        return "students";
+    }
+
+    @RequestMapping(value = "/about")
+    public String aboutPage(Model model) {
+        model.addAttribute("title", "About");
+        return "about";
+    }
 }
