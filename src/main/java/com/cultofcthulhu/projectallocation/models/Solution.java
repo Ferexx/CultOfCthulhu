@@ -58,7 +58,7 @@ public class Solution {
             do {
                 randInt = rand.nextInt(solution.size() - 1);
                 randInt2 = rand.nextInt(solution.size() - 1);
-            }while (randInt != randInt2);
+            }while (randInt == randInt2);
             int temp = solution.get(randInt);
             int temp2 = solution.get(randInt2);
             solution.replace(randInt, temp2);

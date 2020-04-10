@@ -20,6 +20,6 @@ public class ProjectTests {
     public void testToString() {
         Project project = new Project("App for destruction", 0, "CS+DS");
 
-        assertEquals("0,An app for destruction,CS+DS", project.toString());
+        assertEquals("0,App for destruction,CS+DS", project.toString());
     }
 }

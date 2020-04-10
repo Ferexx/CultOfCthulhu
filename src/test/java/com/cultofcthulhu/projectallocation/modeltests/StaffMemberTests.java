@@ -1,7 +1,7 @@
 package com.cultofcthulhu.projectallocation.modeltests;
 
 import com.cultofcthulhu.projectallocation.models.StaffMember;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.Map;
 

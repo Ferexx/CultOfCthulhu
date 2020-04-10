@@ -1,13 +1,17 @@
 package com.cultofcthulhu.projectallocation;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import com.cultofcthulhu.projectallocation.modeltests.*;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
 
-@SpringBootTest
-class ProjectallocationApplicationTests {
-
-	@Test
-	void contextLoads() {
-	}
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+		ProjectTests.class,
+		SolutionTests.class,
+		StaffMemberTests.class,
+		StudentTests.class,
+		FileParserTest.class
+})
+public class ProjectallocationApplicationTests {
 
 }
