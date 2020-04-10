@@ -3,7 +3,7 @@ package com.cultofcthulhu.projectallocation.solvers;
 import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
-import com.cultofcthulhu.projectallocation.models.data.Solution;
+import com.cultofcthulhu.projectallocation.models.Solution;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 
 import java.util.HashMap;

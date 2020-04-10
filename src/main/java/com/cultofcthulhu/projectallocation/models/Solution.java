@@ -1,4 +1,4 @@
-package com.cultofcthulhu.projectallocation.models.data;
+package com.cultofcthulhu.projectallocation.models;
 
 import javax.persistence.*;
 import java.util.Map;

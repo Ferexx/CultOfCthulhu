@@ -2,7 +2,7 @@ package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
-import com.cultofcthulhu.projectallocation.models.data.Solution;
+import com.cultofcthulhu.projectallocation.models.Solution;
 import com.cultofcthulhu.projectallocation.models.data.SolutionDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.solvers.SolutionByLottery;

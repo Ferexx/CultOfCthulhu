@@ -26,8 +26,8 @@
             </tr>
             </thead>
             <tbody class="text-left">
-            <tr th:each="">
-                <th scope="row" th:text="${}"></th>
+            <tr th:each="project: ${projects}">
+                <th scope="row" th:text="${project.getProject_title()}"></th>
                 <td>
                     <form>
                         <input type="number" min="1" max="20">

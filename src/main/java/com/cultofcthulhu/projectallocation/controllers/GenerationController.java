@@ -169,11 +169,12 @@ public class GenerationController {
             String name = line[0];
             Map<Integer, String> interestsMap = new HashMap<>();
             //Some staff members have no interests
-            if(line[1] != null) {
+            if(line[1] != null && line[1].length() > 0) {
                 String[] interests = line[1].substring(1, line[1].length() - 1).split(",");
                 for (String string : interests)
                     interestsMap.put(interestsMap.size(), string);
             }
+            else interestsMap.put(interestsMap.size(), null);
             String stream;
             if(line[line.length-1].equals("Dagon Studies")) stream = "Dagon Studies";
             else stream = "Cthulhu Studies";
