@@ -1,4 +1,4 @@
-package com.cultofcthulhu.projectallocation;
+package com.cultofcthulhu.projectallocation.modeltests;
 
 import com.cultofcthulhu.projectallocation.models.StaffMember;
 import com.cultofcthulhu.projectallocation.models.data.StaffMemberDAO;

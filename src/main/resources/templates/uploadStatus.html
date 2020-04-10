@@ -9,6 +9,8 @@
 </head>
 <body>
 
+    <div th:insert="navbar.html"></div>
+
     <div class="jumbotron text-center" th:if="${message}" style="margin-bottom:0">
         <h2>Upload Status</h2>
         <h3 th:text="${message}"></h3>

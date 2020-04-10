@@ -21,7 +21,7 @@ public class FileParser {
         if (toParse.getName().substring(toParse.getName().length()-3).equals("csv"))
             split=",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";      //Regex to ignore ", basically checks ahead for how many ", and splits on the comma if that comma has zero or even number of quotes ahead of it
         else if(toParse.getName().substring(toParse.getName().length()-3).equals("csv")) split="\t";
-        else throw new ParseException("Please make sure your file is in .csv or .tsv format, and saved as such.");
+        else throw new ParseException("Please make sure your file is in .csv or .tsv format (values separated by commas or tabs, respectively), and saved as such.");
         parse(split);
     }
 
