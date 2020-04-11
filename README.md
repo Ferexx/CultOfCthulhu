@@ -1,6 +1,9 @@
 # CultOfCthulhu
 COMP30880 project
 
+Sprint 1:
+
+
 We used Spring because creating a UI with HTML is far easier than doing it with something like Swing or AWT.
 
 Staff/Project generation:
@@ -22,4 +25,16 @@ The work was tested using the csv uploaded in Sprint 1. A catch-all error page w
 
 Sprint 3:
 
-While the function used to generate a solution in our SolutionByLottery class returns a map, that map is only used as a Thymeleaf attribute for the html page. Aside from that, it is discarded right away. The mapping of students to projects is done within each instance of the student and project class. Student has a field contains the ID of the project to which they were assigned. Similarly, Project has a field which contains the ID of the student it was assigned to.  
+While the function used to generate a solution in our SolutionByLottery class returns a map, that map is only used as a Thymeleaf attribute for the html page. Aside from that, it is discarded right away. The mapping of students to projects is done within each instance of the student and project class. Student has a field contains the ID of the project to which they were assigned. Similarly, Project has a field which contains the ID of the student it was assigned to.
+
+Sprint 4:
+
+We added a new Solution class so that our Simulated Annealing and Genetic Algorithms classes will be able to compare two different solutions.
+We also began work on a testing suite, run "ProjectAllocationApplicationTests" to run them all in one go.
+
+We seriously upgraded our UI to make it look a lot more presentable. We also began work on functionality that would allow students to denote their preferences within the app itself. While the frontend for this is mostly done, there is no backend implementation yet.
+In the future, we hope to use the UCD login system to allow students to login and denote their preferences, though we are still waiting to hear back from UCD on that one.
+
+The new Simulated Annealing and Genetic Algorithms classes are not fully in use yet. SolutionController does create instances of them, but doesn't actually do anything with them just yet. Next week when we are changing solutions and deciding if we should accept them, this will come more into play.
+
+Our "change" functionality is stored in the new Solution class. It simply swaps the projects of two random students. It does this multiple times depending on an input variable.  
