@@ -11,14 +11,20 @@
 
     <div th:insert="navbar.html"></div>
 
-    <div class="jumbotron text-center" style="margin-bottom:0">
-        <div class="form-group">
-            <h4>Use the slider to determine how much GPA will affect the outcome</h4>
-        </div>
+    <div class="jumbotron text-center" style="margin-bottom:0;">
+        <h4 style="margin-top: -10px;">Use the slider to determine how much GPA will affect the outcome</h4>
+
         <div class="slider" style="margin-left: 20%; margin-right: 20%;">
             <input type="range" step="0.01" min="0" max="1" value="0.50" class="slider" id="GPARange">
             <h5 id="value"></h5>
         </div>
+        <h4 style="margin-top: -2px; margin-bottom: 15px;">Select between the options below:</h4>
+        <form action="">
+        <input type="radio" id="simulatedAnnealing" name="choice" value="simulatedAnnealing">
+        <label for="simulatedAnnealing">Simulated Annealing</label>
+        <input type="radio" id="geneticAlgorithms" name="choice" value="geneticAlgorithms">
+        <label for="geneticAlgorithms">Genetic Algorithms</label>
+        </form>
     </div>
 
     <div class="card text-center"  style="height: auto;">
