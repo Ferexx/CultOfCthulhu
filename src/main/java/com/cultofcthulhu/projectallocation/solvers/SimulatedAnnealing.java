@@ -20,6 +20,19 @@ public class SimulatedAnnealing {
         this.studentDAO = studentDAO;
     }
 
+    public Solution hillClimb(double GPA_impact) {
+        int count = 0;
+        do {
+            Solution newSolution = new Solution(currentBest.change(1));
+            newSolution.setEnergy(assessSolution(newSolution, GPA_impact));
+            if (currentBest.getEnergy() > assessSolution(newSolution, GPA_impact)) {
+                currentBest = newSolution;
+                count = 0;
+            } else count++;
+        } while(count < Math.pow(60, 2));
+        return currentBest;
+    }
+
     public double assessSolution(Solution solution, double GPA_impact) {
         double energy = 0;
 

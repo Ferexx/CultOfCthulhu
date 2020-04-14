@@ -1,5 +1,6 @@
 package com.cultofcthulhu.projectallocation.controllers;
 
+import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.Solution;
@@ -32,9 +33,9 @@ public class SolutionController {
         model.addAttribute("title", "Solution by Lottery");
         SolutionByLottery lottery = new SolutionByLottery();
         lottery.generateSolution(studentDAO, projectDAO);
-        model.addAttribute("map", generateMap());
         if(choice.equals("Simulated Annealing")) {
-            SimulatedAnnealing simul = new SimulatedAnnealing(solutionDAO.getOne(0), projectDAO, studentDAO);
+            SimulatedAnnealing simulation = new SimulatedAnnealing(solutionDAO.getOne(0), projectDAO, studentDAO);
+            model.addAttribute("map", generateMap(simulation.hillClimb(GPARange).getSolution()));
         }
         else {
             GeneticAlgorithm genet = new GeneticAlgorithm(solutionDAO.getOne(0), projectDAO, studentDAO);
@@ -42,15 +43,14 @@ public class SolutionController {
         return "solution";
     }
 
-    public Map<String, String> generateMap() {
-        List<Student> students = studentDAO.findAll();
+    public Map<String, String> generateMap(Map<Integer, Integer> solutionMap) {
         Map<String, String> map = new HashMap<>();
-        Map<Integer, Integer> solution = new HashMap<>();
-        for (Student student : students) {
-            map.put(student.getName(), projectDAO.findById(student.getAssignedProjectID()).get().getProject_title());
-            solution.put(student.getId(), student.getAssignedProjectID());
+        for (Map.Entry<Integer, Integer> entry: solutionMap.entrySet()) {
+            Student student = studentDAO.getOne(entry.getKey());
+            Project project = projectDAO.getOne(entry.getValue());
+            map.put(student.getName(), project.getProject_title());
         }
-        solutionDAO.save(new Solution(solution));
         return map;
     }
+
 }
