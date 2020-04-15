@@ -1,5 +1,6 @@
 package com.cultofcthulhu.projectallocation.solvers;
 
+import com.cultofcthulhu.projectallocation.interfaces.Solverable;
 import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
@@ -9,7 +10,7 @@ import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GeneticAlgorithm {
+public class GeneticAlgorithm implements Solverable {
     public Solution currentBest;
     private ProjectDAO projectDAO;
     private StudentDAO studentDAO;
@@ -20,7 +21,11 @@ public class GeneticAlgorithm {
         this.studentDAO = studentDAO;
     }
 
-    public double assessSolution(Solution solution, double GPA_impact) {
+    public Solution hillClimb(double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
+        return null;
+    }
+
+    public double assessSolution(Solution solution, double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
         double fitness = 5000;
 
         Map<Student, Project> studentProjectMap = createDirectMap(solution.getSolution());
@@ -86,4 +91,7 @@ public class GeneticAlgorithm {
         }
         return newMap;
     }
+
+
+
 }
