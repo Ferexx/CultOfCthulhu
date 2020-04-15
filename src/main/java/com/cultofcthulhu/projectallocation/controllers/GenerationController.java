@@ -161,7 +161,7 @@ public class GenerationController {
             //First, generate a staff member
             int lineNumber;
             do {
-                lineNumber = ThreadLocalRandom.current().nextInt(0, lines.size() + 1);
+                lineNumber = ThreadLocalRandom.current().nextInt(1, lines.size() + 1);
             } while (already.contains(lineNumber));
             already.add(lineNumber);
 

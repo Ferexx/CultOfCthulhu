@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -34,6 +33,7 @@ public class SolutionController {
         SolutionByLottery lottery = new SolutionByLottery();
         if(choice.equals("simulatedAnnealing")) {
             SimulatedAnnealing simulation = new SimulatedAnnealing(lottery.generateSolution(studentDAO, projectDAO));
+            simulation.currentBest.setEnergy(simulation.assessSolution(simulation.currentBest, GPARange, studentDAO, projectDAO));
             model.addAttribute("map", generateMap(simulation.hillClimb(GPARange, studentDAO, projectDAO).getSolution()));
         }
         else {

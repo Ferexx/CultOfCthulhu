@@ -15,15 +15,20 @@ public class SimulatedAnnealing {
 
     public Solution hillClimb(double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
         int count = 0;
+        Solution newSolution;
         do {
-            Solution newSolution = new Solution(currentBest.change(1));
+            newSolution = new Solution(currentBest.getSolution());
+            newSolution.change(1);
             newSolution.setEnergy(assessSolution(newSolution, GPA_impact, studentDAO, projectDAO));
             if (currentBest.getEnergy() > newSolution.getEnergy()) {
                 currentBest = newSolution;
                 count = 0;
                 System.out.println(currentBest.getEnergy());
-            } else count++;
-        } while(count < Math.pow(60, 2));
+            } else {
+                count++;
+                System.out.println("Energy: " + currentBest.getEnergy() + " " + newSolution.getEnergy());
+            }
+        } while(count < 3600);
         return currentBest;
     }
 
@@ -80,11 +85,15 @@ public class SimulatedAnnealing {
         for(Map.Entry<Integer, Integer> entry : map.entrySet()) {
             //First check if a project has been assigned to more than one person
             for (Map.Entry<Integer, Integer> entry2 : map.entrySet())
-                if (entry.getValue().equals(entry2.getValue()) && !entry.getKey().equals(entry2.getKey()))
+                if (entry.getValue().equals(entry2.getValue()) && !entry.getKey().equals(entry2.getKey())) {
+                    System.out.println("Project assigned to more than one student");
                     return true;
+                }
             //Next check if a student has actually been assigned a project
-            if(entry.getValue() == -1)
+            if(entry.getValue() == -1) {
+                System.out.println("Student not assigned a project");
                 return true;
+            }
         }
         return false;
     }

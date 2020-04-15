@@ -1,6 +1,7 @@
 package com.cultofcthulhu.projectallocation.models;
 
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
@@ -21,10 +22,10 @@ public class Solution {
     }
 
     public Solution(Map<Integer, Integer> map) {
-        solution = map;
+        solution = new HashMap<>(map);
     }
     public Solution(Map<Integer, Integer> map, double energy) {
-        solution = map;
+        solution = new HashMap<>(map);
         this.energy = energy;
         fitness = 1/energy;
     }
@@ -56,8 +57,8 @@ public class Solution {
             int randInt;
             int randInt2;
             do {
-                randInt = rand.nextInt(solution.size() - 1);
-                randInt2 = rand.nextInt(solution.size() - 1);
+                randInt = rand.nextInt(solution.size() - 1) + 1;
+                randInt2 = rand.nextInt(solution.size() - 1) + 1;
             }while (randInt == randInt2);
             int temp = solution.get(randInt);
             int temp2 = solution.get(randInt2);

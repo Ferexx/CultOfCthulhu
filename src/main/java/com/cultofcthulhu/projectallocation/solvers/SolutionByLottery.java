@@ -45,8 +45,8 @@ public class SolutionByLottery implements Solutionable {
             if(student.getAssignedProjectID() == -1) {
                 for(int x = 0; x < takenProjects.length; x++) {
                     if(!takenProjects[x]) {
-                        student.setAssignedProjectID(x);
-                        Project project = projectDAO.getOne(x);
+                        student.setAssignedProjectID(x + 1);
+                        Project project = projectDAO.getOne(x + 1);
                         project.setStudentAssigned(student.getId());
                         projectDAO.save(project);
                         takenProjects[x] = true;
