@@ -32,10 +32,9 @@ public class SolutionController {
     public String solution(@RequestParam double GPARange, @RequestParam String choice, Model model) {
         model.addAttribute("title", "Solution by Lottery");
         SolutionByLottery lottery = new SolutionByLottery();
-        lottery.generateSolution(studentDAO, projectDAO);
-        if(choice.equals("Simulated Annealing")) {
-            SimulatedAnnealing simulation = new SimulatedAnnealing(solutionDAO.getOne(0), projectDAO, studentDAO);
-            model.addAttribute("map", generateMap(simulation.hillClimb(GPARange).getSolution()));
+        if(choice.equals("simulatedAnnealing")) {
+            SimulatedAnnealing simulation = new SimulatedAnnealing(lottery.generateSolution(studentDAO, projectDAO));
+            model.addAttribute("map", generateMap(simulation.hillClimb(GPARange, studentDAO, projectDAO).getSolution()));
         }
         else {
             GeneticAlgorithm genet = new GeneticAlgorithm(solutionDAO.getOne(0), projectDAO, studentDAO);
