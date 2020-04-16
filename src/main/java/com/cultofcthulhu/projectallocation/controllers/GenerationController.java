@@ -8,6 +8,7 @@ import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.data.StaffMemberDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.solvers.SolutionByLottery;
+import com.cultofcthulhu.projectallocation.system.systemVariables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -51,6 +52,7 @@ public class GenerationController {
     public String numStudents(@RequestParam("number") Integer number) {
         generateProjects(number);
         generateStudents(number, projectDAO.findAll());
+        systemVariables.NUMBER_OF_STUDENTS = number;
         return "redirect:downloadProjects";
     }
 

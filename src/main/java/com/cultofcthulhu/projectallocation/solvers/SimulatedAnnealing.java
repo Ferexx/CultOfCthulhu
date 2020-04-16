@@ -5,6 +5,7 @@ import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.Solution;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
+import com.cultofcthulhu.projectallocation.system.systemVariables;
 
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class SimulatedAnnealing implements Solverable {
                 count++;
                 System.out.println("Energy: " + currentBest.getEnergy() + " " + newSolution.getEnergy());
             }
-        } while(count < 3600);
+        } while(count < (systemVariables.NUMBER_OF_STUDENTS * systemVariables.NUMBER_OF_STUDENTS));
         return currentBest;
     }
 
