@@ -72,9 +72,10 @@ public class Solution {
 
     public void change(int degree) {
         Random rand = new Random();
-        for(int i = 0; i < degree; i++) {
-            Collections.swap(Arrays.asList(student_project_assignment_order),rand.nextInt(student_project_assignment_order.length),rand.nextInt(student_project_assignment_order.length));
-        }
+
+        int x = rand.nextInt(student_project_assignment_order.length);
+        int y = rand.nextInt(student_project_assignment_order.length);
+        Collections.swap(Arrays.asList(student_project_assignment_order),x,y);
     }
 
     public Solution assignProjects(StudentDAO studentDAO, ProjectDAO projectDAO) {
