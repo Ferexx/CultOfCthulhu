@@ -1,8 +1,13 @@
 package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.FileParser;
+import com.cultofcthulhu.projectallocation.RandomGenerator;
 import com.cultofcthulhu.projectallocation.exceptions.ParseException;
+import com.cultofcthulhu.projectallocation.models.Project;
+import com.cultofcthulhu.projectallocation.models.StaffMember;
 import com.cultofcthulhu.projectallocation.models.Student;
+import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
+import com.cultofcthulhu.projectallocation.models.data.StaffMemberDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.storage.StorageFileNotFoundException;
 import com.cultofcthulhu.projectallocation.storage.StorageService;
@@ -19,7 +24,11 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @Controller
@@ -35,6 +44,12 @@ public class UploadController {
 
     @Autowired
     public StudentDAO studentDAO;
+
+    @Autowired
+    public StaffMemberDAO staffMemberDAO;
+
+    @Autowired
+    public ProjectDAO projectDAO;
 
     @RequestMapping(value = "")
     @GetMapping("/")
@@ -81,7 +96,7 @@ public class UploadController {
                 studentDAO.save(student);
             model.addAttribute("message", "Students file uploaded.");
             systemVariables.NUMBER_OF_STUDENTS = students.size();
-            GenerationController.generateProjects(systemVariables.NUMBER_OF_STUDENTS);
+            //GenerationController.generateProjects(systemVariables.NUMBER_OF_STUDENTS);
             return "downloadProjects";
         } catch (ParseException | IOException | NumberFormatException e) {
             if(e.getClass() == ParseException.class)
@@ -102,5 +117,62 @@ public class UploadController {
     @GetMapping("/uploadStatus")
     public String uploadStatus() {
         return "uploadStatus";
+    }
+
+    public void generateProjects(int number) {
+        List<String[]> lines = UploadController.parser.lines;
+
+        //List for making sure we don't add the same staff member twice
+        List<Integer> already = new ArrayList<>();
+
+        for(int i = 0; i < number / 2; i++) {
+            //First, generate a staff member
+            int lineNumber;
+            do {
+                lineNumber = ThreadLocalRandom.current().nextInt(1, lines.size() + 1);
+            } while (already.contains(lineNumber));
+            already.add(lineNumber);
+
+            String[] line = lines.get(lineNumber-1);
+            String name = line[0];
+            Map<Integer, String> interestsMap = new HashMap<>();
+            //Some staff members have no interests
+            if(line[1] != null && line[1].length() > 0) {
+                String[] interests = line[1].substring(1, line[1].length() - 1).split(",");
+                for (String string : interests)
+                    interestsMap.put(interestsMap.size(), string);
+            }
+            else interestsMap.put(interestsMap.size(), null);
+            String stream;
+            if(line[line.length-1].equals("Dagon Studies")) stream = "Dagon Studies";
+            else stream = "Cthulhu Studies";
+            StaffMember member = new StaffMember(name, interestsMap, stream);
+            //Store and retrieve it in database so that an ID is generated
+            staffMemberDAO.save(member);
+            member = staffMemberDAO.findByName(member.getName());
+
+            //Next, generate three projects that they "propose"
+            for(int j = 0; j < 3; j++) {
+                String projectTitle = RandomGenerator.generateString();
+                String projectStream;
+                if(member.getStream().equals("Dagon Studies"))
+                    projectStream = "DS";
+                    //Generate a random integer to decide if it's CS or CS+DS
+                else if(ThreadLocalRandom.current().nextInt(0, 11) % 2 == 0)
+                    projectStream = "CS";
+                else projectStream = "CS+DS";
+                Project project = new Project(projectTitle, member.getId(), projectStream);
+                member.addProject_proposal(project.getId());
+                projectDAO.save(project);
+            }
+            staffMemberDAO.save(member);
+        }
+
+        //Now write to a CSV
+        try {
+            UploadController.parser.writeProjects(projectDAO.findAll(), "user-files/projects.csv");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
