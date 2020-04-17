@@ -70,16 +70,6 @@ public class UploadController {
         }
     }
 
-    @ExceptionHandler(StorageFileNotFoundException.class)
-    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
-        return ResponseEntity.notFound().build();
-    }
-
-    @GetMapping("/uploadStatus")
-    public String uploadStatus() {
-        return "uploadStatus";
-    }
-
     @PostMapping("/uploadStudents")
     public String uploadStudents(@RequestParam("file") MultipartFile file, Model model) {
         storageService.store(file);
@@ -99,5 +89,15 @@ public class UploadController {
                 model.addAttribute("error", "Please ensure your preferences are stored as integers corresponding to project IDs, and GPA is stored as an integer or double");
             return "error";
         }
+    }
+
+    @ExceptionHandler(StorageFileNotFoundException.class)
+    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/uploadStatus")
+    public String uploadStatus() {
+        return "uploadStatus";
     }
 }

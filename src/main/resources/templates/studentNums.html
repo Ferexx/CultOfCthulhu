@@ -28,6 +28,10 @@
         </form>
         <br>
         <p>Alternatively, you can upload a .csv or .tsv file with your students' details.<br>Please ensure it is structured as follows:<br>Firstname,Lastname,Stream,"Project Preferences",GPA</p>
+        <form method="post" action="/uploadStudents">
+            <input type="file" name="file">
+            <button class="btn btn-default" type="submit">Submit</button>
+        </form>
     </div>
 
 <footer class="text-center">
