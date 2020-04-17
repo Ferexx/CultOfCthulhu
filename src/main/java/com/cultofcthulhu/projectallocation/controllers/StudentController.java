@@ -44,4 +44,10 @@ public class StudentController {
         model.addAttribute("title", "Home");
         return "index";
     }
+
+    @RequestMapping(value = "/settings")
+    public String settingsPage(Model model) {
+        model.addAttribute("title", "Settings");
+        return "settings";
+    }
 }
