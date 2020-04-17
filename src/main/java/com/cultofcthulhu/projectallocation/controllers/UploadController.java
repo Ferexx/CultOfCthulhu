@@ -6,6 +6,7 @@ import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.storage.StorageFileNotFoundException;
 import com.cultofcthulhu.projectallocation.storage.StorageService;
+import com.cultofcthulhu.projectallocation.system.systemVariables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -79,7 +80,8 @@ public class UploadController {
             for(Student student:students)
                 studentDAO.save(student);
             model.addAttribute("message", "Students file uploaded.");
-            GenerationController.generateProjects((int) studentDAO.count());
+            systemVariables.NUMBER_OF_STUDENTS = students.size();
+            GenerationController.generateProjects(systemVariables.NUMBER_OF_STUDENTS);
             return "downloadProjects";
         } catch (ParseException | IOException | NumberFormatException e) {
             if(e.getClass() == ParseException.class)
