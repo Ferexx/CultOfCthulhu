@@ -13,10 +13,6 @@
 
     <div class="jumbotron text-center" style="margin-bottom:0">
         <p>For how many students do you wish to generate projects?</p>
-    </div>
-
-    <div class="card text-center">
-        <br><br>
         <form method="post" action="numStudents">
             <select id="number" name="number">
                 <option value="60">60</option>
@@ -26,11 +22,27 @@
             </select>
             <button class="btn btn-default" type="submit" value="submit">Submit</button>
         </form>
+    </div>
+
+    <div class="card text-center" style="height: auto;">
+        <br><br>
+
+        <h4>Alternatively, you can upload a .csv or .tsv file with your students' details.</h4>
+        <h5>Please ensure it is structured as follows:
+        <br>Firstname,  Lastname,   Stream, "Project Preferences",  GPA</h5>
+
         <br>
-        <p>Alternatively, you can upload a .csv or .tsv file with your students' details.<br>Please ensure it is structured as follows:<br>Firstname,Lastname,Stream,"Project Preferences",GPA</p>
+
         <form method="post" action="/uploadStudents">
-            <input type="file" name="file">
-            <button class="btn btn-default" type="submit">Submit</button>
+            <div class="form-group">
+                <div class="input-group">
+                    <input style="display: inline-block;" type="file" name="file">
+                </div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default" type="submit">Submit</button>
+            </div>
+            <br>
         </form>
     </div>
 
