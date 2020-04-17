@@ -35,9 +35,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GenerationController {
 
     @Autowired
-    private StaffMemberDAO staffMemberDAO;
+    private static StaffMemberDAO staffMemberDAO;
     @Autowired
-    private ProjectDAO projectDAO;
+    private static ProjectDAO projectDAO;
     @Autowired
     private StudentDAO studentDAO;
 
@@ -151,7 +151,7 @@ public class GenerationController {
         studentDAO.save(student);
     }
 
-    public void generateProjects(int number) {
+    public static void generateProjects(int number) {
         List<String[]> lines = UploadController.parser.lines;
 
         //List for making sure we don't add the same staff member twice

@@ -79,6 +79,7 @@ public class UploadController {
             for(Student student:students)
                 studentDAO.save(student);
             model.addAttribute("message", "Students file uploaded.");
+            GenerationController.generateProjects((int) studentDAO.count());
             return "downloadProjects";
         } catch (ParseException | IOException | NumberFormatException e) {
             if(e.getClass() == ParseException.class)
