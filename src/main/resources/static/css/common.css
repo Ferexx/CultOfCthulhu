@@ -11,3 +11,21 @@
     align-items: center;
     height: 200px;
 }
+
+.help span{
+    position: absolute;
+    width: 300px;
+    background: black;
+    color: white;
+    padding: 5px 5px 10px 5px;
+    border-radius: 6px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .5s;
+    word-spacing: -12px;
+}
+
+.help:hover span{
+    visibility: visible;
+    opacity: 1;
+}
