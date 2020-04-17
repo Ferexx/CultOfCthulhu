@@ -19,8 +19,9 @@ public class SimulatedAnnealing implements Solverable {
         int count = 0;
         Solution newSolution;
         do {
-            newSolution = new Solution(currentBest.getSolution());
+            newSolution = new Solution(currentBest.getSolution(), currentBest.getStudent_project_assignment_order());
             newSolution.change(1);
+            newSolution.assignProjects(studentDAO, projectDAO);
             newSolution.setEnergy(assessSolution(newSolution, GPA_impact, studentDAO, projectDAO));
             if (currentBest.getEnergy() > newSolution.getEnergy()) {
                 currentBest = newSolution;
@@ -37,7 +38,7 @@ public class SimulatedAnnealing implements Solverable {
     public double assessSolution(Solution solution, double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
         double energy = 0;
 
-        if(violatesHardConstraints(solution.getSolution())) energy += 100;
+        if(violatesHardConstraints(solution.getSolution())) { energy += 100; }
 
         //Main loop to iterate through all students, and the projects assigned to them
         for (Map.Entry<Integer, Integer> currentPair : solution.getSolution().entrySet()) {

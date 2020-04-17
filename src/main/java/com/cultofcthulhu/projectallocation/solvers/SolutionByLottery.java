@@ -10,19 +10,21 @@ import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import java.util.*;
 
 public class SolutionByLottery implements Solutionable {
-    public SolutionByLottery() {}
-    public Solution generateSolution(StudentDAO studentDAO, ProjectDAO projectDAO) {
 
-        Integer[] student_project_assignment_order = new Integer[((int) studentDAO.count())];
-        Boolean[] takenProjects = new Boolean[(int) projectDAO.count()];
+    private Integer[] student_project_assignment_order;
+
+    public SolutionByLottery(StudentDAO studentDAO) {
+        this.student_project_assignment_order = new Integer[((int) studentDAO.count())];
+        for (int i = 0; i < student_project_assignment_order.length; i++) { student_project_assignment_order[i] = i; }
+        Collections.shuffle(Arrays.asList(student_project_assignment_order));
+    }
+
+    public Solution generateSolution(StudentDAO studentDAO, ProjectDAO projectDAO) {
 
         Map<Integer, Integer> solution = new HashMap<>();
 
+        Boolean[] takenProjects = new Boolean[(int) projectDAO.count()];
         Arrays.fill(takenProjects, false);
-
-        for (int i = 0; i < student_project_assignment_order.length; i++) { student_project_assignment_order[i] = i; }
-
-        Collections.shuffle(Arrays.asList(student_project_assignment_order));
 
         for (Integer integer : student_project_assignment_order) {
             Student student = studentDAO.getOne(integer+1);
@@ -56,6 +58,6 @@ public class SolutionByLottery implements Solutionable {
                 }
             }
         }
-        return new Solution(solution);
+        return new Solution(solution, student_project_assignment_order);
     }
 }

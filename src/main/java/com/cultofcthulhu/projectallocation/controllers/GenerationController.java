@@ -149,7 +149,7 @@ public class GenerationController {
     }
 
     public void generateSolution(){
-        SolutionByLottery solution = new SolutionByLottery();
+        SolutionByLottery solution = new SolutionByLottery(studentDAO);
         solution.generateSolution(studentDAO, projectDAO);
     }
 
