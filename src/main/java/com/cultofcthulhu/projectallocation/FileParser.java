@@ -3,6 +3,7 @@ package com.cultofcthulhu.projectallocation;
 import com.cultofcthulhu.projectallocation.exceptions.ParseException;
 import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.Student;
+import com.cultofcthulhu.projectallocation.system.systemVariables;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class FileParser {
     public List<String[]> lines = new ArrayList<>();
     private File toParse;
 
+    public FileParser() {}
     //Constructor does the actual parsing
     public FileParser(File toParse) throws ParseException {
         this.toParse = toParse;
@@ -46,20 +48,26 @@ public class FileParser {
         String split;
         List<Student> students = new ArrayList<>();
         if(file.getName().endsWith("csv")) split = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
-        else if(file.getName().endsWith("tsv")) split = "\t";
-        else throw new ParseException("Please make sure your file is in .csv or .tsv format (values separated by commas or tabs, respectively), and saved as such.");
+        else if(file.getName().endsWith("tsv")) split = "\t(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+        else throw new ParseException(
+                "Please make sure your file is in .csv or .tsv format (values separated by commas or tabs, respectively), and saved as such.");
         String line;
         BufferedReader br = new BufferedReader(new FileReader(file));
         int i = 1;
         while((line = br.readLine())!=null) {
             String[] values = line.split(split, -1);
-            if(values.length != 5) throw new ParseException("Your file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 5)");
+            if(values.length != 5) throw new ParseException(
+                    "Your file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 5)");
             values[3] = values[3].substring(1, values[3].length()-1);
             String[] preferences = values[3].split(split);
+            //TODO: Change 10 to numofstudents in sysvariables
+            if(preferences.length != 10) throw new ParseException(
+                    "The student on line " + i + " does not have the correct number of preferences. (Found: " + preferences.length + ", Expected: " + 10 + ")");
             Student student = new Student(values[0], values[1], values[2], Double.parseDouble(values[4]));
             for(String string : preferences)
                 student.addPreference(Integer.parseInt(string));
             students.add(student);
+            i++;
         }
         return students;
     }
