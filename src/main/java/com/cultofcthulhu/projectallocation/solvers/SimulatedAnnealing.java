@@ -33,7 +33,7 @@ public class SimulatedAnnealing implements Solverable {
             } else {
                 System.out.println("Energy: " + (int) currentBest.getEnergy() + " " + (int) newSolution.getEnergy());
             }
-        } while(temperature > 0);
+        } while(temperature > 1);
 
         System.out.println(currentBest.printSolution(studentDAO, projectDAO));
 
