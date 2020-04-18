@@ -12,18 +12,21 @@
     <div th:insert="navbar.html"></div>
 
     <div class="jumbotron text-center" style="margin-bottom:0">
-            <h1>Welcome</h1>
+        <h1>Welcome</h1>
     </div>
 
-    <div class="card text-center" style="height: 500px;">
-        <br><br>
+        <div class="card text-center" style="height: 500px;">
+            <br><br>
 
         <div class="card container bg-light border-dark mb-3" style="max-width: 500px;">
             <br>
-            <h4 class="card-title text-center">Choose a .csv or .tsv file type to upload</h4>
+            <h4 class="card-title text-center">Choose a .csv or .tsv file type to upload
+                <span class="help glyphicon glyphicon-question-sign"><span>Please make sure your file has only the following fields:<br>Staff Name, Research Activity, Research Area, Special Focus</span></span>
+            </h4>
+
             <hr>
 
-            <form method="POST" action="/upload" enctype="multipart/form-data">
+            <form method="POST" action="/uploadStaff" enctype="multipart/form-data">
                 <div class="form-group">
                     <div class="input-group">
                         <input style="display: inline-block;" type="file" name="file">

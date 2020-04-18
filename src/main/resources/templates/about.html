@@ -12,13 +12,36 @@
     <div th:insert="navbar.html"></div>
 
     <div class="jumbotron text-center" style="margin-bottom:0">
-        <h4>About MoRoJack</h4>
+        <h3>About MoRoJack</h3>
+        <h4>This page will be used to store in depth explanations of the various methods that we use.</h4>
     </div>
 
     <div class="card text-center" style="height: 500px;">
         <br><br>
 
+        <div class="container">
+            <p><strong>Simulated Annealing</strong></p>
+            <p>Simulated Annealing (We will use SA for short) is a method used for solving unconstrained and
+                bound-constrained optimization problems. For this particular project, we use the hill climbing
+                technique to improve the current solution. SA  models the process of heating, then slowly lowering
+                the temperature as the energy lowers. At each iteration of the SA algorithm, a new point is randomly
+                generated. The algorithm accepts all new points that lower the energy, and also within a certain
+                probability raises the energy. By accepting points that raise the energy, SA is able to find more
+                possible solutions. A cooling algorithm will decrease the temperature as the algorithm processes.
+                While the temperature cools, SA reduces its search to reach a minimum energy.
+            </p>
 
+            <br>
+
+            <p><strong>Genetic Algorithms</strong></p>
+            <p>Genetic Algorithms (We will use GAs for short) are a fairly new method to programing. It is derived from
+                biological evolution. They are most commonly used to generate high quality solutions for search and
+                optimization problems. GAs simulate natural selection, in which "survival of the fittest" among
+                individuals applies. Each new generation consists of a population of individuals, and each
+                individual represents a point in search space, and a possible solution. A string of variables represents
+                each individual. This string is comparable to a chromosome.
+            </p>
+        </div>
 
         <br><br>
     </div>

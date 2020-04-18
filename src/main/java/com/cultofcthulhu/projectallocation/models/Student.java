@@ -28,6 +28,12 @@ public class Student implements Personable {
         this.lastName = lastName;
         this.stream = stream;
     }
+    public Student(String firstName, String lastName, String stream, double GPA) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.stream = stream;
+        this.gpa = GPA;
+    }
 
     //Getters and setters
     public int getId() {
@@ -89,6 +95,6 @@ public class Student implements Personable {
         StringBuilder sb = new StringBuilder();
         for(int preference : preferences.values())
             sb.append(preference).append(",");
-        return firstName + " " + lastName + "," + id + "," + stream + ",\"" + sb + "\"";
+        return firstName + " " + lastName + "," + id + "," + stream + ",\"" + sb + "\"," + gpa;
     }
 }

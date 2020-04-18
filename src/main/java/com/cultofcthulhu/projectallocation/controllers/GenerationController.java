@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -123,6 +124,8 @@ public class GenerationController {
             if(rand.nextInt(10) < 6) stream = "CS";
             else stream = "DS";
             Student student = new Student(firstname, lastname, stream);
+            DecimalFormat df = new DecimalFormat("#.#");
+            student.setGpa(Double.parseDouble(df.format(ThreadLocalRandom.current().nextDouble(0, 4.2))));
             //Generate this student's preferences with Gaussian distribution
             assignPreferences(student, projects);
         }
