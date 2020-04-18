@@ -30,7 +30,7 @@ public class SimulatedAnnealing implements Solverable {
                 System.out.println(currentBest.getEnergy());
             } else {
                 count++;
-                System.out.println("Energy: " + currentBest.getEnergy() + " " + newSolution.getEnergy());
+                System.out.println("Energy: " + (int) currentBest.getEnergy() + " " + (int) newSolution.getEnergy());
             }
         } while(count < (systemVariables.NUMBER_OF_STUDENTS * systemVariables.NUMBER_OF_STUDENTS));
 
@@ -106,6 +106,15 @@ public class SimulatedAnnealing implements Solverable {
             }
         }
         return false;
+    }
+
+    public double boltzmannFormula(double oldEnergy, double newEnergy, double temperature){
+        double probability;
+        double energyChange = newEnergy - oldEnergy;
+
+        probability = 1 / (Math.exp(energyChange/temperature));
+
+        return probability;
     }
 
     public int projectToStudent(int id) {
