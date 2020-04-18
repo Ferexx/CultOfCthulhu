@@ -32,7 +32,9 @@ public class SimulatedAnnealing implements Solverable {
                 } else {
                     System.out.println("Energy: " + (int) currentBest.getEnergy() + " " + (int) newSolution.getEnergy());
                 }
+                count++;
             }while(count < systemVariables.NUMBER_OF_STUDENTS);
+            //Cooling Schedule
             temperature = temperature/2;
         } while(temperature > 1);
 
@@ -68,7 +70,7 @@ public class SimulatedAnnealing implements Solverable {
         }
 
         energy = energy/systemVariables.NUMBER_OF_STUDENTS;
-        energy = energy * 100;
+        energy = energy * 10;
         return energy;
     }
 
