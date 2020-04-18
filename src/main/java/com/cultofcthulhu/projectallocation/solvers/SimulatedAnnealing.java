@@ -20,8 +20,10 @@ public class SimulatedAnnealing implements Solverable {
     public Solution hillClimb(double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
         int count = 0;
         Solution newSolution;
+        double initialEnergy = 0, finalEnergy = 0;
         do {
             do {
+                if(count == 0) initialEnergy = currentBest.getEnergy();
                 newSolution = new Solution(currentBest.getSolution(), currentBest.getStudent_project_assignment_order());
                 newSolution.change();
                 newSolution = newSolution.assignProjects(studentDAO, projectDAO);
@@ -33,9 +35,10 @@ public class SimulatedAnnealing implements Solverable {
                     System.out.println("Rejected new solution with energy: " + newSolution.getEnergy());
                 }
                 count++;
+                if(count == systemVariables.NUMBER_OF_STUDENTS) finalEnergy = currentBest.getEnergy();
             }while(count < systemVariables.NUMBER_OF_STUDENTS);
             //Cooling Schedule
-            temperature /= 2;
+            if(initialEnergy-finalEnergy > temperature/10) temperature /= 2;
             count = 0;
         } while(temperature > 1);
 
