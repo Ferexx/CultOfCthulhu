@@ -28,9 +28,9 @@ public class SolutionController {
 
     @PostMapping(value = "/solution")
     public String solution(@RequestParam double GPARange, @RequestParam String choice, Model model) {
-        model.addAttribute("title", "Solution by Lottery");
         SolutionByLottery lottery = new SolutionByLottery(studentDAO);
         if(choice.equals("simulatedAnnealing")) {
+            model.addAttribute("title", "Simulated Annealing");
             SimulatedAnnealing simulation = new SimulatedAnnealing(lottery.generateSolution(studentDAO, projectDAO));
             simulation.currentBest.setEnergy(simulation.assessSolution(simulation.currentBest, GPARange, studentDAO, projectDAO));
             model.addAttribute("map", generateMap(simulation.hillClimb(GPARange, studentDAO, projectDAO).getSolution()));
