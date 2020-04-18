@@ -33,6 +33,9 @@ public class SimulatedAnnealing implements Solverable {
                 System.out.println("Energy: " + currentBest.getEnergy() + " " + newSolution.getEnergy());
             }
         } while(count < (systemVariables.NUMBER_OF_STUDENTS * systemVariables.NUMBER_OF_STUDENTS));
+
+        System.out.println(currentBest.printSolution(studentDAO, projectDAO));
+
         return currentBest;
     }
 
@@ -76,6 +79,9 @@ public class SimulatedAnnealing implements Solverable {
                 if(preference.getKey() + 1 == assignedPreference) break;
             }
         }
+
+        energy = energy/systemVariables.NUMBER_OF_STUDENTS;
+        energy = energy * 100;
         return energy;
     }
 

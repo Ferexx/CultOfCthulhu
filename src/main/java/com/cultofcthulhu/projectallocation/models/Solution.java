@@ -119,4 +119,24 @@ public class Solution {
         }
         return new Solution(solution, student_project_assignment_order);
     }
+
+
+    public String printSolution(StudentDAO studentDAO, ProjectDAO projectDAO ){
+
+        String out = "";
+
+        for(Map.Entry<Integer, Integer> entry : solution.entrySet()) {
+            out = out + studentDAO.getOne(entry.getKey()).getName();
+            Integer num = -1;
+            for (Map.Entry<Integer, Integer> preference: studentDAO.getOne(entry.getKey()).getPreferences().entrySet())
+            {
+                if (preference.getValue().equals(entry.getValue())){
+                    num = preference.getKey() + 1;
+                }
+            }
+            out = out + "\t\t(" + num.toString() + ")\t\t" + projectDAO.getOne(entry.getValue()).getProject_title() + "\n";
+        }
+      
+            return out;
+    }
 }
