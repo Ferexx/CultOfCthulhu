@@ -8,6 +8,7 @@ import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class SimulatedAnnealing implements Solverable {
     public Solution currentBest;
@@ -94,15 +95,6 @@ public class SimulatedAnnealing implements Solverable {
         return false;
     }
 
-    public double boltzmannFormula(double oldEnergy, double newEnergy, double temperature){
-        double probability;
-        double energyChange = newEnergy - oldEnergy;
-
-        probability = 1 / (Math.exp(energyChange/temperature));
-
-        return probability;
-    }
-
     public int projectToStudent(int id) {
         for(Map.Entry<Integer, Integer> entry : currentBest.getSolution().entrySet()) {
             if(entry.getValue() == id)
@@ -116,7 +108,9 @@ public class SimulatedAnnealing implements Solverable {
         if(energyDifference <= 0)
             return true;
         else {
-
+            double probability = 1 / Math.exp(energyDifference/temperature);
+            double accept = ThreadLocalRandom.current().nextDouble(0, 1);
+            return accept < probability;
         }
     }
 }
