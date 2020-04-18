@@ -19,8 +19,10 @@ public class SimulatedAnnealing implements Solverable {
         int count = 0;
         Solution newSolution;
         do {
-            newSolution = new Solution(currentBest.getSolution());
+            System.out.println(count);
+            newSolution = new Solution(currentBest.getSolution(), currentBest.getStudent_project_assignment_order());
             newSolution.change(1);
+            newSolution = newSolution.assignProjects(studentDAO, projectDAO);
             newSolution.setEnergy(assessSolution(newSolution, GPA_impact, studentDAO, projectDAO));
             if (currentBest.getEnergy() > newSolution.getEnergy()) {
                 currentBest = newSolution;
@@ -31,13 +33,16 @@ public class SimulatedAnnealing implements Solverable {
                 System.out.println("Energy: " + currentBest.getEnergy() + " " + newSolution.getEnergy());
             }
         } while(count < (systemVariables.NUMBER_OF_STUDENTS * systemVariables.NUMBER_OF_STUDENTS));
+
+        System.out.println(currentBest.printSolution(studentDAO, projectDAO));
+
         return currentBest;
     }
 
     public double assessSolution(Solution solution, double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
         double energy = 0;
 
-        if(violatesHardConstraints(solution.getSolution())) energy += 100;
+        if(violatesHardConstraints(solution.getSolution())) { energy += 100; }
 
         //Main loop to iterate through all students, and the projects assigned to them
         for (Map.Entry<Integer, Integer> currentPair : solution.getSolution().entrySet()) {
@@ -74,6 +79,9 @@ public class SimulatedAnnealing implements Solverable {
                 if(preference.getKey() + 1 == assignedPreference) break;
             }
         }
+
+        energy = energy/systemVariables.NUMBER_OF_STUDENTS;
+        energy = energy * 100;
         return energy;
     }
 

@@ -151,6 +151,11 @@ public class GenerationController {
         studentDAO.save(student);
     }
 
+    public void generateSolution(){
+        SolutionByLottery solution = new SolutionByLottery(studentDAO);
+        solution.generateSolution(studentDAO, projectDAO);
+    }
+
     public void generateProjects(int number) {
         List<String[]> lines = UploadController.parser.lines;
 
