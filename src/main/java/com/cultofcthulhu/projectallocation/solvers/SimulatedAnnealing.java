@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class SimulatedAnnealing implements Solverable {
     public Solution currentBest;
+    int temperature = 100;
     public SimulatedAnnealing(Solution solution) {
         currentBest = solution;
     }
@@ -48,36 +49,21 @@ public class SimulatedAnnealing implements Solverable {
         for (Map.Entry<Integer, Integer> currentPair : solution.getSolution().entrySet()) {
             Student currentStudent = studentDAO.getOne(currentPair.getKey());
             //First, add energy based on how far down in each students preference list their assigned project is
+            //For each project they weren't assigned, find the student that was assigned to it, and check if their GPA is less than our current student's
             for(Map.Entry<Integer, Integer> preference : currentStudent.getPreferences().entrySet()) {
                 //If the current preference is the project the student was assigned, add energy according to how far down the list we are
                 if(preference.getValue().equals(currentPair.getValue())) energy += preference.getKey();
+                else {
+                    int studentID = projectToStudent(preference.getValue());
+                    if (studentID != -1) {
+                        Student assignedStudent = studentDAO.getOne(studentID);
+                        if(assignedStudent.getGpa() < currentStudent.getGpa())
+                            energy += (10 * GPA_impact);
+                    }
+                }
             }
             //If a student got a project not in their preferences list, add significantly more energy
             if(!currentStudent.getPreferences().containsValue(currentPair.getValue())) energy += 50;
-
-            /* Next, check our GPA constraint:
-            For each student, get the projects that they were not assigned, that were above the project they were assigned in their preference list.
-            So if a student was assigned their 5th preference, find their 1st, 2nd, 3rd, and 4th preference. */
-            Map<Integer, Integer> preferences = currentStudent.getPreferences();
-            int assignedPreference = preferences.size();
-            for(Map.Entry<Integer, Integer> preference : preferences.entrySet()) {
-                if(preference.getValue().equals(currentPair.getValue()))
-                    assignedPreference = preference.getKey();
-            }
-            /* Next, find the students that were assigned these projects. Check if their GPA is higher than our current student.
-            If their GPA is lower than our current student, then this violates our GPA constraint, so add energy based on how much the user has chosen
-            GPA to impact the outcome. */
-            for(Map.Entry<Integer, Integer> preference : preferences.entrySet()) {
-                int studentID = projectToStudent(preference.getValue());
-                //We perform this check because there are more projects than students, so a student may not have been assigned this project
-                if(studentID != -1) {
-                    Student assignedStudent = studentDAO.getOne(studentID);
-                    if (assignedStudent.getGpa() < currentStudent.getGpa()) {
-                        energy += (10 * GPA_impact);
-                    }
-                }
-                if(preference.getKey() + 1 == assignedPreference) break;
-            }
         }
 
         energy = energy/systemVariables.NUMBER_OF_STUDENTS;
@@ -123,5 +109,14 @@ public class SimulatedAnnealing implements Solverable {
                 return entry.getKey();
         }
         return -1;
+    }
+
+    public boolean isAcceptable(Solution newSolution) {
+        double energyDifference = newSolution.getEnergy() - currentBest.getEnergy();
+        if(energyDifference <= 0)
+            return true;
+        else {
+
+        }
     }
 }
