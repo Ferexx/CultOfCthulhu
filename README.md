@@ -37,4 +37,16 @@ In the future, we hope to use the UCD login system to allow students to login an
 
 The new Simulated Annealing and Genetic Algorithms classes are not fully in use yet. SolutionController does create instances of them, but doesn't actually do anything with them just yet. Next week when we are changing solutions and deciding if we should accept them, this will come more into play.
 
-Our "change" functionality is stored in the new Solution class. It simply swaps the projects of two random students. It does this multiple times depending on an input variable.  
+Our "change" functionality is stored in the new Solution class. It simply swaps the projects of two random students. It does this multiple times depending on an input variable.
+
+Sprint 5:
+
+This week saw a fairly significant amount of changes. We updated our solution assessment method so that we're not directly accessing the student class to get their assigned projects. Instead we use the <Integer, Integer> map we were already generating to check which students have been assigned to which subjects. We also included the GPA check in our preference check loop to make the algorithm run faster.
+
+We added the option for users to upload a file containing their own students, instead of having the application randomly generate students for them. This is very useful for testing, as you can check if you get expected output with certain inputs. For example, the sample file we provide, "EveryoneGets1st.csv", includes student preferences which should result in every student getting their first preference.
+
+We also improved our change functionality. Now, instead, of randomly swapping the projects of two students, the application swaps the order in which we assign projects to students, in our initial "SolutionByLottery" generation.
+
+We output the energies of new solutions, and whether they were accepted, to console. We also output the final solution to console as well as to the console.
+
+If we'd had more time we would have updated the web interface to something more similar to what we're outputting in console, as well as an analysis of how well the algorithm worked.

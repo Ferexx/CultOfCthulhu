@@ -30,12 +30,13 @@ public class SimulatedAnnealing implements Solverable {
                     currentBest = newSolution;
                     System.out.println("Accepted new solution with energy: " + currentBest.getEnergy());
                 } else {
-                    System.out.println("Rejected new solution with energy: " + (int) newSolution.getEnergy());
+                    System.out.println("Rejected new solution with energy: " + newSolution.getEnergy());
                 }
                 count++;
             }while(count < systemVariables.NUMBER_OF_STUDENTS);
             //Cooling Schedule
-            temperature = temperature/2;
+            temperature /= 2;
+            count = 0;
         } while(temperature > 1);
 
         System.out.println(currentBest.printSolution(studentDAO, projectDAO));
