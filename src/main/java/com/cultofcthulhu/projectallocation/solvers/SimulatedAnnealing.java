@@ -28,7 +28,7 @@ public class SimulatedAnnealing implements Solverable {
             newSolution.setEnergy(assessSolution(newSolution, GPA_impact, studentDAO, projectDAO));
             if (isAcceptable(newSolution)) {
                 currentBest = newSolution;
-                temperature -= 5;
+                temperature = temperature/2;
                 System.out.println(currentBest.getEnergy());
             } else {
                 System.out.println("Energy: " + (int) currentBest.getEnergy() + " " + (int) newSolution.getEnergy());
