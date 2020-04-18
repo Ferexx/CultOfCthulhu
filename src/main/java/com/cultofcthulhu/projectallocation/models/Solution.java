@@ -70,7 +70,7 @@ public class Solution {
         return solution;
     }
 
-    public void change(int degree) {
+    public void change() {
         Random rand = new Random();
 
         int x = rand.nextInt(student_project_assignment_order.length);

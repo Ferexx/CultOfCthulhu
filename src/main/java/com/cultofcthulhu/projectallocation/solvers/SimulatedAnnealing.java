@@ -23,18 +23,17 @@ public class SimulatedAnnealing implements Solverable {
         do {
             System.out.println(count);
             newSolution = new Solution(currentBest.getSolution(), currentBest.getStudent_project_assignment_order());
-            newSolution.change(1);
+            newSolution.change();
             newSolution = newSolution.assignProjects(studentDAO, projectDAO);
             newSolution.setEnergy(assessSolution(newSolution, GPA_impact, studentDAO, projectDAO));
-            if (currentBest.getEnergy() > newSolution.getEnergy()) {
+            if (isAcceptable(newSolution)) {
                 currentBest = newSolution;
-                count = 0;
+                temperature -= 5;
                 System.out.println(currentBest.getEnergy());
             } else {
-                count++;
                 System.out.println("Energy: " + (int) currentBest.getEnergy() + " " + (int) newSolution.getEnergy());
             }
-        } while(count < (systemVariables.NUMBER_OF_STUDENTS * systemVariables.NUMBER_OF_STUDENTS));
+        } while(temperature > 0);
 
         System.out.println(currentBest.printSolution(studentDAO, projectDAO));
 
