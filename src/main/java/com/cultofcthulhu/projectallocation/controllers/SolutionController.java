@@ -3,7 +3,6 @@ package com.cultofcthulhu.projectallocation.controllers;
 import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
-import com.cultofcthulhu.projectallocation.models.data.SolutionDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.solvers.GeneticAlgorithm;
 import com.cultofcthulhu.projectallocation.solvers.SimulatedAnnealing;
@@ -23,8 +22,6 @@ public class SolutionController {
     private StudentDAO studentDAO;
     @Autowired
     private ProjectDAO projectDAO;
-    @Autowired
-    private SolutionDAO solutionDAO;
 
     @PostMapping(value = "/solution")
     public String solution(@RequestParam double GPARange, @RequestParam String choice, Model model) {

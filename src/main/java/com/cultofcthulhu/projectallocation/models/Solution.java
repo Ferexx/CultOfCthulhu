@@ -6,26 +6,13 @@ import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import javax.persistence.*;
 import java.util.*;
 
-@Entity
 public class Solution implements Comparable<Solution>{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @ElementCollection
     private Map<Integer, Integer> solution;
     private Integer[] student_project_assignment_order;
     private double energy;
     private double fitness;
 
-    public int getId() {
-        return id;
-    }
-
-    //public Solution(Map<Integer, Integer> map) {
-    //    solution = new HashMap<>(map);
-    //}
 
     public Solution(Map<Integer, Integer> map, Integer[] student_project_assignment_order)
     {
