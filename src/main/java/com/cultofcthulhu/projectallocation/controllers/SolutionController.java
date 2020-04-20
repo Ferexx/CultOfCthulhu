@@ -36,7 +36,7 @@ public class SolutionController {
             model.addAttribute("map", generateMap(simulation.hillClimb(GPARange, studentDAO, projectDAO).getSolution()));
         }
         else {
-            GeneticAlgorithm genet = new GeneticAlgorithm(solutionDAO.getOne(0), projectDAO, studentDAO);
+            GeneticAlgorithm genet = new GeneticAlgorithm(lottery.generateSolution(studentDAO, projectDAO));
         }
         return "solution";
     }

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-public class Solution {
+public class Solution implements Comparable<Solution>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -138,5 +138,10 @@ public class Solution {
         }
       
             return out;
+    }
+
+    @Override
+    public int compareTo(Solution o) {
+        return Double.compare(fitness, o.getFitness());
     }
 }
