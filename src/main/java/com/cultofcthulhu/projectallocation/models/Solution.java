@@ -13,7 +13,6 @@ public class Solution implements Comparable<Solution>{
     private double energy;
     private double fitness;
 
-
     public Solution(Map<Integer, Integer> map, Integer[] student_project_assignment_order)
     {
         this.student_project_assignment_order = student_project_assignment_order;
@@ -26,8 +25,9 @@ public class Solution implements Comparable<Solution>{
         fitness = -energy;
     }
 
-
-    public Solution() {}
+    public Solution(StudentDAO studentDAO, ProjectDAO projectDAO) {
+        generateSolution(studentDAO, projectDAO);
+    }
 
     public double getEnergy() {
         return energy;
@@ -57,6 +57,42 @@ public class Solution implements Comparable<Solution>{
         return solution;
     }
 
+    public void generateSolution(StudentDAO studentDao, ProjectDAO projectDAO) {
+        Integer[] studentAssignmentOrder;
+        if(student_project_assignment_order == null) {
+            studentAssignmentOrder = new Integer[(int) studentDao.count()];
+            for(int i = 0; i < studentAssignmentOrder.length; i++) studentAssignmentOrder[i] = i + 1;
+            Collections.shuffle(Arrays.asList(studentAssignmentOrder));
+            this.student_project_assignment_order = studentAssignmentOrder;
+        }
+        else studentAssignmentOrder = student_project_assignment_order;
+        Map<Integer, Integer> solution = new HashMap<>();
+        Boolean[] takenProjects = new Boolean[(int) projectDAO.count()];
+        Arrays.fill(takenProjects, false);
+
+        for(Integer integer : studentAssignmentOrder) {
+            Student student = studentDao.getOne(integer);
+            Map<Integer, Integer> preferences = student.getPreferences();
+            for(int x = 0; x < preferences.size(); x++) {
+                if(!takenProjects[preferences.get(x) - 1]) {
+                    takenProjects[preferences.get(x) - 1] = true;
+                    solution.put(student.getId(), preferences.get(x));
+                    break;
+                }
+            }
+            if(solution.get(student.getId()) == null) {
+                for(int i = 0; i < takenProjects.length; i++) {
+                    if(!takenProjects[i]) {
+                        takenProjects[i] = true;
+                        solution.put(student.getId(), i + 1);
+                        break;
+                    }
+                }
+            }
+        }
+        this.solution = solution;
+    }
+
     public void change() {
         Random rand = new Random();
 
@@ -64,49 +100,6 @@ public class Solution implements Comparable<Solution>{
         int y = rand.nextInt(student_project_assignment_order.length);
         Collections.swap(Arrays.asList(student_project_assignment_order),x,y);
     }
-
-    public Solution assignProjects(StudentDAO studentDAO, ProjectDAO projectDAO) {
-
-        Map<Integer, Integer> solution = new HashMap<>();
-
-        Boolean[] takenProjects = new Boolean[(int) projectDAO.count()];
-        Arrays.fill(takenProjects, false);
-
-        for (Integer integer : student_project_assignment_order) {
-            Student student = studentDAO.getOne(integer+1);
-            Map<Integer, Integer> preferences = student.getPreferences();
-
-            for (int x = 0; x < preferences.size(); x++) {
-                int preferenceX = preferences.get(x);
-                if (!takenProjects[preferenceX]) { //If project of preference x is not taken
-                    student.setAssignedProjectID(preferenceX); //Assign project to this student
-                    Project project = projectDAO.getOne(preferenceX);
-                    project.setStudentAssigned(student.getId()); //Assign student to project x
-                    projectDAO.save(project);
-                    takenProjects[preferenceX] = true; //record that project is now taken in this solution
-                    solution.put(student.getId(), project.getId());
-                    break; //Exit loop since we've assigned a student their highest preference possible
-                }
-            }
-
-            //If we haven't assigned a student a project in the loop, just give them the first one that isn't taken
-            if(student.getAssignedProjectID() == -1) {
-                for(int x = 0; x < takenProjects.length; x++) {
-                    if(!takenProjects[x]) {
-                        student.setAssignedProjectID(x + 1);
-                        Project project = projectDAO.getOne(x + 1);
-                        project.setStudentAssigned(student.getId());
-                        projectDAO.save(project);
-                        takenProjects[x] = true;
-                        solution.put(student.getId(), project.getId());
-                        break;
-                    }
-                }
-            }
-        }
-        return new Solution(solution, student_project_assignment_order);
-    }
-
 
     public String printSolution(StudentDAO studentDAO, ProjectDAO projectDAO ){
 

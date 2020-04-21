@@ -1,12 +1,12 @@
 package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.models.Project;
+import com.cultofcthulhu.projectallocation.models.Solution;
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.solvers.GeneticAlgorithm;
 import com.cultofcthulhu.projectallocation.solvers.SimulatedAnnealing;
-import com.cultofcthulhu.projectallocation.solvers.SolutionByLottery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,15 +25,15 @@ public class SolutionController {
 
     @PostMapping(value = "/solution")
     public String solution(@RequestParam double GPARange, @RequestParam String choice, Model model) {
-        SolutionByLottery lottery = new SolutionByLottery(studentDAO);
+        Solution solution = new Solution(studentDAO, projectDAO);
         if(choice.equals("simulatedAnnealing")) {
             model.addAttribute("title", "Simulated Annealing");
-            SimulatedAnnealing simulation = new SimulatedAnnealing(lottery.generateSolution(studentDAO, projectDAO));
+            SimulatedAnnealing simulation = new SimulatedAnnealing(solution);
             simulation.currentBest.setEnergy(simulation.assessSolution(simulation.currentBest, GPARange, studentDAO, projectDAO));
             model.addAttribute("map", generateMap(simulation.hillClimb(GPARange, studentDAO, projectDAO).getSolution()));
         }
         else {
-            GeneticAlgorithm genet = new GeneticAlgorithm(lottery.generateSolution(studentDAO, projectDAO));
+            GeneticAlgorithm genet = new GeneticAlgorithm(solution);
         }
         return "solution";
     }

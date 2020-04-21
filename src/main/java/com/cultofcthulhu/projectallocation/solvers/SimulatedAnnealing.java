@@ -25,7 +25,7 @@ public class SimulatedAnnealing implements Solverable {
             do {
                 newSolution = new Solution(currentBest.getSolution(), currentBest.getStudent_project_assignment_order());
                 newSolution.change();
-                newSolution = newSolution.assignProjects(studentDAO, projectDAO);
+                newSolution.generateSolution(studentDAO, projectDAO);
                 newSolution.setEnergy(assessSolution(newSolution, GPA_impact, studentDAO, projectDAO));
                 if (isAcceptable(newSolution)) {
                     currentBest = newSolution;

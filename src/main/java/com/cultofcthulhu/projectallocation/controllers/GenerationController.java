@@ -7,7 +7,6 @@ import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.data.StaffMemberDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
-import com.cultofcthulhu.projectallocation.solvers.SolutionByLottery;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -149,11 +148,6 @@ public class GenerationController {
             student.addPreference(projects.get(val).getId());
         }
         studentDAO.save(student);
-    }
-
-    public void generateSolution(){
-        SolutionByLottery solution = new SolutionByLottery(studentDAO);
-        solution.generateSolution(studentDAO, projectDAO);
     }
 
     public void generateProjects(int number) {
