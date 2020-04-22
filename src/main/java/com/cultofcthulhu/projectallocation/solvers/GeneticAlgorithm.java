@@ -6,20 +6,86 @@ import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 
-import javax.persistence.criteria.CriteriaBuilder;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 public class GeneticAlgorithm {
     private Solution initialSolution;
     private List<Solution> solutionList;
+    private StudentDAO studentDAO;
+    private ProjectDAO projectDAO;
 
     public GeneticAlgorithm(Solution initialSolution) {
         this.initialSolution = initialSolution;
     }
 
-    public void mate() {
-        //Mating stuff goes here
+    public Solution mate(Solution solution1, Solution solution2) {
+        Integer[] solution_student_order_1 = solution1.getStudent_project_assignment_order();
+        Integer[] solution_student_order_2 = solution2.getStudent_project_assignment_order();
+
+        Integer[] new_solution_order = new Integer[systemVariables.NUMBER_OF_STUDENTS];
+        Arrays.fill(new_solution_order, 0);
+        int select = 1;
+
+        for (int student = 1 ; student <= systemVariables.NUMBER_OF_STUDENTS ; student++){
+            int place = -1;
+            if (select == 1) {
+                for (int x = 0 ; x < systemVariables.NUMBER_OF_STUDENTS ; x++) {
+                    if (solution_student_order_1[x] == student) {
+                        place = x;
+                    }
+                }
+                boolean placed = false;
+                do {
+                    if (new_solution_order[place] == 0) {
+                        new_solution_order[place] = student;
+                        placed = true;
+                    } else {
+                        place++;
+                        if (place == new_solution_order.length){
+                            for(int i=0; i + 1 < new_solution_order.length; i++) {
+                                if (new_solution_order[i] == 0) {
+                                    new_solution_order[i] = new_solution_order[i+1];
+                                    new_solution_order[i] = 0;
+                                }
+                            }
+                        }
+                    }
+                } while (!placed);
+                select = 2;
+            } else if (select == 2) {
+                for (int x = 0; x < systemVariables.NUMBER_OF_STUDENTS; x++) {
+                    if (solution_student_order_2[x] == student) {
+                        place = x;
+                    }
+                }
+                boolean placed = false;
+                do {
+                    if (new_solution_order[place] == 0) {
+                        new_solution_order[place] = student;
+                        placed = true;
+                    } else {
+                        place++;
+                        if (place == new_solution_order.length) {
+                            for (int i = 0; i + 1 < new_solution_order.length; i++) {
+                                if (new_solution_order[i] == 0) {
+                                    new_solution_order[i] = new_solution_order[i + 1];
+                                    new_solution_order[i] = 0;
+                                }
+                            }
+                        }
+                    }
+                } while (!placed);
+                select = 1;
+            }
+
+        }
+
+        Solution returnSolution = new Solution(solution1.getSolution(), new_solution_order);
+        returnSolution.generateSolution(studentDAO, projectDAO);
+        return returnSolution;
+
     }
 
     public double assessSolution(Solution solution, double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
