@@ -42,12 +42,6 @@ public class GenerationController {
 
     private static final int NUMBER_OF_PREFERENCES = 10;
 
-    @RequestMapping(value = "/howManyStudents")
-    public String howManyStudents(Model model) {
-        model.addAttribute("title", "Number of Students");
-        return "studentNums";
-    }
-
     @PostMapping(value = "numStudents")
     public String numStudents(@RequestParam("number") Integer number) {
         generateProjects(number);
@@ -57,7 +51,8 @@ public class GenerationController {
     }
 
     @RequestMapping(value = "downloadProjects")
-        public String downloadProjects() {
+        public String downloadProjects(Model model) {
+            model.addAttribute("title", "Generate Solution");
             return "downloadProjects";
         }
 

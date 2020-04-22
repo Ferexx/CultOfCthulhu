@@ -79,7 +79,8 @@ public class UploadController {
         File convFile = new File(String.valueOf(storageService.load(file.getOriginalFilename())));
         try {
             parser = new FileParser(convFile);
-            return "uploadStatus";
+            model.addAttribute("title", "Number of Students");
+            return "studentNums";
         } catch (ParseException e) {
             model.addAttribute("error", e.getMessage());
             return "error";
@@ -95,6 +96,7 @@ public class UploadController {
             for(Student student:students)
                 studentDAO.save(student);
             model.addAttribute("message", "Students file uploaded.");
+            model.addAttribute("title", "Generate Solution");
             systemVariables.NUMBER_OF_STUDENTS = students.size();
             generateProjects(systemVariables.NUMBER_OF_STUDENTS);
             return "downloadProjects";

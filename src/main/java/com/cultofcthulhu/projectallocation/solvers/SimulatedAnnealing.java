@@ -36,7 +36,7 @@ public class SimulatedAnnealing implements Solverable {
                 count++;
             }while(count < systemVariables.NUMBER_OF_STUDENTS);
             //Cooling Schedule
-            if(initialEnergy-currentBest.getEnergy() > temperature/10 || count > Math.pow(systemVariables.NUMBER_OF_STUDENTS, 2)) {
+            if(initialEnergy-currentBest.getEnergy() > temperature/10.0 || count > Math.pow(systemVariables.NUMBER_OF_STUDENTS, 2)) {
                 temperature /= 2;
                 count = 0;
                 initialEnergy = currentBest.getEnergy();
@@ -80,12 +80,6 @@ public class SimulatedAnnealing implements Solverable {
     }
 
     public boolean violatesHardConstraints(Map<Integer, Integer> map) {
-        /*Need to do a few checks here:
-        Check if more than one person has the same project
-        Check everyone has a project
-        Self-specified project can only be assigned to that student
-        Maybe more
-         */
         for(Map.Entry<Integer, Integer> entry : map.entrySet()) {
             //First check if a project has been assigned to more than one person
             for (Map.Entry<Integer, Integer> entry2 : map.entrySet())
