@@ -1,5 +1,6 @@
 package com.cultofcthulhu.projectallocation.controllers;
 
+import com.cultofcthulhu.projectallocation.models.GeneticAlgorithmSolutionHerd;
 import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.Solution;
 import com.cultofcthulhu.projectallocation.models.Student;
@@ -25,15 +26,16 @@ public class SolutionController {
 
     @PostMapping(value = "/solution")
     public String solution(@RequestParam double GPARange, @RequestParam String choice, Model model) {
-        Solution solution = new Solution(studentDAO, projectDAO);
+        Solution initialSolution = new Solution(studentDAO, projectDAO);
         if(choice.equals("simulatedAnnealing")) {
             model.addAttribute("title", "Simulated Annealing");
-            SimulatedAnnealing simulation = new SimulatedAnnealing(solution);
+            SimulatedAnnealing simulation = new SimulatedAnnealing(initialSolution);
             simulation.currentBest.setEnergy(simulation.assessSolution(simulation.currentBest, GPARange, studentDAO, projectDAO));
             model.addAttribute("map", generateMap(simulation.hillClimb(GPARange, studentDAO, projectDAO).getSolution()));
         }
         else {
-            GeneticAlgorithm genet = new GeneticAlgorithm(solution);
+            GeneticAlgorithmSolutionHerd solutionHerd = new GeneticAlgorithmSolutionHerd(initialSolution);
+            GeneticAlgorithm genet = new GeneticAlgorithm(solutionHerd);
         }
         return "solution";
     }

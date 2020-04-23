@@ -19,6 +19,10 @@ public class GeneticAlgorithmSolutionHerd {
         solutionList.add(solution);
     }
 
+    public int size() {
+        return solutionList.size();
+    }
+
     public void cullSolutions(int percent) {
         int number = (int) Math.round((solutionList.size()/100.0) * percent);
         number = solutionList.size() - number;

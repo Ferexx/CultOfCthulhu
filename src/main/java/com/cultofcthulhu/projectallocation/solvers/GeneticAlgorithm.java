@@ -1,5 +1,6 @@
 package com.cultofcthulhu.projectallocation.solvers;
 
+import com.cultofcthulhu.projectallocation.models.GeneticAlgorithmSolutionHerd;
 import com.cultofcthulhu.projectallocation.models.Solution;
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
@@ -7,18 +8,53 @@ import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneticAlgorithm {
-    private Solution initialSolution;
-    private List<Solution> solutionList;
-    private StudentDAO studentDAO;
-    private ProjectDAO projectDAO;
+    private GeneticAlgorithmSolutionHerd solutions;
+    private final int MAX_POPULATION_SIZE = systemVariables.MAX_POPULATION_SIZE;
+    private final int MATE_PERCENTAGE = systemVariables.MATE_PERCENTAGE;
+    private final int CULL_PERCENTAGE = systemVariables.CULL_PERCENTAGE;
+    private final double MUTATION_CHANCE = systemVariables.MUTATION_CHANCE;
 
-    public GeneticAlgorithm(Solution initialSolution) {
-        this.initialSolution = initialSolution;
+    public GeneticAlgorithm(GeneticAlgorithmSolutionHerd initialSolutions) {
+        solutions = initialSolutions;
+    }
+
+    public void runAlgorithm(double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
+        int generationLimit = 0;
+        double bestFitness;
+        //Generate a bunch of initial solutions
+        for(int i = 0; i < MAX_POPULATION_SIZE; i++) {
+            solutions.addSolution(new Solution(studentDAO, projectDAO));
+            solutions.sortSolutions();
+        }
+        //Main loop:
+        do {
+            bestFitness = solutions.getSolution(0).getFitness();
+            //Allow top % to mate until we reach max population size
+            while (solutions.size() < MAX_POPULATION_SIZE) {
+                int solution1, solution2;
+                do {
+                    solution1 = ThreadLocalRandom.current().nextInt(0, (MAX_POPULATION_SIZE / 100) * MATE_PERCENTAGE);
+                    solution2 = ThreadLocalRandom.current().nextInt(0, (MAX_POPULATION_SIZE / 100) * MATE_PERCENTAGE);
+                } while (solution1 != solution2);
+                Solution offspringSolution = mate(solutions.getSolution(solution1), solutions.getSolution(solution2));
+                offspringSolution = mutate(offspringSolution);
+                offspringSolution.generateSolution(studentDAO, projectDAO);
+                offspringSolution.setFitness(assessSolution(offspringSolution, GPA_impact, studentDAO, projectDAO));
+                solutions.addSolution(offspringSolution);
+            }
+            //Order list according to fitness
+            solutions.sortSolutions();
+            //Cull bottom %
+            solutions.cullSolutions(CULL_PERCENTAGE);
+            //Repeat until a plateau is reached i.e. No significant energy improvements
+            if(solutions.getSolution(0).getFitness() <= bestFitness) {
+                generationLimit++;
+            } else generationLimit = 0;
+        } while(generationLimit < 5);
     }
 
     public Solution mate(Solution solution1, Solution solution2) {
@@ -59,12 +95,11 @@ public class GeneticAlgorithm {
         }
 
         Solution returnSolution = new Solution(solution1.getSolution(), new_solution_order);
-        returnSolution.generateSolution(studentDAO, projectDAO);
         return returnSolution;
     }
 
     public Solution mutate(Solution solution) {
-        if(ThreadLocalRandom.current().nextDouble(0, 1) <= systemVariables.MUTATION_CHANCE)
+        if(ThreadLocalRandom.current().nextDouble(0, 1) <= MUTATION_CHANCE)
             solution.change();
         return solution;
     }
