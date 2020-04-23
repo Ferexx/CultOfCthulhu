@@ -60,7 +60,7 @@ public class FileParser {
                     "Your file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 5)");
             values[3] = values[3].substring(1, values[3].length()-1);
             String[] preferences = values[3].split(split);
-            //TODO: Change 10 to numofstudents in sysvariables
+            //TODO: Change 10 to numofpreferences in sysvariables
             if(preferences.length != 10) throw new ParseException(
                     "The student on line " + i + " does not have the correct number of preferences. (Found: " + preferences.length + ", Expected: " + 10 + ")");
             Student student = new Student(values[0], values[1], values[2], Double.parseDouble(values[4]));

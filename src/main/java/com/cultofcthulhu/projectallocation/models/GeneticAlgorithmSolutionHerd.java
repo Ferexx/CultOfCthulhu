@@ -4,10 +4,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class geneticAlgorithmSolutionHerd {
+public class GeneticAlgorithmSolutionHerd {
     private List<Solution> solutionList = new ArrayList<>();
 
-    public geneticAlgorithmSolutionHerd(Solution initialSolution) {
+    public GeneticAlgorithmSolutionHerd(Solution initialSolution) {
         solutionList.add(initialSolution);
     }
 

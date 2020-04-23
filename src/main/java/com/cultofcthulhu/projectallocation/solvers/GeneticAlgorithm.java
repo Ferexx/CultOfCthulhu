@@ -9,6 +9,7 @@ import com.cultofcthulhu.projectallocation.system.systemVariables;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneticAlgorithm {
     private Solution initialSolution;
@@ -21,71 +22,51 @@ public class GeneticAlgorithm {
     }
 
     public Solution mate(Solution solution1, Solution solution2) {
-        Integer[] solution_student_order_1 = solution1.getStudent_project_assignment_order();
-        Integer[] solution_student_order_2 = solution2.getStudent_project_assignment_order();
 
+        Integer[] currentSolutionOrder;
         Integer[] new_solution_order = new Integer[systemVariables.NUMBER_OF_STUDENTS];
         Arrays.fill(new_solution_order, 0);
-        int select = 1;
+
+        int place = -1;
 
         for (int student = 1 ; student <= systemVariables.NUMBER_OF_STUDENTS ; student++){
-            int place = -1;
-            if (select == 1) {
-                for (int x = 0 ; x < systemVariables.NUMBER_OF_STUDENTS ; x++) {
-                    if (solution_student_order_1[x] == student) {
-                        place = x;
-                    }
-                }
-                boolean placed = false;
-                do {
-                    if (new_solution_order[place] == 0) {
-                        new_solution_order[place] = student;
-                        placed = true;
-                    } else {
-                        place++;
-                        if (place == new_solution_order.length){
-                            for(int i=0; i + 1 < new_solution_order.length; i++) {
-                                if (new_solution_order[i] == 0) {
-                                    new_solution_order[i] = new_solution_order[i+1];
-                                    new_solution_order[i] = 0;
-                                }
-                            }
-                        }
-                    }
-                } while (!placed);
-                select = 2;
-            } else if (select == 2) {
-                for (int x = 0; x < systemVariables.NUMBER_OF_STUDENTS; x++) {
-                    if (solution_student_order_2[x] == student) {
-                        place = x;
-                    }
-                }
-                boolean placed = false;
-                do {
-                    if (new_solution_order[place] == 0) {
-                        new_solution_order[place] = student;
-                        placed = true;
-                    } else {
-                        place++;
-                        if (place == new_solution_order.length) {
-                            for (int i = 0; i + 1 < new_solution_order.length; i++) {
-                                if (new_solution_order[i] == 0) {
-                                    new_solution_order[i] = new_solution_order[i + 1];
-                                    new_solution_order[i] = 0;
-                                }
-                            }
-                        }
-                    }
-                } while (!placed);
-                select = 1;
-            }
+            if(student % 2 == 1) currentSolutionOrder = solution1.getStudent_project_assignment_order();
+            else currentSolutionOrder = solution2.getStudent_project_assignment_order();
 
+            for (int x = 0 ; x < systemVariables.NUMBER_OF_STUDENTS ; x++) {
+                if (currentSolutionOrder[x] == student) {
+                    place = x;
+                    break;
+                }
+            }
+            boolean placed = false;
+            do {
+                if (new_solution_order[place] == 0) {
+                    new_solution_order[place] = student;
+                    placed = true;
+                } else {
+                    place++;
+                    if (place == new_solution_order.length){
+                        for(int i=0; i + 1 < new_solution_order.length; i++) {
+                            if (new_solution_order[i] == 0) {
+                                new_solution_order[i] = new_solution_order[i+1];
+                                new_solution_order[i] = 0;
+                            }
+                        }
+                    }
+                }
+            } while (!placed);
         }
 
         Solution returnSolution = new Solution(solution1.getSolution(), new_solution_order);
         returnSolution.generateSolution(studentDAO, projectDAO);
         return returnSolution;
+    }
 
+    public Solution mutate(Solution solution) {
+        if(ThreadLocalRandom.current().nextDouble(0, 1) <= systemVariables.MUTATION_CHANCE)
+            solution.change();
+        return solution;
     }
 
     public double assessSolution(Solution solution, double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
