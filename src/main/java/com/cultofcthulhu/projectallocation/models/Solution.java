@@ -117,12 +117,12 @@ public class Solution implements Comparable<Solution>{
             }
             out = out + "\t\t(" + num + ")\t\t" + projectDAO.getOne(entry.getValue()).getProject_title() + "\n";
         }
-      
-            return out;
+        out = out + fitness + "\n";
+        return out;
     }
 
     @Override
     public int compareTo(Solution o) {
-        return Double.compare(fitness, o.getFitness());
+        return Double.compare(o.getFitness(), fitness);
     }
 }
