@@ -22,14 +22,16 @@ public class GeneticAlgorithm {
         solutions = initialSolutions;
     }
 
-    public void runAlgorithm(double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
+    public Map<Integer, Integer> runAlgorithm(double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
         int generationLimit = 0;
         double bestFitness;
         //Generate a bunch of initial solutions
         for(int i = 0; i < MAX_POPULATION_SIZE; i++) {
-            solutions.addSolution(new Solution(studentDAO, projectDAO));
-            solutions.sortSolutions();
+            Solution solution = new Solution(studentDAO, projectDAO);
+            solution.setFitness(assessSolution(solution, GPA_impact, studentDAO, projectDAO));
+            solutions.addSolution(solution);
         }
+        solutions.sortSolutions();
         //Main loop:
         do {
             bestFitness = solutions.getSolution(0).getFitness();
@@ -37,13 +39,15 @@ public class GeneticAlgorithm {
             while (solutions.size() < MAX_POPULATION_SIZE) {
                 int solution1, solution2;
                 do {
-                    solution1 = ThreadLocalRandom.current().nextInt(0, (MAX_POPULATION_SIZE / 100) * MATE_PERCENTAGE);
-                    solution2 = ThreadLocalRandom.current().nextInt(0, (MAX_POPULATION_SIZE / 100) * MATE_PERCENTAGE);
-                } while (solution1 != solution2);
+                    solution1 = ThreadLocalRandom.current().nextInt(0, (int) ((MAX_POPULATION_SIZE / 100.0) * MATE_PERCENTAGE));
+                    solution2 = ThreadLocalRandom.current().nextInt(0, (int) ((MAX_POPULATION_SIZE / 100.0) * MATE_PERCENTAGE));
+                } while (solution1 == solution2);
+                System.out.println("Mating solutions " + solution1 + " and " + solution2);
                 Solution offspringSolution = mate(solutions.getSolution(solution1), solutions.getSolution(solution2));
                 offspringSolution = mutate(offspringSolution);
                 offspringSolution.generateSolution(studentDAO, projectDAO);
                 offspringSolution.setFitness(assessSolution(offspringSolution, GPA_impact, studentDAO, projectDAO));
+                System.out.println("New solution has fitness " + offspringSolution.getFitness());
                 solutions.addSolution(offspringSolution);
             }
             //Order list according to fitness
@@ -55,12 +59,13 @@ public class GeneticAlgorithm {
                 generationLimit++;
             } else generationLimit = 0;
         } while(generationLimit < 5);
+        return solutions.getSolution(0).getSolution();
     }
 
     public Solution mate(Solution solution1, Solution solution2) {
 
         Integer[] currentSolutionOrder;
-        Integer[] new_solution_order = new Integer[systemVariables.NUMBER_OF_STUDENTS];
+        Integer[] new_solution_order = new Integer[systemVariables.NUMBER_OF_STUDENTS + 1];
         Arrays.fill(new_solution_order, 0);
 
         int place = -1;
@@ -94,13 +99,14 @@ public class GeneticAlgorithm {
             } while (!placed);
         }
 
-        Solution returnSolution = new Solution(solution1.getSolution(), new_solution_order);
-        return returnSolution;
+        return new Solution(solution1.getSolution(), new_solution_order);
     }
 
     public Solution mutate(Solution solution) {
-        if(ThreadLocalRandom.current().nextDouble(0, 1) <= MUTATION_CHANCE)
+        if(ThreadLocalRandom.current().nextDouble(0, 1) <= MUTATION_CHANCE) {
             solution.change();
+            System.out.println("Mutation!");
+        }
         return solution;
     }
 

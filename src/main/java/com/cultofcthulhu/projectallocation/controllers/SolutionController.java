@@ -36,6 +36,8 @@ public class SolutionController {
         else {
             GeneticAlgorithmSolutionHerd solutionHerd = new GeneticAlgorithmSolutionHerd(initialSolution);
             GeneticAlgorithm genet = new GeneticAlgorithm(solutionHerd);
+            solutionHerd.getSolution(0).setFitness(genet.assessSolution(solutionHerd.getSolution(0), GPARange, studentDAO, projectDAO));
+            model.addAttribute("map", generateMap(genet.runAlgorithm(GPARange, studentDAO, projectDAO)));
         }
         return "solution";
     }
