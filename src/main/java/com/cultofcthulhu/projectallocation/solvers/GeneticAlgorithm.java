@@ -71,7 +71,8 @@ public class GeneticAlgorithm {
 
         int place = -1;
 
-        for (int student = 1 ; student <= systemVariables.NUMBER_OF_STUDENTS ; student++){
+        for (int studentNo = 0 ; studentNo < systemVariables.NUMBER_OF_STUDENTS ; studentNo++){
+            int student = solution1.getStudent_project_assignment_order()[studentNo];
             if(student % 2 == 1) currentSolutionOrder = solution1.getStudent_project_assignment_order();
             else currentSolutionOrder = solution2.getStudent_project_assignment_order();
 
@@ -141,7 +142,6 @@ public class GeneticAlgorithm {
             }
             if(!currentStudent.getPreferences().containsValue(currentPair.getValue())) fitness -= 50;
         }
-        fitness /= systemVariables.NUMBER_OF_STUDENTS;
         return fitness;
     }
 
