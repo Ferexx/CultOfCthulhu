@@ -59,6 +59,7 @@ public class GeneticAlgorithm {
                 generationLimit++;
             } else generationLimit = 0;
         } while(generationLimit < 5);
+        System.out.println(solutions.getSolution(0).printSolution(studentDAO, projectDAO));
         return solutions.getSolution(0).getSolution();
     }
 
@@ -111,9 +112,9 @@ public class GeneticAlgorithm {
     }
 
     public Solution mutate(Solution solution) {
-        if(ThreadLocalRandom.current().nextDouble(0, 1) <= MUTATION_CHANCE) {
+        if(ThreadLocalRandom.current().nextInt(0, 100) <= MUTATION_CHANCE) {
             solution.change();
-            System.out.println("Mutation!");
+            System.out.println("Mutation! " + MUTATION_CHANCE);
         }
         return solution;
     }
@@ -140,7 +141,6 @@ public class GeneticAlgorithm {
             }
             if(!currentStudent.getPreferences().containsValue(currentPair.getValue())) fitness -= 50;
         }
-        if(fitness < 0) fitness = 0;
         fitness /= systemVariables.NUMBER_OF_STUDENTS;
         return fitness;
     }
