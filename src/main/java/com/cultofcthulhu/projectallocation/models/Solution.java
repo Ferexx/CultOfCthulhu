@@ -70,6 +70,7 @@ public class Solution implements Comparable<Solution>{
         Boolean[] takenProjects = new Boolean[(int) projectDAO.count()];
         Arrays.fill(takenProjects, false);
 
+
         for(Integer integer : studentAssignmentOrder) {
             Student student = studentDao.getOne(integer);
             Map<Integer, Integer> preferences = student.getPreferences();

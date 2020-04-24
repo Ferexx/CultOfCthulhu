@@ -65,7 +65,7 @@ public class GeneticAlgorithm {
     public Solution mate(Solution solution1, Solution solution2) {
 
         Integer[] currentSolutionOrder;
-        Integer[] new_solution_order = new Integer[systemVariables.NUMBER_OF_STUDENTS + 1];
+        Integer[] new_solution_order = new Integer[systemVariables.NUMBER_OF_STUDENTS];
         Arrays.fill(new_solution_order, 0);
 
         int place = -1;
@@ -77,6 +77,7 @@ public class GeneticAlgorithm {
             for (int x = 0 ; x < systemVariables.NUMBER_OF_STUDENTS ; x++) {
                 if (currentSolutionOrder[x] == student) {
                     place = x;
+                    //System.out.println("Student " + currentSolutionOrder[place] + " is in place : " + place);
                     break;
                 }
             }
@@ -88,16 +89,23 @@ public class GeneticAlgorithm {
                 } else {
                     place++;
                     if (place == new_solution_order.length){
-                        for(int i=0; i + 1 < new_solution_order.length; i++) {
-                            if (new_solution_order[i] == 0) {
-                                new_solution_order[i] = new_solution_order[i+1];
-                                new_solution_order[i] = 0;
+                        //System.out.println("[" + place + "] :" + Arrays.toString(new_solution_order));
+                        for(int i = 0; i + 1 < new_solution_order.length; i++) {
+                            if(new_solution_order[i] == 0) {
+                                new_solution_order[i] = new_solution_order[i + 1];
+                                new_solution_order[i + 1] = 0;
                             }
                         }
+                        //System.out.println("[" + place + "] :" + Arrays.toString(new_solution_order));
+                        place = new_solution_order.length - 1;
                     }
                 }
             } while (!placed);
         }
+
+        System.out.println("Solution 1st" +  Arrays.toString(solution1.getStudent_project_assignment_order()));
+        System.out.println("+ Solution 2nd" + Arrays.toString(solution2.getStudent_project_assignment_order()) );
+        System.out.println("= New Solution  : " + Arrays.toString(new_solution_order));
 
         return new Solution(solution1.getSolution(), new_solution_order);
     }
