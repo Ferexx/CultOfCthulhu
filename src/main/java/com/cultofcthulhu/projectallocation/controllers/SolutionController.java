@@ -31,7 +31,7 @@ public class SolutionController {
             model.addAttribute("title", "Simulated Annealing");
             SimulatedAnnealing simulation = new SimulatedAnnealing(initialSolution);
             simulation.currentBest.setEnergy(simulation.assessSolution(simulation.currentBest, GPARange, studentDAO, projectDAO));
-            model.addAttribute("map", generateMap(simulation.hillClimb(GPARange, studentDAO, projectDAO).getSolution()));
+            model.addAttribute("map", simulation.hillClimb(GPARange, studentDAO, projectDAO).getSolutionList(studentDAO, projectDAO));
         }
         else {
             GeneticAlgorithmSolutionHerd solutionHerd = new GeneticAlgorithmSolutionHerd(initialSolution);

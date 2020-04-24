@@ -121,6 +121,27 @@ public class Solution implements Comparable<Solution>{
         return out;
     }
 
+    public List<String> getSolutionList(StudentDAO studentDAO, ProjectDAO projectDAO ){
+
+        List<String> stringList = new ArrayList<>();
+        String out;
+
+        for(Map.Entry<Integer, Integer> entry : solution.entrySet()) {
+            out = "";
+            out = out + studentDAO.getOne(entry.getKey()).getName() + " " + studentDAO.getOne(entry.getKey()).getGpa();
+            int num = -1;
+            for (Map.Entry<Integer, Integer> preference: studentDAO.getOne(entry.getKey()).getPreferences().entrySet())
+            {
+                if (preference.getValue().equals(entry.getValue())){
+                    num = preference.getKey() + 1;
+                }
+            }
+            out = out + "\t\t(" + num + ")\t\t" + projectDAO.getOne(entry.getValue()).getProject_title() + "\n";
+            stringList.add(out);
+        }
+        return stringList;
+    }
+
     @Override
     public int compareTo(Solution o) {
         return Double.compare(o.getFitness(), fitness);
