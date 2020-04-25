@@ -15,7 +15,7 @@
     <h4>Settings</h4>
 </div>
 
-<div class="card text-center" style="height: 500px;">
+<div class="card text-center" style="height: auto;">
     <br><br>
 
     <div class="card container bg-light border-dark mb-3" style="max-width: 500px;">
@@ -33,7 +33,29 @@
                 <label for="noOfStudents">Input the number of preferences you'd like your students to choose:</label>
                 <input class="form-control" style="width: 200px; margin-left: 30%;" placeholder="Number of Preferences" min="0" type="number" th:value="${numPreferences}" id="noOfPreferences" name="noOfPreferences">
             </div>
+
+            <div class="form-group">
+                <label for="mutationChance">Input the chance of mutation as a percentage (0 - 100):</label>
+                <input class="form-control" style="width: 200px; margin-left: 30%;" placeholder="Chance of Mutation" min="0" max="100" type="number" th:value="${chanceMutation}" id="mutationChance" name="mutationChance">
+            </div>
+
+            <div class="form-group">
+                <label for="cullingPercentage">Input the percentage of culling (0 - 100):</label>
+                <input class="form-control" style="width: 200px; margin-left: 30%;" placeholder="Culling %" min="0" max="100" type="number" th:value="${cullPercentage}" id="cullingPercentage" name="cullingPercentage">
+            </div>
+
+            <div class="form-group">
+                <label for="matingPercentage">Input the percentage of mating (0 - 100):</label>
+                <input class="form-control" style="width: 200px; margin-left: 30%;" placeholder="Mating %" min="0" max="100" type="number" th:value="${matePercentage}" id="matingPercentage" name="matingPercentage">
+            </div>
+
+            <div class="form-group">
+                <label for="maximumPopulation">Input the maximum possible population:</label>
+                <input class="form-control" style="width: 200px; margin-left: 30%;" placeholder="Maximum Population" min="0" type="number" th:value="${maxPopulation}" id="maximumPopulation" name="maximumPopulation">
+            </div>
+
             <br><hr>
+
             <div class="form-group">
                 <button class="btn btn-default" type="submit">Save</button>
             </div>

@@ -24,13 +24,17 @@
             <thead>
             <tr>
                 <th>Student Name</th>
-                <th>Project Name</th>
+                <th>Student GPA</th>
+                <th>Preference Assigned</th>
+                <th>Project Title</th>
             </tr>
             </thead>
             <tbody class="text-left">
-            <tr th:each="student : ${map}">
-                <td th:text="${student.getKey()}"></td>
-                <td th:text="${student.getValue()}"></td>
+            <tr th:each="line : ${list}">
+                <td th:text="${line[0]}"></td>
+                <td th:text="${line[1]}"></td>
+                <td th:text="${line[2]}"></td>
+                <td th:text="${line[3]}"></td>
             </tr>
             </tbody>
         </table>

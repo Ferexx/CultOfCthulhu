@@ -31,14 +31,14 @@ public class SolutionController {
             model.addAttribute("title", "Simulated Annealing");
             SimulatedAnnealing simulation = new SimulatedAnnealing(initialSolution);
             simulation.currentBest.setEnergy(simulation.assessSolution(simulation.currentBest, GPARange, studentDAO, projectDAO));
-            model.addAttribute("map", generateMap(simulation.hillClimb(GPARange, studentDAO, projectDAO).getSolution()));
+            model.addAttribute("list", simulation.hillClimb(GPARange, studentDAO, projectDAO).getSolutionList(studentDAO, projectDAO));
         }
         else {
             GeneticAlgorithmSolutionHerd solutionHerd = new GeneticAlgorithmSolutionHerd(initialSolution);
             GeneticAlgorithm genet = new GeneticAlgorithm(solutionHerd);
             solutionHerd.getSolution(0).setFitness(genet.assessSolution(solutionHerd.getSolution(0), GPARange, studentDAO, projectDAO));
             System.out.println(solutionHerd.getSolution(0).printSolution(studentDAO, projectDAO));
-            model.addAttribute("map", generateMap(genet.runAlgorithm(GPARange, studentDAO, projectDAO)));
+            model.addAttribute("list", genet.runAlgorithm(GPARange, studentDAO, projectDAO).getSolutionList(studentDAO,projectDAO));
         }
         return "solution";
     }

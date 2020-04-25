@@ -117,8 +117,29 @@ public class Solution implements Comparable<Solution>{
             }
             out = out + "\t\t(" + num + ")\t\t" + projectDAO.getOne(entry.getValue()).getProject_title() + "\n";
         }
-        out = out + fitness + "\n";
         return out;
+    }
+
+    public List<String[]> getSolutionList(StudentDAO studentDAO, ProjectDAO projectDAO ){
+
+        List<String[]> stringList = new ArrayList<>();
+
+        for(Map.Entry<Integer, Integer> entry : solution.entrySet()) {
+            String[] out = new String[4];
+            out[0] = studentDAO.getOne(entry.getKey()).getName();
+            out[1] = String.valueOf(studentDAO.getOne(entry.getKey()).getGpa());
+            int num = -1;
+            for (Map.Entry<Integer, Integer> preference: studentDAO.getOne(entry.getKey()).getPreferences().entrySet())
+            {
+                if (preference.getValue().equals(entry.getValue())){
+                    num = preference.getKey() + 1;
+                }
+            }
+            out[2] = String.valueOf(num);
+            out[3] = projectDAO.getOne(entry.getValue()).getProject_title();
+            stringList.add(out);
+        }
+        return stringList;
     }
 
     @Override

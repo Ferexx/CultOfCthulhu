@@ -53,13 +53,23 @@ public class StudentController {
         model.addAttribute("title", "Settings");
         model.addAttribute("numStudents", systemVariables.NUMBER_OF_STUDENTS);
         model.addAttribute("numPreferences", systemVariables.NUMBER_OF_PREFERENCES);
+        model.addAttribute("chanceMutation", systemVariables.MUTATION_CHANCE);
+        model.addAttribute("cullPercentage", systemVariables.CULL_PERCENTAGE);
+        model.addAttribute("matePercentage", systemVariables.MATE_PERCENTAGE);
+        model.addAttribute("maxPopulation", systemVariables.MAX_POPULATION_SIZE);
         return "settings";
     }
 
     @PostMapping(value = "/updateSettings")
-    public String updateSettings(@RequestParam("noOfStudents") int students, @RequestParam("noOfPreferences") int preferences, HttpServletRequest request) {
+    public String updateSettings(@RequestParam("noOfStudents") int students, @RequestParam("noOfPreferences") int preferences,
+                                 @RequestParam("mutationChance") int mutation, @RequestParam("cullingPercentage") int cull,
+                                 @RequestParam("matingPercentage") int mating, @RequestParam("maximumPopulation") int population, HttpServletRequest request) {
         systemVariables.NUMBER_OF_STUDENTS = students;
         systemVariables.NUMBER_OF_PREFERENCES = preferences;
+        systemVariables.MUTATION_CHANCE = mutation;
+        systemVariables.CULL_PERCENTAGE = cull;
+        systemVariables.MATE_PERCENTAGE = mating;
+        systemVariables.MAX_POPULATION_SIZE = population;
         return "redirect:" + request.getHeader("Referer");
     }
 }
