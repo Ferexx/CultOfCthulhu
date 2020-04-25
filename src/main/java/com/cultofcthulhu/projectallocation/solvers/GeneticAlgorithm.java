@@ -71,11 +71,13 @@ public class GeneticAlgorithm {
 
         int place = -1;
 
+        //Loop through students in order of first solution student assignment order
         for (int studentNo = 0 ; studentNo < systemVariables.NUMBER_OF_STUDENTS ; studentNo++){
-            int student = solution1.getStudent_project_assignment_order()[studentNo];
+            int student = solution1.getStudent_project_assignment_order()[studentNo]; //Set student to look at
             if(student % 2 == 1) currentSolutionOrder = solution1.getStudent_project_assignment_order();
             else currentSolutionOrder = solution2.getStudent_project_assignment_order();
 
+            //Find space where current student was in old solution
             for (int x = 0 ; x < systemVariables.NUMBER_OF_STUDENTS ; x++) {
                 if (currentSolutionOrder[x] == student) {
                     place = x;
@@ -85,11 +87,14 @@ public class GeneticAlgorithm {
             }
             boolean placed = false;
             do {
+                //check if place in new solution is free to fill
                 if (new_solution_order[place] == 0) {
                     new_solution_order[place] = student;
                     placed = true;
                 } else {
+                    //If space is full find next available space
                     place++;
+                    //If next available space would be outside bounds of array, upshift all previous elements upto next free space
                     if (place == new_solution_order.length){
                         //System.out.println("[" + place + "] :" + Arrays.toString(new_solution_order));
                         for(int i = 0; i + 1 < new_solution_order.length; i++) {
