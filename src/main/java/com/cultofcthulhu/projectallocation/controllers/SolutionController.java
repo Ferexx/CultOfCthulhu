@@ -38,7 +38,7 @@ public class SolutionController {
             GeneticAlgorithm genet = new GeneticAlgorithm(solutionHerd);
             solutionHerd.getSolution(0).setFitness(genet.assessSolution(solutionHerd.getSolution(0), GPARange, studentDAO, projectDAO));
             System.out.println(solutionHerd.getSolution(0).printSolution(studentDAO, projectDAO));
-            model.addAttribute("list", generateMap(genet.runAlgorithm(GPARange, studentDAO, projectDAO)));
+            model.addAttribute("list", genet.runAlgorithm(GPARange, studentDAO, projectDAO).getSolutionList(studentDAO,projectDAO));
         }
         return "solution";
     }

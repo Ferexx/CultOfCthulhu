@@ -22,7 +22,7 @@ public class GeneticAlgorithm {
         solutions = initialSolutions;
     }
 
-    public Map<Integer, Integer> runAlgorithm(double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
+    public Solution runAlgorithm(double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
         int generationLimit = 0;
         double bestFitness;
         //Generate a bunch of initial solutions
@@ -54,13 +54,13 @@ public class GeneticAlgorithm {
             solutions.sortSolutions();
             //Cull bottom %
             solutions.cullSolutions(CULL_PERCENTAGE);
-            //Repeat until a plateau is reached i.e. No significant energy improvements
+            //Repeat until a plateau is reached i.e. No significant fitness improvements
             if(solutions.getSolution(0).getFitness() <= bestFitness) {
                 generationLimit++;
             } else generationLimit = 0;
         } while(generationLimit < 5);
         System.out.println(solutions.getSolution(0).printSolution(studentDAO, projectDAO));
-        return solutions.getSolution(0).getSolution();
+        return solutions.getSolution(0);
     }
 
     public Solution mate(Solution solution1, Solution solution2) {
@@ -115,7 +115,7 @@ public class GeneticAlgorithm {
     public Solution mutate(Solution solution) {
         if(ThreadLocalRandom.current().nextInt(0, 100) <= MUTATION_CHANCE) {
             solution.change();
-            System.out.println("Mutation! " + MUTATION_CHANCE);
+            System.out.println("Mutation!");
         }
         return solution;
     }

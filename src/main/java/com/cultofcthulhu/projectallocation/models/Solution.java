@@ -117,7 +117,6 @@ public class Solution implements Comparable<Solution>{
             }
             out = out + "\t\t(" + num + ")\t\t" + projectDAO.getOne(entry.getValue()).getProject_title() + "\n";
         }
-        out = out + fitness + "\n";
         return out;
     }
 

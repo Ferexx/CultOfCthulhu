@@ -50,3 +50,18 @@ We also improved our change functionality. Now, instead, of randomly swapping th
 We output the energies of new solutions, and whether they were accepted, to console. We also output the final solution to console as well as to the console.
 
 If we'd had more time we would have updated the web interface to something more similar to what we're outputting in console, as well as an analysis of how well the algorithm worked.
+
+Sprint 6:
+
+We created the class "GeneticAlgorithmSolutionHerd" to store the solutions, and provide basic functionality. The solutions are stored in the standard Java-defined list. Our class is effectively a wrapper, that provides methods specific to the genetic algorithm application, like culling solutions from the list, etc.
+
+Our main function in GeneticAlgorithm is the unimaginatively named "runAlgorithm". It starts by generating random solutions until the max population size is reached, and then enters the main loop. The main loop has the basic cycle of mate the best solutions until max population size is reached, sort solutions according to their fitness, then cull the worst solutions.
+
+Our mate function works by choosing two random solutions from the top x% of the solution herd, where x defaults to 30, but can be changed by the user. It interleaves the project assignment order of these two solutions. It does this by iterating through the students in order.
+For each solution, it finds the index of the current student, and tries to place the student at the same index in the new solution. If it can't do this, it tries to place the student at the next index, and repeats until it finds an empty index. If it were to reach the end of the array, it finds the last available position in the array, and then increment the index of everything after. This method will never fail due to the pigeonhole principle.
+
+Our mutation function reuses the change functionality introduced for simulated annealing. It simply swaps the positions of two adjacent students in the assignment order.
+
+We assess solutions in a similar way to how we assessed solutions for simulated annealing, except we now increase fitness when something is good, and decrease it when something is bad.
+
+We updated our web interface to display the solution output we see in console. It now displays each student, their GPA, the preference they got, and the title of the project they got.
