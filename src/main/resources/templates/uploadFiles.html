@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/common.css}" />
+</head>
+<body>
+
+<div th:insert="navbar.html"></div>
+
+<div class="jumbotron text-center" style="margin-bottom:0">
+    <h4>Upload Files</h4>
+</div>
+
+<div class="card text-center" style="height: auto;">
+    <br><br>
+
+    <div class="card container bg-light border-dark mb-3" style="max-width: 500px;">
+        <br>
+        <h4 class="card-title text-center">Choose your files</h4>
+        <hr><br>
+
+        <form method="post" action="/uploadFiles" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="staffFile">Staff File:</label>
+                <input class="form-control" style="width: 200px; margin-left: 30%;" type="file" id="staffFile" name="staffFile">
+            </div>
+
+            <div class="form-group">
+                <label for="studentFile">Students File:</label>
+                <input class="form-control" style="width: 200px; margin-left: 30%;" type="file" id="studentFile" name="studentFile">
+            </div>
+
+            <div class="form-group">
+                <label for="projectFile">Projects File:</label>
+                <input class="form-control" style="width: 200px; margin-left: 30%;" type="file" id="projectFile" name="projectFile">
+            </div>
+
+            <div class="form-group">
+                <button class="btn btn-default" type="submit">Upload</button>
+            </div>
+        </form>
+
+        <br>
+        <p>Developer? Test our system <a href="/devTest">here</a></p>
+    </div>
+
+    <br><br>
+</div>
+
+<footer class="text-center">
+    <br>
+    <p>&copy; MoRoJack</p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -13,6 +13,8 @@ public class Student implements Personable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    private int studentID;
     private String firstName;
     private String lastName;
     private String stream;
@@ -38,6 +40,14 @@ public class Student implements Personable {
     //Getters and setters
     public int getId() {
         return id;
+    }
+
+    public int getStudentID() {
+        return studentID;
+    }
+
+    public void setStudentID(int studentID) {
+        this.studentID = studentID;
     }
 
     public String getFirstName() {

@@ -12,36 +12,27 @@
     <div th:insert="navbar.html"></div>
 
     <div class="jumbotron text-center" style="margin-bottom:0">
-        <h1>Welcome</h1>
+        <h2>Welcome</h2>
+        <h4>This page will show you how to use the site</h4>
     </div>
+    <p>We need 3 files from you: A staff file, a students file, and a projects file</p>
+    <p>Each file should be in either .csv or .tsv format (We prefer .csv since tabs are notoriously unreliable in modern text editors).</p>
+    <br>
 
-        <div class="card text-center" style="height: 500px;">
-            <br><br>
+    <p>Each row in the staff file represents a staff member <br> The rows should have 5 fields each: Staff ID, Staff name, Research Activity, Research Area, Special Focus. <br> Please see below for an example of what the file should look like in Excel.</p>
+    <img th:src="@{/images/StaffFile.png}" />
+    <br>
 
-        <div class="card container bg-light border-dark mb-3" style="max-width: 500px;">
-            <br>
-            <h4 class="card-title text-center">Choose a .csv or .tsv file type to upload. The file should contain the details of your staff members.
-                <span class="help glyphicon glyphicon-question-sign"><span>Please make sure your file has only the following fields:<br>Staff Name, Research Activity, Research Area, Special Focus</span></span>
-            </h4>
+    <p>Each row in the students file represents a student.<br>The rows should have 6 fields each: Student ID, First name, last name, stream, preferences, GPA. <br>Please see below for an example of what the file should look like in Excel.</p>
+    <img th:src="@{/images/StudentsFile.png}" />
+    <br>
 
-            <hr>
+    <p>Each row in the projects file represents a project.<br>The rows should have 3 fields each: Project title, ID of staff member who proposed it, Streams it is suitable for.<br>Please see below for an example of what the file should look like in Excel.</p>
+    <img th:src="@{/images/ProjectsFile.png}" />
+    <br>
 
-            <form method="POST" action="/uploadStaff" enctype="multipart/form-data">
-                <div class="form-group">
-                    <div class="input-group">
-                        <input style="display: inline-block;" type="file" name="file">
-                    </div>
-                </div>
-                <hr>
-                <div class="form-group">
-                    <button class="btn btn-default" type="submit">Submit</button>
-                </div>
-                <br>
-            </form>
-        </div>
-
-        <br><br>
-    </div>
+    <p>Click here when you're ready to upload your files</p>
+    <a class="btn btn-default" href="/upload">Continue</a>
 
 <footer class="text-center">
     <br>

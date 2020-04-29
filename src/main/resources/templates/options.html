@@ -32,18 +32,16 @@
         </form>
     </div>
 
-    <div class="card text-center"  style="height: auto;">
+    <div class="card text-center" style="height: auto;" th:if="${download}">
         <br><br>
         <h4>Download your files here:</h4>
         <br>
 
         <div class="form-group">
             <a class="btn btn-primary" href="/downloadP">Projects</a>
-            <a class="btn btn-danger" href="downloadS" th:if="${message!='Students file uploaded.'}">Students</a>
+            <a class="btn btn-danger" href="/downloadS">Students</a>
         </div>
         <br>
-
-        <p th:text="${message}"></p>
 
         <br><br>
     </div>

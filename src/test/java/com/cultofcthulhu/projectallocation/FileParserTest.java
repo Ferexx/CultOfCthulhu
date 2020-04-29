@@ -12,12 +12,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class FileParserTest {
 
     @Test
-    public void testStaffParse() throws ParseException {
-        FileParser StaffCsvWorks = new FileParser(new File("test-files/Staff/ShouldWork.csv"));
-        FileParser StaffTsvWorks = new FileParser(new File("test-files/Staff/ShouldWork.tsv"));
+    public void testStaffParse() throws ParseException, IOException {
+        FileParser parser = new FileParser();
+
+        parser.parseStaff(new File("test-files/Staff/ShouldWork.csv"));
+        parser.parseStaff(new File("test-files/Staff/ShouldWork.tsv"));
 
         Exception exception = assertThrows(ParseException.class, () -> {
-            FileParser parser = new FileParser(new File("test-files/Staff/WontWork.csv"));
+           parser.parseStaff(new File("test-files/Staff/WontWork.csv"));
         });
         String expectedMessage = "Your file has an incorrect number of fields";
         String actualMessage = exception.getMessage();

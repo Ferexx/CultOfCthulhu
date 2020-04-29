@@ -13,6 +13,7 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    private int projectID;
     private String project_title;
     private int proposed_by;
     private String suitable_for_streams;
@@ -20,7 +21,8 @@ public class Project {
 
     public Project() {}
 
-    public Project(String project_title, int proposed_by, String suitable_for_streams){
+    public Project(int id, String project_title, int proposed_by, String suitable_for_streams){
+        this.projectID = id;
         this.project_title = project_title;
         this.proposed_by = proposed_by;
         this.suitable_for_streams = suitable_for_streams;
@@ -29,6 +31,14 @@ public class Project {
     //Getters and setters
     public int getId() {
         return id;
+    }
+
+    public int getProjectID() {
+        return projectID;
+    }
+
+    public void setProjectID(int projectID) {
+        this.projectID = projectID;
     }
 
     public String getProject_title() {
