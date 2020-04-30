@@ -1,7 +1,7 @@
 .jumbotron.text-center {
     display: grid;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     height: 200px;
 }
 
@@ -29,4 +29,12 @@
 .help:hover span{
     visibility: visible;
     opacity: 1;
+}
+
+#maindiv{
+    justify-content: center;
+    padding-left: 100px;
+    padding-right: 100px;
+    border-top: black;
+    border-bottom: black;
 }
