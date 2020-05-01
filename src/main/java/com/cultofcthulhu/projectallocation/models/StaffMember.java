@@ -10,38 +10,28 @@ import java.util.Map;
 public class StaffMember implements Personable {
 
     //Variable declaration and constructors
-    //TODO: Change ID to input files ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int staffID;
     private String name;
-    private String researchInterests;
+    @ElementCollection
+    private Map<Integer, String> research_interests = new HashMap<>();
     private String stream;
     @ElementCollection
     private Map<Integer, Integer> project_proposals = new HashMap<>();
 
     public StaffMember() {}
 
-    public StaffMember (int id, String name, String researchInterests,  String stream){
-        this.staffID = id;
+    public StaffMember (String name, Map<Integer, String> research_interests,  String stream){
         this.name = name;
-        this.researchInterests = researchInterests;
+        this.research_interests = research_interests;
         this. stream = stream;
     }
 
     //Getters and setters
     public int getId() {
         return id;
-    }
-
-    public int getStaffID() {
-        return staffID;
-    }
-
-    public void setStaffID(int staffID) {
-        this.staffID = staffID;
     }
 
     public void setName(String name) {
@@ -52,12 +42,16 @@ public class StaffMember implements Personable {
         return name;
     }
 
-    public String getResearchInterests() {
-        return researchInterests;
+    public void setResearch_interests(Map<Integer, String> research_interests) {
+        this.research_interests = research_interests;
     }
 
-    public void setResearchInterests(String interests) {
-        this.researchInterests = interests;
+    public void addResearchInterest(String research_interest){
+        research_interests.put(research_interests.size(), research_interest);
+    }
+
+    public Map<Integer, String> getResearch_interests() {
+        return research_interests;
     }
 
     public void setStream(String stream) {
@@ -80,6 +74,6 @@ public class StaffMember implements Personable {
     //Extra methods
     @Override
     public String toString() {
-        return id + "," + name + "," + stream + "," + researchInterests;
+        return id + "," + name + "," + stream + "," + research_interests.toString();
     }
 }

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}"></title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/common.css}" />
+</head>
+<body>
+
+    <div th:insert="navbar.html"></div>
+
+    <div class="jumbotron text-center" style="margin-bottom:0;">
+        <h4 style="margin-top: -30px;">Use the slider to determine how much GPA will affect the outcome
+            <span class="help glyphicon glyphicon-question-sign"><span>If you want students with higher GPAs to get projects higher in their preference lists, you should set the value of this slider closer to 1.</span></span>
+        </h4>
+        <form method="POST" action="/solution">
+            <div class="slider" style="margin-left: 20%; margin-right: 20%;">
+                <input type="range" step="0.01" min="0" max="1" value="0.50" class="slider" id="GPARange" name="GPARange">
+                <h5 id="value"></h5>
+            </div>
+            <h4 style="margin-top: -2px; margin-bottom: 5px;">Select between the options below
+                <span class="help glyphicon glyphicon-question-sign"><span>Simulated annealing uses a hill climbing technique to improve the solution. Genetic algorithms combine the best aspects of multiple solutions to create the best overall solution.</span></span>
+                :</h4>
+            <input type="radio" id="simulatedAnnealing" name="choice" value="simulatedAnnealing" checked="checked">
+            <label for="simulatedAnnealing">Simulated Annealing</label>
+            <input type="radio" id="geneticAlgorithms" name="choice" value="geneticAlgorithms">
+            <label for="geneticAlgorithms">Genetic Algorithms</label>
+            <br>
+            <button type="submit" class="btn btn-default" style="margin-top: 5px;">Generate Solution</button>
+        </form>
+    </div>
+
+    <div class="card text-center"  style="height: auto;">
+        <br><br>
+        <h4>Download your files here:</h4>
+        <br>
+
+        <div class="form-group">
+            <a class="btn btn-primary" href="/downloadP">Projects</a>
+            <a class="btn btn-danger" href="downloadS" th:if="${message!='Students file uploaded.'}">Students</a>
+        </div>
+        <br>
+
+        <p th:text="${message}"></p>
+
+        <br><br>
+    </div>
+
+    <footer class="text-center">
+        <br>
+        <p>&copy; MoRoJack</p>
+    </footer>
+
+    <script>
+        var gpaSlider = document.getElementById("GPARange");
+        var output = document.getElementById("value");
+        output.innerHTML = gpaSlider.value;
+
+        gpaSlider.oninput = function() {
+            output.innerHTML = this.value;
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

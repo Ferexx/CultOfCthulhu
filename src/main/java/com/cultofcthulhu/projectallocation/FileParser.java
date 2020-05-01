@@ -2,7 +2,6 @@ package com.cultofcthulhu.projectallocation;
 
 import com.cultofcthulhu.projectallocation.exceptions.ParseException;
 import com.cultofcthulhu.projectallocation.models.Project;
-import com.cultofcthulhu.projectallocation.models.StaffMember;
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 
@@ -12,31 +11,37 @@ import java.util.List;
 
 public class FileParser {
 
-    public FileParser() {}
+    public List<String[]> lines = new ArrayList<>();
+    private File toParse;
 
-    public List<StaffMember> parseStaff(File file) throws ParseException, IOException, NumberFormatException{
+    public FileParser() {}
+    //Constructor does the actual parsing
+    public FileParser(File toParse) throws ParseException {
+        this.toParse = toParse;
         String split;
-        List<StaffMember> staff = new ArrayList<>();
-        if(file.getName().endsWith("csv")) split = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
-        else if(file.getName().endsWith("tsv")) split = "\t(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
-        else throw new ParseException(
-                    "Please make sure your staff members file is in .csv or .tsv format (values separated by commas or tabs, respectively), and saved as such.");
+        //Set splitter based on if it's csv or tsv. If it's neither, throw an error
+        if (toParse.getName().endsWith("csv"))
+            split=",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";      //Regex to ignore ", basically checks ahead for how many ", and splits on the comma if that comma has zero or even number of quotes ahead of it
+        else if(toParse.getName().endsWith("tsv")) split="\t(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+        else throw new ParseException("Please make sure your file is in .csv or .tsv format (values separated by commas or tabs, respectively), and saved as such.");
+        parse(split);
+    }
+
+    public void parse(String split) throws ParseException{
         String line;
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        int i = 1;
-        while((line = br.readLine())!=null) {
-            String[] values = line.split(split, -1);
-            //Ignore column titles
-            if(values[0].equals("ID")) {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(toParse));
+            int i = 1;
+            while((line = br.readLine())!=null) {
+                String[] values = line.split(split, -1);
+                if(values.length!=4) throw new ParseException("Your file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 4)");
+                lines.add(values);
                 i++;
-                continue;
             }
-            if(values.length != 5) throw new ParseException(
-                    "Your staff members file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 5)");
-            staff.add(new StaffMember(Integer.parseInt(values[0]), values[1], values[2], values[4]));
-            i++;
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
         }
-        return staff;
     }
 
     public List<Student> parseStudents(File file) throws ParseException, IOException, NumberFormatException {
@@ -45,23 +50,19 @@ public class FileParser {
         if(file.getName().endsWith("csv")) split = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
         else if(file.getName().endsWith("tsv")) split = "\t(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
         else throw new ParseException(
-                "Please make sure your students file is in .csv or .tsv format (values separated by commas or tabs, respectively), and saved as such.");
+                "Please make sure your file is in .csv or .tsv format (values separated by commas or tabs, respectively), and saved as such.");
         String line;
         BufferedReader br = new BufferedReader(new FileReader(file));
         int i = 1;
         while((line = br.readLine())!=null) {
             String[] values = line.split(split, -1);
-            //Ignore column titles
-            if(values[0].equals("ID")) {
-                i++;
-                continue;
-            }
             if(values.length != 5) throw new ParseException(
-                    "Your students file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 5)");
+                    "Your file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 5)");
             values[3] = values[3].substring(1, values[3].length()-1);
             String[] preferences = values[3].split(split);
-            if(preferences.length != systemVariables.NUMBER_OF_PREFERENCES) throw new ParseException(
-                    "The student on line " + i + " in your students file does not have the correct number of preferences. (Found: " + preferences.length + ", Expected: " + systemVariables.NUMBER_OF_PREFERENCES + ")");
+            //TODO: Change 10 to numofpreferences in sysvariables
+            if(preferences.length != 10) throw new ParseException(
+                    "The student on line " + i + " does not have the correct number of preferences. (Found: " + preferences.length + ", Expected: " + 10 + ")");
             Student student = new Student(values[0], values[1], values[2], Double.parseDouble(values[4]));
             for(String string : preferences)
                 student.addPreference(Integer.parseInt(string));
@@ -69,31 +70,6 @@ public class FileParser {
             i++;
         }
         return students;
-    }
-
-    public List<Project> parseProjects(File file) throws ParseException, IOException {
-        String split;
-        List<Project> projects = new ArrayList<>();
-        if(file.getName().endsWith("csv")) split = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
-        else if(file.getName().endsWith("tsv")) split = "\t(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
-        else throw new ParseException(
-                    "Please make sure your projects file is in .csv or .tsv format (values separated by commas or tabs, respectively), and saved as such.");
-        String line;
-        BufferedReader br = new BufferedReader(new FileReader(file));
-        int i = 1;
-        while((line = br.readLine()) != null) {
-            String[] values = line.split(split, -1);
-            //Ignore column titles
-            if(values[0].equals("ID")) {
-                i++;
-                continue;
-            }
-            if(values.length != 4) throw new ParseException(
-                    "Your projects file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 4)");
-            projects.add(new Project(Integer.parseInt(values[0]), values[1], Integer.parseInt(values[2]), values[3]));
-            i++;
-        }
-        return projects;
     }
 
     //File parser doubles as a file writer :)

@@ -2,8 +2,10 @@ package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.RandomGenerator;
 import com.cultofcthulhu.projectallocation.models.Project;
+import com.cultofcthulhu.projectallocation.models.StaffMember;
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
+import com.cultofcthulhu.projectallocation.models.data.StaffMemberDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,44 +34,50 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GenerationController {
 
     @Autowired
+    private StaffMemberDAO staffMemberDAO;
+    @Autowired
     private ProjectDAO projectDAO;
     @Autowired
     private StudentDAO studentDAO;
 
-    private static final int NUMBER_OF_PREFERENCES = systemVariables.NUMBER_OF_PREFERENCES;
+    private static final int NUMBER_OF_PREFERENCES = 10;
 
-    @RequestMapping(value = "/devTest")
-    public String devTest(Model model) {
-        model.addAttribute("title", "Dev Page");
-        return "devPage";
-    }
-
-    @PostMapping(value = "/generateStudentsAndProjects")
-    public String generate(@RequestParam("number") int number, Model model) {
-        systemVariables.NUMBER_OF_STUDENTS = number;
+    @PostMapping(value = "numStudents")
+    public String numStudents(@RequestParam("number") Integer number) {
         generateProjects(number);
         generateStudents(number, projectDAO.findAll());
-        model.addAttribute("download", true);
-        return "options";
+        systemVariables.NUMBER_OF_STUDENTS = number;
+        return "redirect:downloadProjects";
     }
 
-    public void generateProjects(int number) {
-        //This way won't bother with staff members, since they're kinda unnecessary
-        //So, generate projects first
-        for(int i = 0; i < number; i++) {
-            String projectTitle = RandomGenerator.generateString();
-            int proposedBy = ThreadLocalRandom.current().nextInt(0, 100);
-            String projectStream = ThreadLocalRandom.current().nextInt(0, 11) % 2 == 0 ? "CS" : "CS+DS";
-
-            projectDAO.save(new Project(number, projectTitle, proposedBy, projectStream));
+    @RequestMapping(value = "downloadProjects")
+        public String downloadProjects(Model model) {
+            model.addAttribute("title", "Generate Solution");
+            return "downloadProjects";
         }
 
-        //Then write it to a .csv for the dev to download
+    @RequestMapping(value = "downloadP")
+    public ResponseEntity downloadP() {
+        Path path = Paths.get("user-files/" + "projects.csv");
+        Resource resource = null;
         try {
-            UploadController.parser.writeProjects(projectDAO.findAll(), "user-files/projects.csv");
-        } catch (IOException e) {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
             e.printStackTrace();
         }
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/csv")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
+    }
+
+    @RequestMapping(value = "downloadS")
+    public ResponseEntity downloadS() {
+        Path path = Paths.get("user-files/" + "students.csv");
+        Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/csv")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
     public void generateStudents(int number, List<Project> projects) {
@@ -137,27 +145,60 @@ public class GenerationController {
         studentDAO.save(student);
     }
 
-    @RequestMapping(value = "downloadP")
-    public ResponseEntity downloadP() {
-        Path path = Paths.get("user-files/" + "projects.csv");
-        Resource resource = null;
-        try {
-            resource = new UrlResource(path.toUri());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/csv")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
-    }
+    public void generateProjects(int number) {
+        List<String[]> lines = UploadController.parser.lines;
 
-    @RequestMapping(value = "downloadS")
-    public ResponseEntity downloadS() {
-        Path path = Paths.get("user-files/" + "students.csv");
-        Resource resource = null;
+        //List for making sure we don't add the same staff member twice
+        List<Integer> already = new ArrayList<>();
+
+        for(int i = 0; i < number / 2; i++) {
+            //First, generate a staff member
+            int lineNumber;
+            do {
+                lineNumber = ThreadLocalRandom.current().nextInt(1, lines.size() + 1);
+            } while (already.contains(lineNumber));
+            already.add(lineNumber);
+
+            String[] line = lines.get(lineNumber-1);
+            String name = line[0];
+            Map<Integer, String> interestsMap = new HashMap<>();
+            //Some staff members have no interests
+            if(line[1] != null && line[1].length() > 0) {
+                String[] interests = line[1].substring(1, line[1].length() - 1).split(",");
+                for (String string : interests)
+                    interestsMap.put(interestsMap.size(), string);
+            }
+            else interestsMap.put(interestsMap.size(), null);
+            String stream;
+            if(line[line.length-1].equals("Dagon Studies")) stream = "Dagon Studies";
+            else stream = "Cthulhu Studies";
+            StaffMember member = new StaffMember(name, interestsMap, stream);
+            //Store and retrieve it in database so that an ID is generated
+            staffMemberDAO.save(member);
+            member = staffMemberDAO.findByName(member.getName());
+
+            //Next, generate three projects that they "propose"
+            for(int j = 0; j < 3; j++) {
+                String projectTitle = RandomGenerator.generateString();
+                String projectStream;
+                if(member.getStream().equals("Dagon Studies"))
+                    projectStream = "DS";
+                //Generate a random integer to decide if it's CS or CS+DS
+                else if(ThreadLocalRandom.current().nextInt(0, 11) % 2 == 0)
+                    projectStream = "CS";
+                else projectStream = "CS+DS";
+                Project project = new Project(projectTitle, member.getId(), projectStream);
+                member.addProject_proposal(project.getId());
+                projectDAO.save(project);
+            }
+            staffMemberDAO.save(member);
+        }
+
+        //Now write to a CSV
         try {
-            resource = new UrlResource(path.toUri());
-        } catch (MalformedURLException e) {
+            UploadController.parser.writeProjects(projectDAO.findAll(), "user-files/projects.csv");
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/csv")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 }
