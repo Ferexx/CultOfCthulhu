@@ -12,39 +12,62 @@
     <div th:insert="navbar.html"></div>
 
     <div class="jumbotron text-center" style="margin-bottom:0;">
-        <h4 style="margin-top: -30px;">Use the slider to determine how much GPA will affect the outcome
-            <span class="help glyphicon glyphicon-question-sign"><span>If you want students with higher GPAs to get projects higher in their preference lists, you should set the value of this slider closer to 1.</span></span>
-        </h4>
-        <form method="POST" action="/solution">
-            <div class="slider" style="margin-left: 20%; margin-right: 20%;">
-                <input type="range" step="0.01" min="0" max="1" value="0.50" class="slider" id="GPARange" name="GPARange">
-                <h5 id="value"></h5>
-            </div>
-            <h4 style="margin-top: -2px; margin-bottom: 5px;">Select between the options below
-                <span class="help glyphicon glyphicon-question-sign"><span>Simulated annealing uses a hill climbing technique to improve the solution. Genetic algorithms combine the best aspects of multiple solutions to create the best overall solution.</span></span>
+        <h4>Select your options and download your files</h4>
+    </div>
+
+    <div class="container" id="maindiv" style="border-opacity: 1; border-left: double; border-right: double; border-left-color: #c0c0c8; border-right-color:#c0c0c8; width: 2500px; margin-bottom: -20px;" th:if="${download}">
+        <br><br><br>
+
+        <div class="row">
+            <div class="col-5">
+                <br><br>
+
+                <h4 style="margin-top: -30px;">Use the slider to determine how much GPA will affect the outcome
+                    <span class="help glyphicon glyphicon-question-sign"><span>If you want students with higher GPAs to get projects higher in their preference lists, you should set the value of this slider closer to 1.</span></span>
                 :</h4>
-            <input type="radio" id="simulatedAnnealing" name="choice" value="simulatedAnnealing" checked="checked">
-            <label for="simulatedAnnealing">Simulated Annealing</label>
-            <input type="radio" id="geneticAlgorithms" name="choice" value="geneticAlgorithms">
-            <label for="geneticAlgorithms">Genetic Algorithms</label>
-            <br>
-            <button type="submit" class="btn btn-default" style="margin-top: 5px;">Generate Solution</button>
-        </form>
-    </div>
 
-    <div class="card text-center" style="height: auto;" th:if="${download}">
-        <br><br>
-        <h4>Download your files here:</h4>
-        <br>
+                <form class="text-center" method="POST" action="/solution">
+                    <div class="sliders" style="margin-left: 20%; margin-right: 20%;">
+                        <br>
+                            <input type="range" step="0.01" min="0" max="1" value="0.50" class="slider" id="GPARange" name="GPARange">
+                        <h5 class="text-center" id="value"></h5><br>
+                    </div>
 
-        <div class="form-group">
-            <a class="btn btn-primary" href="/downloadP">Projects</a>
-            <a class="btn btn-danger" href="/downloadS">Students</a>
+                    <div class="heading text-left">
+                        <h4 style="margin-top: -2px; margin-bottom: 5px;">Select between the options below
+                            <span class="help glyphicon glyphicon-question-sign"><span>Simulated annealing uses a hill climbing technique to improve the solution. Genetic algorithms combine the best aspects of multiple solutions to create the best overall solution.</span></span>
+                            :</h4><br>
+                    </div>
+
+                    <input type="radio" id="simulatedAnnealing" name="choice" value="simulatedAnnealing" checked="checked">
+                    <label for="simulatedAnnealing">Simulated Annealing</label><br>
+                    <input type="radio" id="geneticAlgorithms" name="choice" value="geneticAlgorithms">
+                    <label for="geneticAlgorithms">Genetic Algorithms</label>
+
+                    <br><br>
+
+                    <button type="submit" class="btn btn-default" style="margin-top: 5px;">Generate Solution</button>
+                </form>
+            </div>
+
+            <div class="col-1" style=" width: 50px; border-left: double; border-left-color: #c0c0c8; margin-left: 7%;"></div>
+
+            <div class="col-5" style="display: grid; justify-content: center; align-content: center;">
+                <div class="row justify-content-center">
+                    <h4>Download your files here:</h4>
+                </div>
+                
+                <div class="row justify-content-center">
+                    <a class="btn btn-primary" href="/downloadP">Projects</a>
+                    <a class="btn btn-danger" href="/downloadS">Students</a>
+                </div>
+            </div>
         </div>
-        <br>
 
         <br><br>
     </div>
+
+    <hr>
 
     <footer class="text-center">
         <br>

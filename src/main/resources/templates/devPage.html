@@ -9,23 +9,37 @@
 </head>
 <body>
 
-<div th:insert="navbar.html"></div>
+    <div th:insert="navbar.html"></div>
 
-<div class="jumbotron text-center" style="margin-bottom:0">
-    <h4>Upload Files</h4>
-</div>
+    <div class="jumbotron text-center" style="margin-bottom:0">
+        <h4>Upload Files</h4>
+    </div>
 
-<p>This is the testing page. Using this functionality will randomly generate students and projects for the algorithm to work on.<br>It's designed for testing the efficiency of our algorithms.<br>It generates students whose preferences are allocated according to the normal distribution, and projects to match</p>
-<p>For how many students do you wish to test the program?</p>
-<form method="post" action="/generateStudentsAndProjects">
-    <select id="number" name="number">
-        <option value="60">60</option>
-        <option value="120">120</option>
-        <option value="240">240</option>
-        <option value="500">500</option>
-    </select>
-    <button class="btn btn-default" type="submit" value="submit">Submit</button>
-</form>
+    <div class="container" id="maindiv" style="border-left: double; border-right: double; border-left-color: #c0c0c8; border-right-color:#c0c0c8; width: 2500px; margin-bottom: -20px;">
+        <br><br><br>
+
+        <h4 class="text-center">This is the testing page. Using this functionality will randomly generate students and projects for the algorithm to work on.
+            It's designed for testing the efficiency of our algorithms, and generates students whose preferences are allocated according to the normal distribution, and projects to match</h4>
+
+        <br>
+
+        <div class="row justify-content-center" style="border-top: double; border-top-color: #c0c0c8; padding-top: 25px;">
+            <form class="text-center" method="post" action="/generateStudentsAndProjects">
+                <p>For how many students do you wish to test the program?</p>
+                <select id="number" name="number">
+                    <option value="60">60</option>
+                    <option value="120">120</option>
+                    <option value="240">240</option>
+                    <option value="500">500</option>
+                </select>
+                <button class="btn btn-default" type="submit" value="submit">Submit</button>
+            </form>
+        </div>
+
+        <br><br>
+    </div>
+
+    <hr>
 
 <footer class="text-center">
     <br>
