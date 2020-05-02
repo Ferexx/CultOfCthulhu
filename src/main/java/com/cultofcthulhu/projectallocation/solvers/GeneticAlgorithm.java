@@ -5,6 +5,7 @@ import com.cultofcthulhu.projectallocation.models.Solution;
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
+import com.cultofcthulhu.projectallocation.solutionAccess;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 
 import java.util.Arrays;
@@ -60,6 +61,7 @@ public class GeneticAlgorithm {
             } else generationLimit = 0;
         } while(generationLimit < 5);
         System.out.println(solutions.getSolution(0).printSolution(studentDAO, projectDAO));
+        new solutionAccess().solutionSaveToFile(solutions.getSolution(0), "solution", solutions.getSolution(0).printSolution(studentDAO, projectDAO));
         return solutions.getSolution(0);
     }
 

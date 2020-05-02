@@ -5,6 +5,7 @@ import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.Solution;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
+import com.cultofcthulhu.projectallocation.solutionAccess;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 
 import java.util.Map;
@@ -45,6 +46,7 @@ public class SimulatedAnnealing implements Solverable {
 
         System.out.println(currentBest.printSolution(studentDAO, projectDAO));
 
+        new solutionAccess().solutionSaveToFile(currentBest, "solution", currentBest.printSolution(studentDAO, projectDAO));
         return currentBest;
     }
 

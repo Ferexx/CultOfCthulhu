@@ -1,21 +1,26 @@
 package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.models.GeneticAlgorithmSolutionHerd;
-import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.Solution;
-import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.solvers.GeneticAlgorithm;
 import com.cultofcthulhu.projectallocation.solvers.SimulatedAnnealing;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Controller
 public class SolutionController {
@@ -43,14 +48,16 @@ public class SolutionController {
         return "solution";
     }
 
-    public Map<String, String> generateMap(Map<Integer, Integer> solutionMap) {
-        Map<String, String> map = new HashMap<>();
-        for (Map.Entry<Integer, Integer> entry: solutionMap.entrySet()) {
-            Student student = studentDAO.getOne(entry.getKey());
-            Project project = projectDAO.getOne(entry.getValue());
-            map.put(student.getName(), project.getProject_title());
+    @RequestMapping(value = "solutionDownload")
+    public ResponseEntity downloadSolution() {
+        Path path = Paths.get("user-files/" + "solution.txt");
+        Resource resource = null;
+        try {
+            resource = new UrlResource(path.toUri());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
-        return map;
+        return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/txt")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
 }

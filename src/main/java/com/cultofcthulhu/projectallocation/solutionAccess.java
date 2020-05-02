@@ -11,14 +11,24 @@ import java.io.FileWriter;
 import java.util.Scanner;
 
 public class solutionAccess {
-    solutionAccess(){}
+    public solutionAccess(){}
 
-    public void solutionSaveToFile(Solution solution, String fileName) throws Exception{
+    public void solutionSaveToFile(Solution solution, String fileName, String tostring) {
         Integer[] student_project_assignment_order = solution.getStudent_project_assignment_order();
-        FileWriter writer = new FileWriter("files/" + fileName + ".txt");
+        try {
+            FileWriter writer = new FileWriter("user-files/" + fileName + ".txt");
 
-        for (Integer integer : student_project_assignment_order) {
-            writer.write(integer.toString() + "\n");
+            writer.write("Order students were assigned projects in: \n");
+            for (Integer integer : student_project_assignment_order) {
+                writer.write(integer.toString() + ",");
+            }
+
+            writer.write("Solution:\n");
+            writer.write("\n" + tostring);
+
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
