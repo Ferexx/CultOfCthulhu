@@ -14,23 +14,27 @@ public class Project {
     private int id;
 
     private int projectID;
-    private String project_title;
-    private int proposed_by;
+    private String projectTitle;
+    private long proposedBy = 0;
     private String suitable_for_streams;
     private int studentAssigned;
 
     public Project() {}
 
     public Project(String project_title, int proposed_by, String suitable_for_streams) {
-        this.project_title = project_title;
-        this.proposed_by = proposed_by;
+        this.projectTitle = project_title;
+        this.proposedBy = proposed_by;
         this.suitable_for_streams = suitable_for_streams;
     }
     public Project(int id, String project_title, int proposed_by, String suitable_for_streams) {
         this.projectID = id;
-        this.project_title = project_title;
-        this.proposed_by = proposed_by;
+        this.projectTitle = project_title;
+        this.proposedBy = proposed_by;
         this.suitable_for_streams = suitable_for_streams;
+    }
+    public Project(String projectTitle, long proposedBy) {
+        this.projectTitle = projectTitle;
+        this.proposedBy = proposedBy;
     }
 
     //Getters and setters
@@ -47,19 +51,19 @@ public class Project {
     }
 
     public String getProject_title() {
-        return project_title;
+        return projectTitle;
     }
 
     public void setProject_title(String project_title) {
-        this.project_title = project_title;
+        this.projectTitle = project_title;
     }
 
-    public int getProposed_by() {
-        return proposed_by;
+    public long getProposed_by() {
+        return proposedBy;
     }
 
     public void setProposed_by(int proposed_by) {
-        this.proposed_by = proposed_by;
+        this.proposedBy = proposed_by;
     }
 
     public String getSuitable_for_streams() {
@@ -81,7 +85,7 @@ public class Project {
     //Extra methods
     @Override
     public String toString() {
-        return proposed_by + "," + project_title + "," + suitable_for_streams;
+        return proposedBy + "," + projectTitle + "," + suitable_for_streams;
     }
 
 }

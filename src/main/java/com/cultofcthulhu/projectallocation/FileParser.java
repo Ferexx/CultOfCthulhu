@@ -4,15 +4,49 @@ import com.cultofcthulhu.projectallocation.exceptions.ParseException;
 import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.StaffMember;
 import com.cultofcthulhu.projectallocation.models.Student;
+import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
+import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class FileParser {
 
     public FileParser() {}
+
+    public void parseMainFile(File file, StudentDAO studentDAO, ProjectDAO projectDAO) throws ParseException, IOException {
+        String split;
+        if(file.getName().endsWith("csv")) split = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+        else if(file.getName().endsWith("tsv")) split = "\t(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
+        else throw new ParseException(
+                "Please make sure your file is in .csv or .tsv format (values separated by commas or tabs, respectively), and saved as such.");
+        String line;
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        int i = 1;
+        while((line = br.readLine()) != null) {
+            String[] values = line.split(split, -1);
+            //Ignore column titles
+            if(values[0].equals("Student")) {
+                i++;
+                continue;
+            }
+            if(values.length < 5) throw new ParseException(
+                    "Your file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: >4)");
+            Student student = new Student(values[0], Long.parseLong(values[1]), Double.parseDouble(values[2]));
+            for(int j = 4; j < values.length; j++) {
+                Optional<Project> project = projectDAO.findByProjectTitle(values[j]);
+                if(!project.isPresent()) {
+                    if(values[3].equals("student")) projectDAO.save(new Project(values[j], student.getStudentID()));
+                    else projectDAO.save(new Project(values[j], 0));
+
+                    student.addPreference(projectDAO.findByProjectTitle(values[j]).get().getId());
+                }
+            }
+        }
+    }
 
     public List<StaffMember> parseStaff(File file) throws ParseException, IOException, NumberFormatException{
         String split;
