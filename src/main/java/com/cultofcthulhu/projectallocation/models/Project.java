@@ -21,7 +21,12 @@ public class Project {
 
     public Project() {}
 
-    public Project(int id, String project_title, int proposed_by, String suitable_for_streams){
+    public Project(String project_title, int proposed_by, String suitable_for_streams) {
+        this.project_title = project_title;
+        this.proposed_by = proposed_by;
+        this.suitable_for_streams = suitable_for_streams;
+    }
+    public Project(int id, String project_title, int proposed_by, String suitable_for_streams) {
         this.projectID = id;
         this.project_title = project_title;
         this.proposed_by = proposed_by;

@@ -1,9 +1,13 @@
 package com.cultofcthulhu.projectallocation.controllers;
 
+import com.cultofcthulhu.projectallocation.FileParser;
 import com.cultofcthulhu.projectallocation.RandomGenerator;
+import com.cultofcthulhu.projectallocation.exceptions.ParseException;
 import com.cultofcthulhu.projectallocation.models.Project;
+import com.cultofcthulhu.projectallocation.models.StaffMember;
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
+import com.cultofcthulhu.projectallocation.models.data.StaffMemberDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +39,8 @@ public class GenerationController {
     private ProjectDAO projectDAO;
     @Autowired
     private StudentDAO studentDAO;
+    @Autowired
+    private StaffMemberDAO staffMemberDAO;
 
     private static final int NUMBER_OF_PREFERENCES = systemVariables.NUMBER_OF_PREFERENCES;
 
@@ -54,17 +60,48 @@ public class GenerationController {
     }
 
     public void generateProjects(int number) {
-        //This way won't bother with staff members, since they're kinda unnecessary
-        //So, generate projects first
-        for(int i = 0; i < number; i++) {
-            String projectTitle = RandomGenerator.generateString();
-            int proposedBy = ThreadLocalRandom.current().nextInt(0, 100);
-            String projectStream = ThreadLocalRandom.current().nextInt(0, 11) % 2 == 0 ? "CS" : "CS+DS";
-
-            projectDAO.save(new Project(number, projectTitle, proposedBy, projectStream));
+        List<StaffMember> members = new ArrayList<>();
+        try {
+            members = new FileParser().parseStaff(new File("test-files/Staff/Miskatonic_Staff_Members.csv"));
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
         }
 
-        //Then write it to a .csv for the dev to download
+        //List for making sure we don't add the same staff member twice
+        List<Integer> already = new ArrayList<>();
+
+        for(int i = 0; i < number / 2; i++) {
+            //First, get a staff member
+            int staffNumber;
+            do {
+                staffNumber = ThreadLocalRandom.current().nextInt(1, members.size() + 1);
+            } while (already.contains(staffNumber));
+            already.add(staffNumber);
+
+            StaffMember member = members.get(staffNumber-1);
+            if(member.getStream() == null) member.setStream("Cthulhu Studies");
+            //Store and retrieve it in database so that an ID is generated
+            staffMemberDAO.save(member);
+            member = staffMemberDAO.findByName(member.getName());
+
+            //Next, generate three projects that they "propose"
+            for(int j = 0; j < 3; j++) {
+                String projectTitle = RandomGenerator.generateString();
+                String projectStream;
+                if(member.getStream().equals("Dagon Studies"))
+                    projectStream = "DS";
+                    //Generate a random integer to decide if it's CS or CS+DS
+                else if(ThreadLocalRandom.current().nextInt(0, 11) % 2 == 0)
+                    projectStream = "CS";
+                else projectStream = "CS+DS";
+                Project project = new Project(projectTitle, member.getId(), projectStream);
+                member.addProject_proposal(project.getId());
+                projectDAO.save(project);
+            }
+            staffMemberDAO.save(member);
+        }
+
+        //Now write to a CSV
         try {
             UploadController.parser.writeProjects(projectDAO.findAll(), "user-files/projects.csv");
         } catch (IOException e) {
