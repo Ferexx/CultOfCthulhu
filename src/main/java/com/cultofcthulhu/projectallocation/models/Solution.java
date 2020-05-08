@@ -64,20 +64,24 @@ public class Solution implements Comparable<Solution>{
 
     public void generateSolution(StudentDAO studentDao, ProjectDAO projectDAO) {
         Integer[] studentAssignmentOrder;
+        List<Student> students = studentDao.findAll();
+        List<Project> projects = projectDAO.findAll();
+
         if(student_project_assignment_order == null) {
-            studentAssignmentOrder = new Integer[(int) studentDao.count()];
+            studentAssignmentOrder = new Integer[students.size()];
+
             for(int i = 0; i < studentAssignmentOrder.length; i++) studentAssignmentOrder[i] = i + 1;
             Collections.shuffle(Arrays.asList(studentAssignmentOrder));
             this.student_project_assignment_order = studentAssignmentOrder;
         }
         else studentAssignmentOrder = student_project_assignment_order;
         Map<Integer, Integer> solution = new HashMap<>();
-        Boolean[] takenProjects = new Boolean[(int) projectDAO.count()];
+        Boolean[] takenProjects = new Boolean[projects.size()];
         Arrays.fill(takenProjects, false);
 
 
         for(Integer integer : studentAssignmentOrder) {
-            Student student = studentDao.getOne(integer);
+            Student student = students.get(integer-1);
             Map<Integer, Integer> preferences = student.getPreferences();
             for(int x = 0; x < preferences.size(); x++) {
                 if(!takenProjects[preferences.get(x) - 1]) {

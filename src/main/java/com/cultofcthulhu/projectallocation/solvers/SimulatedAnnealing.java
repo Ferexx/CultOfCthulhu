@@ -1,6 +1,7 @@
 package com.cultofcthulhu.projectallocation.solvers;
 
 import com.cultofcthulhu.projectallocation.interfaces.Solverable;
+import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.Solution;
@@ -8,6 +9,7 @@ import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.solutionAccess;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -52,12 +54,13 @@ public class SimulatedAnnealing implements Solverable {
 
     public double assessSolution(Solution solution, double GPA_impact, StudentDAO studentDAO, ProjectDAO projectDAO) {
         double energy = 0;
+        List<Student> students = studentDAO.findAll();
 
         if(violatesHardConstraints(solution.getSolution())) { energy += 100; }
 
         //Main loop to iterate through all students, and the projects assigned to them
         for (Map.Entry<Integer, Integer> currentPair : solution.getSolution().entrySet()) {
-            Student currentStudent = studentDAO.getOne(currentPair.getKey());
+            Student currentStudent = students.get(currentPair.getKey() - 1);
             //First, add energy based on how far down in each students preference list their assigned project is
             //For each project they weren't assigned, find the student that was assigned to it, and check if their GPA is less than our current student's
             for(Map.Entry<Integer, Integer> preference : currentStudent.getPreferences().entrySet()) {
@@ -66,7 +69,7 @@ public class SimulatedAnnealing implements Solverable {
                 else {
                     int studentID = projectToStudent(preference.getValue());
                     if (studentID != -1) {
-                        Student assignedStudent = studentDAO.getOne(studentID);
+                        Student assignedStudent = students.get(studentID - 1);
                         if(assignedStudent.getGpa() < currentStudent.getGpa())
                             energy += (10 * GPA_impact);
                     }
