@@ -1,7 +1,6 @@
 package com.cultofcthulhu.projectallocation.solvers;
 
 import com.cultofcthulhu.projectallocation.interfaces.Solverable;
-import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.Solution;
@@ -15,6 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class SimulatedAnnealing implements Solverable {
     public Solution currentBest;
+    private int progress;
     int temperature = 100;
     public SimulatedAnnealing(Solution solution) {
         currentBest = solution;
@@ -37,9 +37,11 @@ public class SimulatedAnnealing implements Solverable {
                     System.out.println("Rejected new solution with energy: " + newSolution.getEnergy());
                 }
                 count++;
+                progress++;
             }while(count < systemVariables.NUMBER_OF_STUDENTS);
             //Cooling Schedule
             if(initialEnergy-currentBest.getEnergy() > temperature/10.0 || count > Math.pow(systemVariables.NUMBER_OF_STUDENTS, 2)) {
+                progress = (int) (progress - count + Math.pow(systemVariables.NUMBER_OF_STUDENTS, 2));
                 temperature /= 2;
                 count = 0;
                 initialEnergy = currentBest.getEnergy();
@@ -118,5 +120,9 @@ public class SimulatedAnnealing implements Solverable {
             double accept = ThreadLocalRandom.current().nextDouble(0, 1);
             return accept < probability;
         }
+    }
+
+    public int getProgress() {
+        return (int) (progress / (Math.pow(systemVariables.NUMBER_OF_STUDENTS, 2) * 7));
     }
 }

@@ -14,6 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GeneticAlgorithm {
     private GeneticAlgorithmSolutionHerd solutions;
+    private int progress;
     private final int MAX_POPULATION_SIZE = systemVariables.MAX_POPULATION_SIZE;
     private final int MATE_PERCENTAGE = systemVariables.MATE_PERCENTAGE;
     private final int CULL_PERCENTAGE = systemVariables.CULL_PERCENTAGE;
@@ -175,5 +176,9 @@ public class GeneticAlgorithm {
                 return entry.getKey();
         }
         return -1;
+    }
+
+    public int getProgress() {
+        return progress;
     }
 }

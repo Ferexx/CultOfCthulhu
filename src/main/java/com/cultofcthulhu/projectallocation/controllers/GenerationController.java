@@ -56,6 +56,7 @@ public class GenerationController {
         generateProjects(number);
         generateStudents(number, projectDAO.findAll());
         model.addAttribute("download", true);
+        model.addAttribute("value", 0);
         return "options";
     }
 

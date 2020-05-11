@@ -74,6 +74,7 @@ public class UploadController {
             for(Project currProject : projects)
                 projectDAO.save(currProject);
             model.addAttribute("title", "Options");
+            model.addAttribute("value", 0);
             return "options";
         } catch (ParseException | IOException | NumberFormatException e) {
             if(e.getClass() == ParseException.class)

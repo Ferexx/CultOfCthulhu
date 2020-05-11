@@ -47,7 +47,7 @@
                     <br><br>
 
                     <div class="progress md-progress" style="height: 10px;">
-                        <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="height: 10px;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="height: 10px;" th:style="'width:'+ ${value}+'%;'" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
 
                     <button type="submit" onclick="move()" class="btn btn-default" style="margin-top: 5px;">Generate Solution</button>
