@@ -134,7 +134,7 @@ public class Solution implements Comparable<Solution>{
         List<String[]> stringList = new ArrayList<>();
 
         for(Map.Entry<Integer, Integer> entry : solution.entrySet()) {
-            String[] out = new String[4];
+            String[] out = new String[5];
             out[0] = studentDAO.getOne(entry.getKey()).getName();
             out[1] = String.valueOf(studentDAO.getOne(entry.getKey()).getGpa());
             int num = -1;
@@ -146,6 +146,11 @@ public class Solution implements Comparable<Solution>{
             }
             out[2] = String.valueOf(num);
             out[3] = projectDAO.getOne(entry.getValue()).getProject_title();
+            if(num <= 5) out[4] = "green";
+            if(num > 5 && num <=10) out[4] = "yellow";
+            if(num > 10 && num <= 15) out[4] = "orange";
+            if(num > 15 && num <= 20) out[4] = "red";
+            if(num == -1) out[4] = "black";
             stringList.add(out);
         }
         return stringList;

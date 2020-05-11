@@ -45,6 +45,7 @@ public class FileParser {
                     student.addPreference(projectDAO.findByProjectTitle(values[j]).get().getId());
                 }
             }
+            studentDAO.save(student);
         }
     }
 
