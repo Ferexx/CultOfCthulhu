@@ -55,6 +55,13 @@ public class UploadController {
         return "uploadFiles";
     }
 
+    /*@RequestMapping(value = "/singleUpload")
+    public String sUploadPage(Model model) {
+        model.addAttribute("title", "File Upload");
+        return "uploadFile";
+    }
+     */
+
     @PostMapping(value = "/uploadFiles")
     public String fileUpload(@RequestParam("staffFile") MultipartFile staffFile, @RequestParam("studentFile") MultipartFile studentFile, @RequestParam("projectFile") MultipartFile projectFile, Model model) {
         storageService.store(staffFile);
@@ -86,6 +93,7 @@ public class UploadController {
             return "error";
         }
     }
+
 
     @GetMapping("/user-files/{filename:.+}")
     @ResponseBody
