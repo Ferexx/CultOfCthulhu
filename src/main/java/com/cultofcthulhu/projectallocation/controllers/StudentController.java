@@ -48,6 +48,18 @@ public class StudentController {
         return "index";
     }
 
+    @RequestMapping(value = "/singleFile")
+    public String singlePage(Model model) {
+        model.addAttribute("title", "Single File");
+        return "singleFile";
+    }
+
+    @RequestMapping(value = "/multiFile")
+    public String multiPage(Model model) {
+        model.addAttribute("title", "Multi File");
+        return "multiFile";
+    }
+
     @RequestMapping(value = "/settings")
     public String settingsPage(Model model) {
         model.addAttribute("title", "Settings");

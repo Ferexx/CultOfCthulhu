@@ -9,16 +9,36 @@
 </head>
 <body>
 
-<div th:insert="navbar.html"></div>
+    <div th:insert="navbar.html"></div>
 
-<p>Welcome</p>
-<br>
-<p>Monika, put in a form here that asks if they have a single students file, or a file with project information as well</p>
+    <div class="jumbotron text-center" style="margin-bottom:0;">
+        <h2>Welcome</h2>
+    </div>
 
-<footer class="text-center">
-    <br>
-    <p>&copy; MoRoJack</p>
-</footer>
+    <div class="container text-center" id="maindiv" style="border-left: double; border-right: double; border-left-color: #c0c0c8; border-right-color:#c0c0c8; width: 2500px; margin-bottom: -20px;">
+        <br><br>
+
+        <form>
+            <label for="files">Choose whether you'll be using a single student file, or a student file and project info file:</label>
+
+            <br><br>
+
+            <select id="files" onchange="location = this.value;">
+                <option value="">Select an Option</option>
+                <option value="/singleFile">Student File</option>
+                <option value="/multiFile">Student and Project Files</option>
+            </select>
+        </form>
+
+        <br><br>
+    </div>
+
+    <hr>
+
+    <footer class="text-center">
+        <br>
+        <p>&copy; MoRoJack</p>
+    </footer>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

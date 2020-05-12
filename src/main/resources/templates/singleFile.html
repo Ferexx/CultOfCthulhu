@@ -9,19 +9,52 @@
 </head>
 <body>
 
-<div th:insert="navbar.html"></div>
+    <div th:insert="navbar.html"></div>
 
-<p>We need a single file from you, please structure it as follows:</p>
-<p>Student Name, Student Number, GPA, Proposer, Preference 1, Preference 2, ... , Preference 20</p>
-<p>Please see below for an example of how the file should look in Excel</p>
-<img th:src="@{/images/SingleFile.png}" />
+    <div class="jumbotron text-center" style="margin-bottom:0">
+        <h4>This page will show you how to use the site</h4>
+    </div>
 
-<a href="singleUpload"><button class="btn btn-primary">Continue</button></a>
+    <div class="container" id="maindiv" style="border-left: double; border-right: double; border-left-color: #c0c0c8; border-right-color:#c0c0c8; width: 2500px; margin-bottom: -20px;">
+        <br><br><br>
 
-<footer class="text-center">
-    <br>
-    <p>&copy; MoRoJack</p>
-</footer>
+        <div class="row justify-content-center">
+            <h4>We need one file from you: A students file</h4>
+            <p>The file should be in either .csv or .tsv format (We prefer .csv since tabs are notoriously unreliable in modern text editors).</p>
+        </div>
+
+        <br><br><br>
+
+        <div class="row" style="border-top: double; border-bottom: double; border-top-color: #c0c0c8; border-bottom-color: #c0c0c8; padding: 50px 100px; margin-left: -100px; margin-right: -100px;">
+            <div class="col">
+                <div class="row">
+                    <p>Each row in the students file represents a student.<br>The rows should have a maximum of <strong>24 fields</strong> each: Student, Student Number, GPA, Proposer, Preferences (1 through 20) <br>Please see below for an example of what the file should look like in Excel.</p>
+                </div>
+
+                <div class="row justify-content-center" >
+                    <img th:src="@{/images/SingleFile.png}" style="overflow: auto" />
+                </div>
+            </div>
+        </div>
+
+        <br><br>
+
+        <div>
+            <div class="col text-center">
+                <p>Click here when you're ready to upload your file</p>
+                <a class="btn btn-default" href="singleUpload">Continue</a>
+            </div>
+        </div>
+
+        <br><br><br>
+    </div>
+
+    <hr>
+
+    <footer class="text-center">
+        <br>
+        <p>&copy; MoRoJack</p>
+    </footer>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
