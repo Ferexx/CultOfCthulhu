@@ -144,7 +144,7 @@ public class GeneticAlgorithm {
                     if(studentID != -1) {
                         Student assignedStudent = studentDAO.getOne(studentID);
                         if(assignedStudent.getGpa() < currentStudent.getGpa())
-                            fitness -= (10 * GPA_impact);
+                            fitness -= ((systemVariables.NUMBER_OF_STUDENTS / 6.0) * GPA_impact);
                     }
                 }
             }

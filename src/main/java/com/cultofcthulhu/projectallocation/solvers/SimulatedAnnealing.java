@@ -73,7 +73,7 @@ public class SimulatedAnnealing implements Solverable {
                     if (studentID != -1) {
                         Student assignedStudent = students.get(studentID - 1);
                         if(assignedStudent.getGpa() < currentStudent.getGpa())
-                            energy += (10 * GPA_impact);
+                            energy += ((systemVariables.NUMBER_OF_STUDENTS / 6.0) * GPA_impact);
                     }
                 }
             }
