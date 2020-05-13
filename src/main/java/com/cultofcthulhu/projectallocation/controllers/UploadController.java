@@ -42,27 +42,56 @@ public class UploadController {
     @Autowired
     public ProjectDAO projectDAO;
 
-    @RequestMapping(value = "")
-    @GetMapping("/")
-    public String tutorialPage(Model model) {
-        model.addAttribute("title", "Welcome");
+    @RequestMapping(value = "/index")
+    public String indexPage(Model model) {
+        model.addAttribute("title", "Home");
         return "index";
     }
 
-    @RequestMapping(value = "/upload")
-    public String uploadPage(Model model) {
-        model.addAttribute("title", "File Upload");
-        return "uploadFiles";
+    @RequestMapping(value = "/singleFile")
+    public String singlePage(Model model) {
+        model.addAttribute("title", "Single File");
+        return "singleFile";
     }
 
-    /*@RequestMapping(value = "/singleUpload")
-    public String sUploadPage(Model model) {
-        model.addAttribute("title", "File Upload");
-        return "uploadFile";
+    @RequestMapping(value = "/multiFile")
+    public String multiPage(Model model) {
+        model.addAttribute("title", "Multi File");
+        return "multiFile";
     }
-     */
 
-    @PostMapping(value = "/uploadFiles")
+    @RequestMapping(value = "/uploadSingleFile")
+    public String uploadSingleFile(Model model) {
+        model.addAttribute("title", "Upload Single File");
+        return "singleUpload";
+    }
+
+    @RequestMapping(value = "/uploadMultiFile")
+    public String uploadMultiFile(Model model) {
+        model.addAttribute("title", "Upload Multiple Files");
+        return "multiUpload";
+    }
+
+    @PostMapping(value = "/singleUpload")
+    public String singleUpload(@RequestParam("file") MultipartFile file, Model model) {
+        storageService.store(file);
+        File mainFile = new File(String.valueOf(storageService.load(file.getOriginalFilename())));
+        try {
+            parser.parseMainFile(mainFile, studentDAO, projectDAO);
+            model.addAttribute("title", "Options");
+            return "options";
+        } catch (ParseException | IOException | NumberFormatException e) {
+            if (e.getClass() == ParseException.class)
+                model.addAttribute("error", e.getMessage());
+            else if (e.getClass() == IOException.class)
+                model.addAttribute("error", "Internal error, please restart the process.");
+            else if (e.getClass() == NumberFormatException.class)
+                model.addAttribute("error", "Please ensure GPA is stored as an integer or double");
+            return "error";
+        }
+    }
+
+    @PostMapping(value = "/multiFileUpload")
     public String fileUpload(@RequestParam("staffFile") MultipartFile staffFile, @RequestParam("studentFile") MultipartFile studentFile, @RequestParam("projectFile") MultipartFile projectFile, Model model) {
         storageService.store(staffFile);
         storageService.store(studentFile);

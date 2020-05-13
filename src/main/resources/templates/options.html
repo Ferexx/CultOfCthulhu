@@ -15,7 +15,7 @@
         <h4>Select your options and download your files</h4>
     </div>
 
-    <div class="container" id="maindiv" style="border-opacity: 1; border-left: double; border-right: double; border-left-color: #c0c0c8; border-right-color:#c0c0c8; width: 2500px; margin-bottom: -20px;" th:if="${download}">
+    <div class="container" id="maindiv" style="border-opacity: 1; border-left: double; border-right: double; border-left-color: #c0c0c8; border-right-color:#c0c0c8; width: 2500px; margin-bottom: -20px;">
         <br><br><br>
 
         <div class="row">
@@ -56,7 +56,7 @@
 
             <div class="col-1" style="width: 50px; border-left: double; border-left-color: #c0c0c8; margin-left: 7%; margin-top: -60px; margin-bottom: -40px;"></div>
 
-            <div class="col-5" style="display: grid; justify-content: center; align-content: center;">
+            <div class="col-5" style="display: grid; justify-content: center; align-content: center;"  th:if="${download}">
                 <div class="row justify-content-center">
                     <h4>Download your files here:</h4>
                 </div>
