@@ -81,12 +81,18 @@ public class UploadController {
             model.addAttribute("title", "Options");
             return "options";
         } catch (ParseException | IOException | NumberFormatException e) {
-            if (e.getClass() == ParseException.class)
+            if (e.getClass() == ParseException.class) {
+                e.printStackTrace();
                 model.addAttribute("error", e.getMessage());
-            else if (e.getClass() == IOException.class)
+            }
+            else if (e.getClass() == IOException.class) {
+                e.printStackTrace();
                 model.addAttribute("error", "Internal error, please restart the process.");
-            else if (e.getClass() == NumberFormatException.class)
-                model.addAttribute("error", "Please ensure GPA is stored as an integer or double");
+            }
+            else if (e.getClass() == NumberFormatException.class) {
+                e.printStackTrace();
+                model.addAttribute("error", "Please ensure student number is stored as an integer, and GPA is stored as an integer or double");
+            }
             return "error";
         }
     }

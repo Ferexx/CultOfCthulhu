@@ -29,23 +29,29 @@ public class FileParser {
         while((line = br.readLine()) != null) {
             String[] values = line.split(split, -1);
             //Ignore column titles
-            if(values[0].equals("Student")) {
+            if(values[0].contains("Student")) {
                 i++;
                 continue;
             }
             if(values.length < 5) throw new ParseException(
                     "Your file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: >4)");
-            Student student = new Student(values[0], Long.parseLong(values[1]), Double.parseDouble(values[2]));
-            for(int j = 4; j < values.length; j++) {
-                Optional<Project> project = projectDAO.findByProjectTitle(values[j]);
-                if(!project.isPresent()) {
-                    if(values[3].equals("student")) projectDAO.save(new Project(values[j], student.getStudentID()));
-                    else projectDAO.save(new Project(values[j], 0));
+            try {
+                Student student = new Student(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[2]));
+                for(int j = 4; j < values.length; j++) {
+                    Optional<Project> project = projectDAO.findByProjectTitle(values[j]);
+                    if(!project.isPresent()) {
+                        if(values[3].equals("student")) projectDAO.save(new Project(values[j], student.getStudentID()));
+                        else projectDAO.save(new Project(values[j], 0));
 
-                    student.addPreference(projectDAO.findByProjectTitle(values[j]).get().getId());
+                        student.addPreference(projectDAO.findByProjectTitle(values[j]).get().getId());
+                    }
                 }
+                studentDAO.save(student);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                throw new ParseException("Please ensure the numbers in row " + i + " are formatted correctly");
             }
-            studentDAO.save(student);
+            i++;
         }
     }
 

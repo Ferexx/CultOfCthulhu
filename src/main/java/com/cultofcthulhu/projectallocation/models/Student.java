@@ -14,7 +14,7 @@ public class Student implements Personable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private long studentID;
+    private int studentID;
     private String firstName;
     private String lastName;
     private String stream;
@@ -36,7 +36,7 @@ public class Student implements Personable {
         this.stream = stream;
         this.gpa = GPA;
     }
-    public Student(String name, long studentID, double GPA) {
+    public Student(String name, int studentID, double GPA) {
         this.firstName = name;
         this.studentID = studentID;
         this.gpa = GPA;
@@ -47,11 +47,11 @@ public class Student implements Personable {
         return id;
     }
 
-    public long getStudentID() {
+    public int getStudentID() {
         return studentID;
     }
 
-    public void setStudentID(long studentID) {
+    public void setStudentID(int studentID) {
         this.studentID = studentID;
     }
 
