@@ -78,6 +78,7 @@ public class UploadController {
 
     @PostMapping(value = "/singleUpload")
     public String singleUpload(@RequestParam("file") MultipartFile file, Model model) {
+        storageService.deleteAll();
         storageService.store(file);
         File mainFile = new File(String.valueOf(storageService.load(file.getOriginalFilename())));
         try {
@@ -103,6 +104,7 @@ public class UploadController {
 
     @PostMapping(value = "/multiFileUpload")
     public String fileUpload(@RequestParam("staffFile") MultipartFile staffFile, @RequestParam("studentFile") MultipartFile studentFile, @RequestParam("projectFile") MultipartFile projectFile, Model model) {
+        storageService.deleteAll();
         storageService.store(staffFile);
         storageService.store(studentFile);
         storageService.store(projectFile);
