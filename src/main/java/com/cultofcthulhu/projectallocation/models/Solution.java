@@ -2,6 +2,7 @@ package com.cultofcthulhu.projectallocation.models;
 
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
+import com.cultofcthulhu.projectallocation.models.data.StudentProjectDAO;
 
 import javax.persistence.*;
 import java.util.*;
@@ -129,7 +130,7 @@ public class Solution implements Comparable<Solution>{
         return out;
     }
 
-    public List<String[]> getSolutionList(StudentDAO studentDAO, ProjectDAO projectDAO ){
+    public List<String[]> getSolutionList(StudentDAO studentDAO, ProjectDAO projectDAO, StudentProjectDAO studentProjectDAO){
 
         List<String[]> stringList = new ArrayList<>();
 
@@ -151,6 +152,18 @@ public class Solution implements Comparable<Solution>{
             if(num > 10 && num <= 15) out[4] = "rgb(255,165,0, 0.1)";
             if(num > 15 && num <= 20) out[4] = "rgb(255,0,0, 0.1)";
             if(num == -1) out[4] = "rgb(0,0,0, 0.1)";
+            stringList.add(out);
+        }
+
+        List<StudentProject> selfProposed = studentProjectDAO.findAll();
+        for (StudentProject curr : selfProposed) {
+            String[] out = new String[5];
+            out[0] = curr.getStudentName();
+            out[1] = String.valueOf(curr.getStudentGPA());
+            out[2] = "1";
+            out[3] = curr.getProjectName();
+            out[4] = "rgba(76, 175, 80, 0.1)";
+
             stringList.add(out);
         }
         return stringList;

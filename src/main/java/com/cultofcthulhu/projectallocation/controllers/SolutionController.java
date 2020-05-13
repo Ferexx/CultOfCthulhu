@@ -4,6 +4,7 @@ import com.cultofcthulhu.projectallocation.models.GeneticAlgorithmSolutionHerd;
 import com.cultofcthulhu.projectallocation.models.Solution;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
+import com.cultofcthulhu.projectallocation.models.data.StudentProjectDAO;
 import com.cultofcthulhu.projectallocation.solvers.GeneticAlgorithm;
 import com.cultofcthulhu.projectallocation.solvers.SimulatedAnnealing;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
 import java.nio.file.Path;
@@ -30,6 +28,8 @@ public class SolutionController {
     private StudentDAO studentDAO;
     @Autowired
     private ProjectDAO projectDAO;
+    @Autowired
+    private StudentProjectDAO studentProjectDAO;
 
     private String choice;
     private SimulatedAnnealing simulation;
@@ -43,7 +43,7 @@ public class SolutionController {
             this.choice = "Simulated Annealing";
             simulation = new SimulatedAnnealing(initialSolution);
             simulation.currentBest.setEnergy(simulation.assessSolution(simulation.currentBest, GPARange, studentDAO, projectDAO));
-            model.addAttribute("list", simulation.hillClimb(GPARange, studentDAO, projectDAO).getSolutionList(studentDAO, projectDAO));
+            model.addAttribute("list", simulation.hillClimb(GPARange, studentDAO, projectDAO).getSolutionList(studentDAO, projectDAO, studentProjectDAO));
         }
         else {
             model.addAttribute("title", "Genetic Algorithms");
@@ -51,7 +51,7 @@ public class SolutionController {
             genet = new GeneticAlgorithm(solutionHerd);
             solutionHerd.getSolution(0).setFitness(genet.assessSolution(solutionHerd.getSolution(0), GPARange, studentDAO, projectDAO));
             System.out.println(solutionHerd.getSolution(0).printSolution(studentDAO, projectDAO));
-            model.addAttribute("list", genet.runAlgorithm(GPARange, studentDAO, projectDAO).getSolutionList(studentDAO,projectDAO));
+            model.addAttribute("list", genet.runAlgorithm(GPARange, studentDAO, projectDAO).getSolutionList(studentDAO,projectDAO, studentProjectDAO));
         }
         return "solution";
     }
@@ -69,14 +69,14 @@ public class SolutionController {
     }
 
     @RequestMapping(value = "solution-progress", method= RequestMethod.GET)
-    public String getProgress(ModelMap map) {
+    public @ResponseBody int getProgress() {
         if(choice.equals("Simulated Annealing")) {
-            return "general :: progress";
+            return simulation.getProgress();
         }
         else if(choice.equals("Genetic Algorithms")) {
-            map.addAttribute("value", genet.getProgress());
+            return genet.getProgress();
         }
-        return "options :: progress";
+        return 0;
     }
 
 }

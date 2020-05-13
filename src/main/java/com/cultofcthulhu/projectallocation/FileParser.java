@@ -4,8 +4,10 @@ import com.cultofcthulhu.projectallocation.exceptions.ParseException;
 import com.cultofcthulhu.projectallocation.models.Project;
 import com.cultofcthulhu.projectallocation.models.StaffMember;
 import com.cultofcthulhu.projectallocation.models.Student;
+import com.cultofcthulhu.projectallocation.models.StudentProject;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
+import com.cultofcthulhu.projectallocation.models.data.StudentProjectDAO;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 
 import java.io.*;
@@ -17,7 +19,7 @@ public class FileParser {
 
     public FileParser() {}
 
-    public void parseMainFile(File file, StudentDAO studentDAO, ProjectDAO projectDAO) throws ParseException, IOException {
+    public void parseMainFile(File file, StudentDAO studentDAO, ProjectDAO projectDAO, StudentProjectDAO studentProjectDAO) throws ParseException, IOException {
         String split;
         if(file.getName().endsWith("csv")) split = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
         else if(file.getName().endsWith("tsv")) split = "\t(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
@@ -36,17 +38,25 @@ public class FileParser {
             if(values.length < 5) throw new ParseException(
                     "Your file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: >4)");
             try {
-                Student student = new Student(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[2]));
-                for(int j = 4; j < values.length; j++) {
-                    Optional<Project> project = projectDAO.findByProjectTitle(values[j]);
-                    if(!project.isPresent()) {
-                        if(values[3].equals("student")) projectDAO.save(new Project(values[j], student.getStudentID()));
-                        else projectDAO.save(new Project(values[j], 0));
-
-                        student.addPreference(projectDAO.findByProjectTitle(values[j]).get().getId());
-                    }
+                if(values[3].contains("student")) {
+                    studentProjectDAO.save(new StudentProject(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[2]), values[4]));
+                    continue;
                 }
-                studentDAO.save(student);
+                else {
+                    Student student = new Student(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[2]));
+                    for (int j = 4; j < values.length; j++) {
+                        if(values[j].endsWith(" ")) values[j] = values[j].substring(0, values[j].length() - 1);
+                        Optional<Project> project = projectDAO.findByProjectTitle(values[j]);
+                        if (!project.isPresent() && !values[j].equals("")) {
+                            projectDAO.save(new Project(values[j], 0));
+                            student.addPreference(projectDAO.findByProjectTitle(values[j]).get().getId());
+                        }
+                        else if(!values[j].equals("")) {
+                            student.addPreference(projectDAO.findByProjectTitle(values[j]).get().getId());
+                        }
+                    }
+                    studentDAO.save(student);
+                }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
                 throw new ParseException("Please ensure the numbers in row " + i + " are formatted correctly");

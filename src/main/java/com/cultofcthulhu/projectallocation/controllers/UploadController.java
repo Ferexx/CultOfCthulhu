@@ -8,6 +8,7 @@ import com.cultofcthulhu.projectallocation.models.Student;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.data.StaffMemberDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
+import com.cultofcthulhu.projectallocation.models.data.StudentProjectDAO;
 import com.cultofcthulhu.projectallocation.storage.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -41,6 +42,9 @@ public class UploadController {
 
     @Autowired
     public ProjectDAO projectDAO;
+
+    @Autowired
+    public StudentProjectDAO studentProjectDAO;
 
     @RequestMapping(value = "/index")
     public String indexPage(Model model) {
@@ -77,7 +81,7 @@ public class UploadController {
         storageService.store(file);
         File mainFile = new File(String.valueOf(storageService.load(file.getOriginalFilename())));
         try {
-            parser.parseMainFile(mainFile, studentDAO, projectDAO);
+            parser.parseMainFile(mainFile, studentDAO, projectDAO, studentProjectDAO);
             model.addAttribute("title", "Options");
             return "options";
         } catch (ParseException | IOException | NumberFormatException e) {
