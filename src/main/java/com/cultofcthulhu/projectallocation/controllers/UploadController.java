@@ -58,10 +58,16 @@ public class UploadController {
         return "singleFile";
     }
 
-    @RequestMapping(value = "/multiFile")
+    @RequestMapping(value = "/doubleFile")
+    public String doublePage(Model model) {
+        model.addAttribute("title", "Double File");
+        return "doubleFile";
+    }
+
+    @RequestMapping(value = "/tripleFile")
     public String multiPage(Model model) {
         model.addAttribute("title", "Multi File");
-        return "multiFile";
+        return "tripleFile";
     }
 
     @RequestMapping(value = "/uploadSingleFile")
@@ -70,10 +76,16 @@ public class UploadController {
         return "singleUpload";
     }
 
-    @RequestMapping(value = "/uploadMultiFile")
+    @RequestMapping(value = "/uploadDoubleFile")
+    public String uploadDoubleFile(Model model) {
+        model.addAttribute("title", "Upload Double File");
+        return "doubleUpload";
+    }
+
+    @RequestMapping(value = "/uploadTripleFile")
     public String uploadMultiFile(Model model) {
-        model.addAttribute("title", "Upload Multiple Files");
-        return "multiUpload";
+        model.addAttribute("title", "Upload Triple Files");
+        return "tripleUpload";
     }
 
     @PostMapping(value = "/singleUpload")
@@ -102,8 +114,36 @@ public class UploadController {
         }
     }
 
-    @PostMapping(value = "/multiFileUpload")
-    public String fileUpload(@RequestParam("staffFile") MultipartFile staffFile, @RequestParam("studentFile") MultipartFile studentFile, @RequestParam("projectFile") MultipartFile projectFile, Model model) {
+    @PostMapping(value = "/doubleUpload")
+    public String doubleUpload(@RequestParam("studentFile") MultipartFile studentFile, @RequestParam("projectFile") MultipartFile projectFile, Model model) {
+        storageService.deleteAll();
+        storageService.store(studentFile);
+        storageService.store(projectFile);
+        File student = new File(String.valueOf(storageService.load(studentFile.getOriginalFilename())));
+        File project = new File(String.valueOf(storageService.load(projectFile.getOriginalFilename())));
+        try {
+            List<Student> students = parser.parseStudents(student);
+            for(Student currStudent : students)
+                studentDAO.save(currStudent);
+            List<Project> projects = parser.parseProjects(project);
+            for(Project currProject : projects)
+                projectDAO.save(currProject);
+            model.addAttribute("title", "Options");
+            model.addAttribute("value", 0);
+            return "options";
+        } catch (ParseException | IOException | NumberFormatException e) {
+            if(e.getClass() == ParseException.class)
+                model.addAttribute("error", e.getMessage());
+            else if(e.getClass() == IOException.class)
+                model.addAttribute("error", "Internal error, please restart the process.");
+            else if(e.getClass() == NumberFormatException.class)
+                model.addAttribute("error", "Please ensure your students' preferences are stored as integers corresponding to project IDs, and GPA is stored as an integer or double");
+            return "error";
+        }
+    }
+
+    @PostMapping(value = "/tripleUpload")
+    public String tripleUpload(@RequestParam("staffFile") MultipartFile staffFile, @RequestParam("studentFile") MultipartFile studentFile, @RequestParam("projectFile") MultipartFile projectFile, Model model) {
         storageService.deleteAll();
         storageService.store(staffFile);
         storageService.store(studentFile);
@@ -130,7 +170,7 @@ public class UploadController {
             else if(e.getClass() == IOException.class)
                 model.addAttribute("error", "Internal error, please restart the process.");
             else if(e.getClass() == NumberFormatException.class)
-                model.addAttribute("error", "Please ensure your preferences are stored as integers corresponding to project IDs, and GPA is stored as an integer or double");
+                model.addAttribute("error", "Please ensure your students' preferences are stored as integers corresponding to project IDs, and GPA is stored as an integer or double");
             return "error";
         }
     }
