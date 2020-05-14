@@ -87,7 +87,7 @@ public class GenerationController {
             //Next, generate three projects that they "propose"
             for(int j = 0; j < 3; j++) {
                 String projectTitle = RandomGenerator.generateString();
-                Project project = new Project(projectTitle, member.getId());
+                Project project = new Project((int) (projectDAO.count() + 1), projectTitle, member.getId());
                 member.addProject_proposal(project.getId());
                 projectDAO.save(project);
             }

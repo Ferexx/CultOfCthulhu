@@ -11,4 +11,5 @@ import java.util.Optional;
 @Transactional
 public interface ProjectDAO extends JpaRepository<Project, Integer> {
     Optional<Project> findByProjectTitle(String title);
+    Optional<Project> findByProposedBy(int proposedBy);
 }
