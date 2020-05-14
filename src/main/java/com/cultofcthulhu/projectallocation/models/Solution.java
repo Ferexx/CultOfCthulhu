@@ -93,7 +93,7 @@ public class Solution implements Comparable<Solution>{
             }
             if(solution.get(student.getId()) == null) {
                 for(int i = 0; i < takenProjects.length; i++) {
-                    if(!takenProjects[i]) {
+                    if(!takenProjects[i] && projects.get(i + 1).getProposedBy() == 0) {
                         takenProjects[i] = true;
                         solution.put(student.getId(), i + 1);
                         break;
@@ -125,7 +125,7 @@ public class Solution implements Comparable<Solution>{
                     num = preference.getKey() + 1;
                 }
             }
-            out = out + "\t\t(" + num + ")\t\t" + projectDAO.getOne(entry.getValue()).getProject_title() + "\n";
+            out = out + "\t\t(" + num + ")\t\t" + projectDAO.getOne(entry.getValue()).getProjectTitle() + "\n";
         }
         return out;
     }
@@ -146,7 +146,7 @@ public class Solution implements Comparable<Solution>{
                 }
             }
             out[2] = String.valueOf(num);
-            out[3] = projectDAO.getOne(entry.getValue()).getProject_title();
+            out[3] = projectDAO.getOne(entry.getValue()).getProjectTitle();
             if(num <= 5) out[4] = "rgba(76, 175, 80, 0.1)";
             if(num > 5 && num <=10) out[4] = "rgb(255,255,0, 0.1)";
             if(num > 10 && num <= 15) out[4] = "rgb(255,165,0, 0.1)";

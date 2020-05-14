@@ -10,24 +10,23 @@ public class Project {
 
     //Variable declaration and constructors
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int projectID;
     private String projectTitle;
-    private long proposedBy = 0;
+    private int proposedBy = 0;
     private int studentAssigned;
 
     public Project() {}
 
-    public Project(String project_title, int proposed_by) {
-        this.projectTitle = project_title;
-        this.proposedBy = proposed_by;
+    public Project(String projectTitle, int proposedBy) {
+        this.projectTitle = projectTitle;
+        this.proposedBy = proposedBy;
     }
-    public Project(int id, String project_title, int proposed_by) {
-        this.projectID = id;
-        this.projectTitle = project_title;
-        this.proposedBy = proposed_by;
+
+    public Project(int id, String projectTitle, int proposedBy) {
+        this.id = id;
+        this.projectTitle = projectTitle;
+        this.proposedBy = proposedBy;
     }
 
     //Getters and setters
@@ -35,28 +34,20 @@ public class Project {
         return id;
     }
 
-    public int getProjectID() {
-        return projectID;
-    }
-
-    public void setProjectID(int projectID) {
-        this.projectID = projectID;
-    }
-
-    public String getProject_title() {
+    public String getProjectTitle() {
         return projectTitle;
     }
 
-    public void setProject_title(String project_title) {
-        this.projectTitle = project_title;
+    public void setProjectTitle(String projectTitle) {
+        this.projectTitle = projectTitle;
     }
 
-    public long getProposed_by() {
+    public int getProposedBy() {
         return proposedBy;
     }
 
-    public void setProposed_by(int proposed_by) {
-        this.proposedBy = proposed_by;
+    public void setProposedBy(int proposedBy) {
+        this.proposedBy = proposedBy;
     }
 
     public void setStudentAssigned(int studentAssigned) {

@@ -90,7 +90,6 @@ public class UploadController {
 
     @PostMapping(value = "/singleUpload")
     public String singleUpload(@RequestParam("file") MultipartFile file, Model model) {
-        storageService.deleteAll();
         storageService.store(file);
         File mainFile = new File(String.valueOf(storageService.load(file.getOriginalFilename())));
         try {
@@ -116,18 +115,17 @@ public class UploadController {
 
     @PostMapping(value = "/doubleUpload")
     public String doubleUpload(@RequestParam("studentFile") MultipartFile studentFile, @RequestParam("projectFile") MultipartFile projectFile, Model model) {
-        storageService.deleteAll();
         storageService.store(studentFile);
         storageService.store(projectFile);
         File student = new File(String.valueOf(storageService.load(studentFile.getOriginalFilename())));
         File project = new File(String.valueOf(storageService.load(projectFile.getOriginalFilename())));
         try {
-            List<Student> students = parser.parseStudents(student);
-            for(Student currStudent : students)
-                studentDAO.save(currStudent);
             List<Project> projects = parser.parseProjects(project);
             for(Project currProject : projects)
                 projectDAO.save(currProject);
+            List<Student> students = parser.parseStudents(student, projectDAO, studentProjectDAO);
+            for(Student currStudent : students)
+                studentDAO.save(currStudent);
             model.addAttribute("title", "Options");
             model.addAttribute("value", 0);
             return "options";
@@ -136,15 +134,16 @@ public class UploadController {
                 model.addAttribute("error", e.getMessage());
             else if(e.getClass() == IOException.class)
                 model.addAttribute("error", "Internal error, please restart the process.");
-            else if(e.getClass() == NumberFormatException.class)
-                model.addAttribute("error", "Please ensure your students' preferences are stored as integers corresponding to project IDs, and GPA is stored as an integer or double");
+            else if(e.getClass() == NumberFormatException.class) {
+                e.printStackTrace();
+                model.addAttribute("error", "Please ensure your students' preferences are stored as numbers corresponding to project IDs, and GPA is stored as a number with at most two decimal places");
+            }
             return "error";
         }
     }
 
     @PostMapping(value = "/tripleUpload")
     public String tripleUpload(@RequestParam("staffFile") MultipartFile staffFile, @RequestParam("studentFile") MultipartFile studentFile, @RequestParam("projectFile") MultipartFile projectFile, Model model) {
-        storageService.deleteAll();
         storageService.store(staffFile);
         storageService.store(studentFile);
         storageService.store(projectFile);
@@ -155,7 +154,7 @@ public class UploadController {
             List<StaffMember> staffMembers = parser.parseStaff(staff);
             for(StaffMember currStaff : staffMembers)
                 staffMemberDAO.save(currStaff);
-            List<Student> students = parser.parseStudents(student);
+            List<Student> students = parser.parseStudents(student, projectDAO, studentProjectDAO);
             for(Student currStudent : students)
                 studentDAO.save(currStudent);
             List<Project> projects = parser.parseProjects(project);
@@ -167,10 +166,14 @@ public class UploadController {
         } catch (ParseException | IOException | NumberFormatException e) {
             if(e.getClass() == ParseException.class)
                 model.addAttribute("error", e.getMessage());
-            else if(e.getClass() == IOException.class)
+            else if(e.getClass() == IOException.class) {
+                e.printStackTrace();
                 model.addAttribute("error", "Internal error, please restart the process.");
-            else if(e.getClass() == NumberFormatException.class)
-                model.addAttribute("error", "Please ensure your students' preferences are stored as integers corresponding to project IDs, and GPA is stored as an integer or double");
+            }
+            else if(e.getClass() == NumberFormatException.class) {
+                e.printStackTrace();
+                model.addAttribute("error", "Please ensure your students' preferences are stored as numbers corresponding to project IDs, and GPA is stored as a number with at most two decimal places");
+            }
             return "error";
         }
     }

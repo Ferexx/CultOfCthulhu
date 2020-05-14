@@ -11,9 +11,9 @@ public class ProjectTests {
     public void testConstructor() {
         Project project = new Project(0, "App for destruction", 0);
 
-        assertEquals(0, project.getProjectID());
-        assertEquals("App for destruction", project.getProject_title());
-        assertEquals(0, project.getProposed_by());
+        assertEquals(0, project.getId());
+        assertEquals("App for destruction", project.getProjectTitle());
+        assertEquals(0, project.getProposedBy());
     }
 
     @Test
