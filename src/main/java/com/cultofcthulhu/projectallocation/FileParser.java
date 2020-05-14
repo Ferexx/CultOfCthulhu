@@ -45,10 +45,10 @@ public class FileParser {
                 else {
                     Student student = new Student(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[2]));
                     for (int j = 4; j < values.length; j++) {
-                        if(values[j].endsWith(" ")) values[j] = values[j].substring(0, values[j].length() - 1);
+                        values[j] = values[j].trim();
                         Optional<Project> project = projectDAO.findByProjectTitle(values[j]);
                         if (!project.isPresent() && !values[j].equals("")) {
-                            projectDAO.save(new Project(values[j], 0));
+                            projectDAO.save(new Project((int) (projectDAO.count() + 1), values[j], 0));
                             student.addPreference(projectDAO.findByProjectTitle(values[j]).get().getId());
                         }
                         else if(!values[j].equals("")) {
@@ -63,6 +63,7 @@ public class FileParser {
             }
             i++;
         }
+        systemVariables.NUMBER_OF_STUDENTS = i;
     }
 
     public List<StaffMember> parseStaff(File file) throws ParseException, IOException, NumberFormatException{
@@ -90,7 +91,7 @@ public class FileParser {
         return staff;
     }
 
-    public List<Student> parseStudents(File file) throws ParseException, IOException, NumberFormatException {
+    public List<Student> parseStudents(File file, ProjectDAO projectDAO, StudentProjectDAO studentProjectDAO) throws ParseException, IOException, NumberFormatException {
         String split;
         List<Student> students = new ArrayList<>();
         if(file.getName().endsWith("csv")) split = ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)";
@@ -103,22 +104,26 @@ public class FileParser {
         while((line = br.readLine())!=null) {
             String[] values = line.split(split, -1);
             //Ignore column titles
-            if(values[0].equals("ID")) {
+            if (values[0].toLowerCase().contains("student number")) {
                 i++;
                 continue;
             }
-            if(values.length != 5) throw new ParseException(
-                    "Your students file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 5)");
-            values[3] = values[3].substring(1, values[3].length()-1);
-            String[] preferences = values[3].split(split);
-            if(preferences.length != systemVariables.NUMBER_OF_PREFERENCES) throw new ParseException(
-                    "The student on line " + i + " in your students file does not have the correct number of preferences. (Found: " + preferences.length + ", Expected: " + systemVariables.NUMBER_OF_PREFERENCES + ")");
-            Student student = new Student(values[0], values[1], values[2], Double.parseDouble(values[4]));
-            for(String string : preferences)
-                student.addPreference(Integer.parseInt(string));
+            if (values.length != 6) throw new ParseException(
+                    "Your students file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 6)");
+            //Self-proposed projects
+            if (values[3].toLowerCase().contains("student")) {
+                studentProjectDAO.save(new StudentProject(values[1] + " " + values[2], Integer.parseInt(values[0]), Double.parseDouble(values[5]), projectDAO.findById(Integer.parseInt(values[4])).get().getProjectTitle()));
+                continue;
+            }
+            //Supervisor projects
+            values[4] = values[4].substring(1, values[4].length() - 1);
+            String[] preferences = values[4].split(split);
+            Student student = new Student(values[1] + " " + values[2], Integer.parseInt(values[0]), Double.parseDouble(values[5]));
+            for (String pref : preferences)
+                student.addPreference(Integer.parseInt(pref));
             students.add(student);
-            i++;
         }
+        systemVariables.NUMBER_OF_STUDENTS = i;
         return students;
     }
 
@@ -139,9 +144,9 @@ public class FileParser {
                 i++;
                 continue;
             }
-            if(values.length != 4) throw new ParseException(
-                    "Your projects file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 4)");
-            projects.add(new Project(Integer.parseInt(values[0]), values[1], Integer.parseInt(values[2]), values[3]));
+            if(values.length != 3) throw new ParseException(
+                    "Your projects file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 3)");
+            projects.add(new Project(Integer.parseInt(values[0]), values[1], Integer.parseInt(values[2])));
             i++;
         }
         return projects;

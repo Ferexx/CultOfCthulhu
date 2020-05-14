@@ -101,6 +101,6 @@ public class Student implements Personable {
         StringBuilder sb = new StringBuilder();
         for(int preference : preferences.values())
             sb.append(preference).append(",");
-        return firstName + " " + lastName + "," + id + ",\"" + sb + "\"," + gpa;
+        return firstName + "," + id + ",\"" + sb + "\"," + gpa;
     }
 }
