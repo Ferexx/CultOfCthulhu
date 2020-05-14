@@ -109,10 +109,12 @@ public class FileParser {
             }
             if(values.length != 6) throw new ParseException(
                     "Your students file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 6)");
+            //Self-proposed projects
             if(values[3].toLowerCase().contains("student")) {
                 studentProjectDAO.save(new StudentProject(values[1] + " " + values[2], Integer.parseInt(values[0]), Double.parseDouble(values[5]), projectDAO.findById(Integer.parseInt(values[4])).get().getProjectTitle()));
                 continue;
             }
+            //Supervisor projects
             values[4] = values[4].substring(1, values[4].length()-1);
             String[] preferences = values[4].split(split);
             Student student = new Student(values[1] + " " + values[2], Integer.parseInt(values[0]), Double.parseDouble(values[5]));

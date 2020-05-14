@@ -18,10 +18,6 @@ public class Project {
 
     public Project() {}
 
-    public Project(String projectTitle, int proposedBy) {
-        this.projectTitle = projectTitle;
-        this.proposedBy = proposedBy;
-    }
 
     public Project(int id, String projectTitle, int proposedBy) {
         this.id = id;
