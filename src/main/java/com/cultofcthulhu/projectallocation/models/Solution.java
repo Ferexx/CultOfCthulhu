@@ -3,6 +3,7 @@ package com.cultofcthulhu.projectallocation.models;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentProjectDAO;
+import com.cultofcthulhu.projectallocation.system.systemVariables;
 
 import javax.persistence.*;
 import java.util.*;
@@ -93,7 +94,7 @@ public class Solution implements Comparable<Solution>{
             }
             if(solution.get(student.getId()) == null) {
                 for(int i = 0; i < takenProjects.length; i++) {
-                    if(!takenProjects[i]) {
+                    if(!takenProjects[i] && projects.get(i + 1).getProposed_by() == 0) {
                         takenProjects[i] = true;
                         solution.put(student.getId(), i + 1);
                         break;
@@ -128,6 +129,42 @@ public class Solution implements Comparable<Solution>{
             out = out + "\t\t(" + num + ")\t\t" + projectDAO.getOne(entry.getValue()).getProject_title() + "\n";
         }
         return out;
+    }
+
+    public String solutionQualityReport(StudentDAO studentDAO, ProjectDAO projectDAO){
+        String out = "";
+        int[] count = new int[systemVariables.NUMBER_OF_PREFERENCES + 1];
+        Arrays.fill(count, 0);
+
+        for(Map.Entry<Integer, Integer> entry : solution.entrySet()) {
+            int num = 0;
+            for (Map.Entry<Integer,  Integer> preference: studentDAO.getOne(entry.getKey()).getPreferences().entrySet())
+            {
+                if (preference.getValue().equals(entry.getValue())){
+                    num = preference.getKey() + 1;
+                }
+            }
+
+            count[num] = count[num]++;
+        }
+
+        for (int i = 1 ; i < count.length ; i++){
+            out = out + count[i] + " student(s) got their " + ordinal(i) + " preference\n";
+        }
+
+        out = out + count[0] + " student(s) didn't get a preference on their list";
+
+        return out;
+    }
+
+    private String ordinal(int i) {
+        i = i % 100;
+        String[] ordinals = new String[] { "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+        if (i == 11 || i == 12 || i == 13) {
+            return i + "th";
+        } else {
+            return i + ordinals[i % 10];
+        }
     }
 
     public List<String[]> getSolutionList(StudentDAO studentDAO, ProjectDAO projectDAO, StudentProjectDAO studentProjectDAO){
