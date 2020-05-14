@@ -45,7 +45,7 @@ public class FileParser {
                 else {
                     Student student = new Student(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[2]));
                     for (int j = 4; j < values.length; j++) {
-                        if(values[j].endsWith(" ")) values[j] = values[j].substring(0, values[j].length() - 1);
+                        values[j] = values[j].trim();
                         Optional<Project> project = projectDAO.findByProjectTitle(values[j]);
                         if (!project.isPresent() && !values[j].equals("")) {
                             projectDAO.save(new Project(values[j], 0));
@@ -63,6 +63,7 @@ public class FileParser {
             }
             i++;
         }
+        systemVariables.NUMBER_OF_STUDENTS = i;
     }
 
     public List<StaffMember> parseStaff(File file) throws ParseException, IOException, NumberFormatException{
@@ -113,11 +114,11 @@ public class FileParser {
             String[] preferences = values[3].split(split);
             if(preferences.length != systemVariables.NUMBER_OF_PREFERENCES) throw new ParseException(
                     "The student on line " + i + " in your students file does not have the correct number of preferences. (Found: " + preferences.length + ", Expected: " + systemVariables.NUMBER_OF_PREFERENCES + ")");
-            Student student = new Student(values[0], values[1], values[2], Double.parseDouble(values[4]));
+            /*Student student = new Student(values[0], values[1], values[2], Double.parseDouble(values[4]));
             for(String string : preferences)
                 student.addPreference(Integer.parseInt(string));
             students.add(student);
-            i++;
+            i++;*/
         }
         return students;
     }
@@ -141,7 +142,7 @@ public class FileParser {
             }
             if(values.length != 4) throw new ParseException(
                     "Your projects file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 4)");
-            projects.add(new Project(Integer.parseInt(values[0]), values[1], Integer.parseInt(values[2]), values[3]));
+            //projects.add(new Project(Integer.parseInt(values[0]), values[1], Integer.parseInt(values[2]), values[3]));
             i++;
         }
         return projects;
