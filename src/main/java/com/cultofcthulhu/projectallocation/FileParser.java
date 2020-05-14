@@ -104,28 +104,26 @@ public class FileParser {
         while((line = br.readLine())!=null) {
             String[] values = line.split(split, -1);
             //Ignore column titles
-            if(values[0].toLowerCase().contains("student number")) {
+            if (values[0].toLowerCase().contains("student number")) {
                 i++;
                 continue;
             }
-            if(values.length != 6) throw new ParseException(
+            if (values.length != 6) throw new ParseException(
                     "Your students file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 6)");
             //Self-proposed projects
-            if(values[3].toLowerCase().contains("student")) {
+            if (values[3].toLowerCase().contains("student")) {
                 studentProjectDAO.save(new StudentProject(values[1] + " " + values[2], Integer.parseInt(values[0]), Double.parseDouble(values[5]), projectDAO.findById(Integer.parseInt(values[4])).get().getProjectTitle()));
                 continue;
             }
             //Supervisor projects
-            values[4] = values[4].substring(1, values[4].length()-1);
+            values[4] = values[4].substring(1, values[4].length() - 1);
             String[] preferences = values[4].split(split);
             Student student = new Student(values[1] + " " + values[2], Integer.parseInt(values[0]), Double.parseDouble(values[5]));
-            if(values.length != 5) throw new ParseException(
-                    "Your students file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 5)");
-            values[3] = values[3].substring(1, values[3].length()-1);
-            String[] preferences = values[3].split(split);
-            if(preferences.length != systemVariables.NUMBER_OF_PREFERENCES) throw new ParseException(
-                    "The student on line " + i + " in your students file does not have the correct number of preferences. (Found: " + preferences.length + ", Expected: " + systemVariables.NUMBER_OF_PREFERENCES + ")");
+            for (String pref : preferences)
+                student.addPreference(Integer.parseInt(pref));
+            students.add(student);
         }
+        systemVariables.NUMBER_OF_STUDENTS = i;
         return students;
     }
 
