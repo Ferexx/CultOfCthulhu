@@ -17,7 +17,6 @@ public class Student implements Personable {
     private int studentID;
     private String firstName;
     private String lastName;
-    private String stream;
     private double gpa = 0.00;
     @ElementCollection
     private Map<Integer, Integer> preferences = new HashMap<>();
@@ -25,15 +24,13 @@ public class Student implements Personable {
     private int workingUnderStaffID;
 
     public Student() {}
-    public Student(String firstName, String lastName, String stream){
+    public Student(String firstName, String lastName){
         this.firstName = firstName;
         this.lastName = lastName;
-        this.stream = stream;
     }
-    public Student(String firstName, String lastName, String stream, double GPA) {
+    public Student(String firstName, String lastName, double GPA) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.stream = stream;
         this.gpa = GPA;
     }
     public Student(String name, int studentID, double GPA) {
@@ -70,12 +67,6 @@ public class Student implements Personable {
         lastName = name.substring(name.indexOf(" ") + 1);
     }
 
-    public String getStream() {
-        return stream;
-    }
-
-    public void setStream(String stream) { this.stream = stream; }
-
     public double getGpa() { return gpa; }
 
     public void setGpa(double gpa) { this.gpa = gpa; }
@@ -110,6 +101,6 @@ public class Student implements Personable {
         StringBuilder sb = new StringBuilder();
         for(int preference : preferences.values())
             sb.append(preference).append(",");
-        return firstName + " " + lastName + "," + id + "," + stream + ",\"" + sb + "\"," + gpa;
+        return firstName + " " + lastName + "," + id + ",\"" + sb + "\"," + gpa;
     }
 }

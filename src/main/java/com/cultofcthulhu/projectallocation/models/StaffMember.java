@@ -18,17 +18,15 @@ public class StaffMember implements Personable {
     private int staffID;
     private String name;
     private String researchInterests;
-    private String stream;
     @ElementCollection
     private Map<Integer, Integer> project_proposals = new HashMap<>();
 
     public StaffMember() {}
 
-    public StaffMember (int id, String name, String researchInterests,  String stream){
+    public StaffMember(int id, String name, String researchInterests) {
         this.staffID = id;
         this.name = name;
-        this.researchInterests = researchInterests;
-        this. stream = stream;
+        this.researchInterests = researchInterests;;
     }
 
     //Getters and setters
@@ -60,14 +58,6 @@ public class StaffMember implements Personable {
         this.researchInterests = interests;
     }
 
-    public void setStream(String stream) {
-        this.stream = stream;
-    }
-
-    public String getStream() {
-        return stream;
-    }
-
     public void setProject_proposals(Map<Integer, Integer> project_proposals) {
         this.project_proposals = project_proposals;
     }
@@ -80,6 +70,6 @@ public class StaffMember implements Personable {
     //Extra methods
     @Override
     public String toString() {
-        return id + "," + name + "," + stream + "," + researchInterests;
+        return id + "," + name + "," + researchInterests;
     }
 }

@@ -1,11 +1,11 @@
-ID,Title,Staff ID,Stream
-1,An app for causing mayhem,1,CS+DS
-2,Cthulhu myths,2,CS
-3,Dagon's screams,3,DS
-4,Fear as a means of control,7,CS+DS
-5,Best methods of worship,5,CS+DS
-6,Worship,4,CS
-7,Help,8,DS
-8,I,2,DS
-9,Hope,1,CS+DS
-10,This,9,DS
+ID,Title,Staff ID
+1,An app for causing mayhem,1
+2,Cthulhu myths,2
+3,Dagon's screams,3
+4,Fear as a means of control,7
+5,Best methods of worship,5
+6,Worship,4
+7,Help,8
+8,I,2
+9,Hope,1
+10,This,9

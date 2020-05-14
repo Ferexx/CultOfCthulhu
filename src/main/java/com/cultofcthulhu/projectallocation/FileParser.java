@@ -84,7 +84,7 @@ public class FileParser {
             }
             if(values.length != 5) throw new ParseException(
                     "Your staff members file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 5)");
-            staff.add(new StaffMember(Integer.parseInt(values[0]), values[1], values[2], values[4]));
+            staff.add(new StaffMember(Integer.parseInt(values[0]), values[1], values[2]));
             i++;
         }
         return staff;
@@ -158,7 +158,7 @@ public class FileParser {
         }
 
         FileWriter writer = new FileWriter(file);
-        writer.write("Staff Member ID,Project Title,Stream");
+        writer.write("Staff Member ID,Project Title");
         writer.write("\n");
         for(Project project : projects) {
             String string = project.toString();
@@ -179,7 +179,7 @@ public class FileParser {
         }
 
         FileWriter writer = new FileWriter(file);
-        writer.write("Student Name,Student Number,Stream,Project Preferences,GPA");
+        writer.write("Student Name,Student Number,Project Preferences,GPA");
         writer.write("\n");
         for(Student student : lines) {
             String string = student.toString();

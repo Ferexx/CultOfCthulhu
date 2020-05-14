@@ -80,7 +80,6 @@ public class GenerationController {
             already.add(staffNumber);
 
             StaffMember member = members.get(staffNumber-1);
-            if(member.getStream() == null) member.setStream("Cthulhu Studies");
             //Store and retrieve it in database so that an ID is generated
             staffMemberDAO.save(member);
             member = staffMemberDAO.findByName(member.getName());
@@ -88,14 +87,7 @@ public class GenerationController {
             //Next, generate three projects that they "propose"
             for(int j = 0; j < 3; j++) {
                 String projectTitle = RandomGenerator.generateString();
-                String projectStream;
-                if(member.getStream().equals("Dagon Studies"))
-                    projectStream = "DS";
-                    //Generate a random integer to decide if it's CS or CS+DS
-                else if(ThreadLocalRandom.current().nextInt(0, 11) % 2 == 0)
-                    projectStream = "CS";
-                else projectStream = "CS+DS";
-                Project project = new Project(projectTitle, member.getId(), projectStream);
+                Project project = new Project(projectTitle, member.getId());
                 member.addProject_proposal(project.getId());
                 projectDAO.save(project);
             }
@@ -141,13 +133,11 @@ public class GenerationController {
         }
 
         //Now randomly choose first and last name, and generate student
-        String firstname, lastname, stream;
+        String firstname, lastname;
         for(int i = 0; i < number; i++) {
             firstname = firstnames.get(rand.nextInt(200));
             lastname = lastnames.get(rand.nextInt(200));
-            if(rand.nextInt(10) < 6) stream = "CS";
-            else stream = "DS";
-            Student student = new Student(firstname, lastname, stream);
+            Student student = new Student(firstname, lastname);
             DecimalFormat df = new DecimalFormat("#.#");
             student.setGpa(Double.parseDouble(df.format(ThreadLocalRandom.current().nextDouble(0, 4.2))));
             //Generate this student's preferences with Gaussian distribution

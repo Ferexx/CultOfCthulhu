@@ -9,11 +9,10 @@ public class StaffMemberTests {
 
     @Test
     public void testConstructor() {
-        StaffMember staffMember = new StaffMember(0, "Jack Price", "Gaming, Testing, Sleeping", "Dagon Studies");
+        StaffMember staffMember = new StaffMember(0, "Jack Price", "Gaming, Testing, Sleeping");
 
         assertEquals("Jack Price", staffMember.getName());
         assertEquals("Gaming, Testing, Sleeping", staffMember.getResearchInterests());
-        assertEquals("Dagon Studies", staffMember.getStream());
     }
 
 }
