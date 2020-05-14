@@ -94,7 +94,7 @@ public class Solution implements Comparable<Solution>{
             }
             if(solution.get(student.getId()) == null) {
                 for(int i = 0; i < takenProjects.length; i++) {
-                    if(!takenProjects[i] && projects.get(i + 1).getProposed_by() == 0) {
+                    if(!takenProjects[i] && projects.get(i + 1).getProposedBy() == 0) {
                         takenProjects[i] = true;
                         solution.put(student.getId(), i + 1);
                         break;
