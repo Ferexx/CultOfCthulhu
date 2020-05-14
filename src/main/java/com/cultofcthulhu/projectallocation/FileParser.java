@@ -45,7 +45,7 @@ public class FileParser {
                 else {
                     Student student = new Student(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[2]));
                     for (int j = 4; j < values.length; j++) {
-                        if(values[j].endsWith(" ")) values[j] = values[j].substring(0, values[j].length() - 1);
+                        values[j] = values[j].trim();
                         Optional<Project> project = projectDAO.findByProjectTitle(values[j]);
                         if (!project.isPresent() && !values[j].equals("")) {
                             projectDAO.save(new Project((int) (projectDAO.count() + 1), values[j], 0));
@@ -63,6 +63,7 @@ public class FileParser {
             }
             i++;
         }
+        systemVariables.NUMBER_OF_STUDENTS = i;
     }
 
     public List<StaffMember> parseStaff(File file) throws ParseException, IOException, NumberFormatException{
@@ -118,10 +119,12 @@ public class FileParser {
             values[4] = values[4].substring(1, values[4].length()-1);
             String[] preferences = values[4].split(split);
             Student student = new Student(values[1] + " " + values[2], Integer.parseInt(values[0]), Double.parseDouble(values[5]));
-            for(String string : preferences)
-                student.addPreference(Integer.parseInt(string));
-            students.add(student);
-            i++;
+            if(values.length != 5) throw new ParseException(
+                    "Your students file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 5)");
+            values[3] = values[3].substring(1, values[3].length()-1);
+            String[] preferences = values[3].split(split);
+            if(preferences.length != systemVariables.NUMBER_OF_PREFERENCES) throw new ParseException(
+                    "The student on line " + i + " in your students file does not have the correct number of preferences. (Found: " + preferences.length + ", Expected: " + systemVariables.NUMBER_OF_PREFERENCES + ")");
         }
         return students;
     }
