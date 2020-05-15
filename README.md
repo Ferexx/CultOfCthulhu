@@ -85,9 +85,11 @@ One significant optimisation we made was to our algorithms. Previously, we were 
 
 We also added a visual indicator of the quality of our solution. We do this by adding a color to the list we pass to Thymeleaf, based on how far down in the student's preference list their assigned project is. This updates the background color of that students' row in the solution table. We also added a quality report to the bottom of the solution page, detailing how many students got their first preference, etc.
 
-Unfortunately, because we only received a sample input file in this sprint, we spent a significant amount of time bolting on new parsing, as well as having to adjust our pre-existing systems, to accommodate this new filetype. We'd been trained to expect a master projects file at every turn up until this point, so the lack of one in the sample input file was quite the nuisance. It would have been nice to have had a sample input file from the beginning of the project, so we could shape our codebase accordingly.
+Unfortunately, because we only received a sample input file in this sprint, we spent a significant amount of time bolting on new parsing, as well as having to adjust our pre-existing systems, to accommodate this new filetype. We'd been trained to expect a master projects file at every turn up until this point, so the lack of one in the sample input file was quite the nuisance. It would have been nice to have had a sample input file from the beginning of the project, so we could shape our codebase accordingly. The new parsing works by adding new projects as it goes through the students' preferences. If it encounters one that doesn't already exist in the database, it adds it.
 
 We added a progress bar to the options page to display the current progress in the search for solutions. Unfortunately, we couldn't get this to work since the algorithm was being run on the server side of things. Despite many hours spent trawling StackOverflow and other sites, we couldn't find a definitive method for updating values after loading the page. The best we could find was AJAX, but nothing specific to Spring Boot. As such, we just left the progress bar to increment every so often.
+
+We added a new class which stores self-proposed projects. When parsing files, we check if a student has proposed their own project, and if so, instantiate one of these new objects. Otherwise, we do the usual thing of creating a new student object and project object. This allows us to deal with students' self-proposed projects entirely separately.
 
 ## Team Report:
 

@@ -1,9 +1,13 @@
 package com.cultofcthulhu.projectallocation.modeltests;
 
+import com.cultofcthulhu.projectallocation.models.Solution;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class SolutionTests {
 
@@ -13,9 +17,11 @@ public class SolutionTests {
         for(int i = 0; i < 10; i++) {
             map.put(i, i);
         }
-        //Solution solution = new Solution(map);
+        Integer[] array = new Integer[] {0,1,2,3,4};
+        Solution solution = new Solution(map, array);
 
-        //assertEquals(map, solution.getSolution());
+        assertEquals(map, solution.getSolution());
+        assertEquals(array, solution.getStudentProjectAssignmentOrder());
     }
 
     @Test
@@ -24,10 +30,11 @@ public class SolutionTests {
         for(int i = 0; i < 10; i++) {
             map.put(i, i);
         }
-       // Solution solution = new Solution(map);
+        Integer[] array = new Integer[] {0,1,2,3,4};
+       Solution solution = new Solution(map, array);
+       Solution solution1 = new Solution(map, array);
+       solution1.change();
 
-       // assertNotEquals(solution.getSolution().toString(), solution.change(1).toString());
-       // assertNotEquals(solution.getSolution().toString(), solution.change(2).toString());
-       // assertNotEquals(solution.getSolution().toString(), solution.change(3).toString());
+       assertNotEquals(solution.getStudentProjectAssignmentOrder(), solution1.getStudentProjectAssignmentOrder());
     }
 }

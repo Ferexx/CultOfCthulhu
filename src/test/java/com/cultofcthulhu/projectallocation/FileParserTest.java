@@ -1,7 +1,11 @@
 package com.cultofcthulhu.projectallocation;
 
 import com.cultofcthulhu.projectallocation.exceptions.ParseException;
+import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
+import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
+import com.cultofcthulhu.projectallocation.models.data.StudentProjectDAO;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,25 +30,22 @@ public class FileParserTest {
         assertTrue(actualMessage.contains(expectedMessage));
     }
 
+    @Autowired
+    private StudentProjectDAO studentProjectDAO;
+    @Autowired
+    private ProjectDAO projectDAO;
+    private StudentDAO studentDAO;
     @Test
     public void testStudentParse() throws ParseException, IOException {
-        /*FileParser StudentParsingWorks = new FileParser();
-        StudentParsingWorks.parseStudents(new File("test-files/Student/ShouldWork.csv"));
-        StudentParsingWorks.parseStudents(new File("test-files/Student/ShouldWork.tsv"));
+        FileParser StudentParsingWorks = new FileParser();
+        StudentParsingWorks.parseStudents(new File("test-files/Student/ShouldWork.csv"), projectDAO, studentProjectDAO);
+        StudentParsingWorks.parseStudents(new File("test-files/Student/ShouldWork.tsv"), projectDAO, studentProjectDAO);
 
         Exception exception = assertThrows(ParseException.class, () -> {
-            StudentParsingWorks.parseStudents(new File("test-files/Student/IncorrectFields.csv"));
+            StudentParsingWorks.parseStudents(new File("test-files/Student/IncorrectFields.csv"), projectDAO, studentProjectDAO);
         });
         String actualMessage = exception.getMessage();
         String expectedMessage = "Your file has an incorrect number of fields";
         assertTrue(actualMessage.contains(expectedMessage));
-        Exception exception1 = assertThrows(ParseException.class, () -> {
-            StudentParsingWorks.parseStudents(new File("test-files/Student/IncorrectNumberOfPreferences.csv"));
-        });
-        String actualMessage1 = exception1.getMessage();
-        assertTrue(actualMessage1.contains("does not have the correct number of preferences"));
-        assertThrows(NumberFormatException.class, () -> {
-            StudentParsingWorks.parseStudents(new File("test-files/Student/IncorrectPreferenceType.csv"));
-        });*/
     }
 }
