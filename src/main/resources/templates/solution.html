@@ -39,17 +39,28 @@
             </tr>
             </tbody>
         </table>
-        <br><br>
-        <table>
-            <tbody class="text-left">
-                <tr th:each="line : ${report}">
-                    <td th:text="${line}"></td>
-                </tr>
-            </tbody>
-        </table>
 
+        <br><br>
+
+        <div class="card justify-content-center" style="height: auto;">
+            <table class="table table-light">
+                <thead>
+                    <tr>
+                        <th style="text-align: center;">Which Preferences Students Got</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr th:each="line : ${report}">
+                        <td th:text="${line}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <br>
     </div>
 
+    <br>
 
     <footer class="text-center">
         <br>

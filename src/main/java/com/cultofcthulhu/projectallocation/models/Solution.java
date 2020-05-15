@@ -184,11 +184,11 @@ public class Solution implements Comparable<Solution>{
             }
             out[2] = String.valueOf(num);
             out[3] = projectDAO.getOne(entry.getValue()).getProjectTitle();
-            if(num <= 5) out[4] = "rgba(76, 175, 80, 0.1)";
-            if(num > 5 && num <=10) out[4] = "rgb(255,255,0, 0.1)";
-            if(num > 10 && num <= 15) out[4] = "rgb(255,165,0, 0.1)";
-            if(num > 15 && num <= 20) out[4] = "rgb(255,0,0, 0.1)";
-            if(num == -1) out[4] = "rgb(0,0,0, 0.1)";
+            if(num <= 5) out[4] = "rgba(76, 175, 80, 0.2)";
+            if(num > 5 && num <=10) out[4] = "rgb(255,255,0, 0.2)";
+            if(num > 10 && num <= 15) out[4] = "rgb(255,165,0, 0.2)";
+            if(num > 15 && num <= 20) out[4] = "rgb(255,0,0, 0.2)";
+            if(num == -1) out[4] = "rgb(0,0,0, 0.2)";
             stringList.add(out);
         }
 
