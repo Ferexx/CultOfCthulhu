@@ -130,8 +130,8 @@ public class Solution implements Comparable<Solution>{
         return out;
     }
 
-    public String solutionQualityReport(StudentDAO studentDAO, ProjectDAO projectDAO){
-        String out = "";
+    public List<String> solutionQualityReport(StudentDAO studentDAO){
+        List<String> out = new ArrayList<>();
         int[] count = new int[systemVariables.NUMBER_OF_PREFERENCES + 1];
         Arrays.fill(count, 0);
 
@@ -144,14 +144,14 @@ public class Solution implements Comparable<Solution>{
                 }
             }
 
-            count[num] = count[num]++;
+            count[num]++;
         }
 
         for (int i = 1 ; i < count.length ; i++){
-            out = out + count[i] + " student(s) got their " + ordinal(i) + " preference\n";
+            out.add(count[i] + " student(s) got their " + ordinal(i) + " preference\n");
         }
 
-        out = out + count[0] + " student(s) didn't get a preference on their list";
+        out.add(count[0] + " student(s) didn't get a preference on their list");
 
         return out;
     }

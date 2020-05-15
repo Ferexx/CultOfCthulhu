@@ -40,6 +40,14 @@
             </tbody>
         </table>
         <br><br>
+        <table>
+            <tbody class="text-left">
+                <tr th:each="line : ${report}">
+                    <td th:text="${line}"></td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 
 

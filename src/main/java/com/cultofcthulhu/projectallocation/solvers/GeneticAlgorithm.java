@@ -181,4 +181,8 @@ public class GeneticAlgorithm {
     public int getProgress() {
         return progress;
     }
+
+    public Solution getBest() {
+        return solutions.getSolution(0);
+    }
 }

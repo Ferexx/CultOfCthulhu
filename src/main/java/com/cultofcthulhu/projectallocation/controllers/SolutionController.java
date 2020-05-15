@@ -47,6 +47,7 @@ public class SolutionController {
             simulation = new SimulatedAnnealing(initialSolution);
             simulation.currentBest.setEnergy(simulation.assessSolution(simulation.currentBest, GPARange, studentDAO, projectDAO));
             model.addAttribute("list", simulation.hillClimb(GPARange, studentDAO, projectDAO).getSolutionList(studentDAO, projectDAO, studentProjectDAO));
+            model.addAttribute("report", simulation.currentBest.solutionQualityReport(studentDAO));
         }
         else {
             model.addAttribute("title", "Genetic Algorithms");
@@ -55,6 +56,7 @@ public class SolutionController {
             solutionHerd.getSolution(0).setFitness(genet.assessSolution(solutionHerd.getSolution(0), GPARange, studentDAO, projectDAO));
             System.out.println(solutionHerd.getSolution(0).printSolution(studentDAO, projectDAO));
             model.addAttribute("list", genet.runAlgorithm(GPARange, studentDAO, projectDAO).getSolutionList(studentDAO,projectDAO, studentProjectDAO));
+            model.addAttribute("report", genet.getBest().solutionQualityReport(studentDAO));
         }
         return "solution";
     }
