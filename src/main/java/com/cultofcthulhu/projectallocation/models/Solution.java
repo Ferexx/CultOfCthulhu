@@ -154,6 +154,29 @@ public class Solution implements Comparable<Solution>{
 
         out.add(count[0] + " student(s) didn't get a preference on their list");
 
+        boolean everyStudentHasUniqueProject = true;
+        boolean everyStudentHasAPreference = true;
+        for(Map.Entry<Integer, Integer> entry : getSolution().entrySet()) {
+            //First check if a project has been assigned to more than one person
+            for (Map.Entry<Integer, Integer> entry2 : getSolution().entrySet())
+                if (entry.getValue().equals(entry2.getValue()) && !entry.getKey().equals(entry2.getKey())) {
+                    out.add("CONSTRAINT VIOLATION : PROJECT ASSIGNED TO MORE THEN ONE STUDENT");
+                    everyStudentHasUniqueProject = false;
+                }
+                if(entry.getValue() == -1) {
+                    out.add("CONSTRAINT VIOLATION : STUDENT NOT ASSIGNED PROJECT ON THEIR LIST");
+                    everyStudentHasAPreference = false;
+                }
+        }
+
+        if (everyStudentHasUniqueProject) {
+            out.add("Ever student has a unique project");
+        }
+
+        if (everyStudentHasAPreference) {
+            out.add("Ever student has a project from their preferences");
+        }
+
         return out;
     }
 
