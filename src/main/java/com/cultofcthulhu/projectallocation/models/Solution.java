@@ -94,7 +94,7 @@ public class Solution implements Comparable<Solution>{
             }
             if(solution.get(student.getId()) == null) {
                 for(int i = 0; i < takenProjects.length; i++) {
-                    if(!takenProjects[i] && projects.get(i + 1).getProposedBy() == 0) {
+                    if(!takenProjects[i]) {
                         takenProjects[i] = true;
                         solution.put(student.getId(), i + 1);
                         break;
@@ -142,10 +142,10 @@ public class Solution implements Comparable<Solution>{
             {
                 if (preference.getValue().equals(entry.getValue())){
                     num = preference.getKey() + 1;
+
                 }
             }
-
-            count[num] = count[num]++;
+            count[num] = count[num] + 1;
         }
 
         for (int i = 1 ; i < count.length ; i++){

@@ -1,0 +1,63 @@
+Order students were assigned projects in: 
+30,27,16,29,51,41,24,3,33,46,59,50,11,1,53,45,12,57,14,44,9,2,42,26,20,10,6,39,28,58,21,43,5,40,18,31,19,23,47,17,15,36,8,4,34,60,56,37,13,32,35,52,25,55,54,49,38,48,22,7,Solution:
+
+Jenna Ferguson 0.0		(1)		worship worship worship mayhem 
+Sarah Rogers 0.1		(1)		myths stories app 
+Eddy Baker 2.3		(1)		myths Cthulhu worship Dagon 
+Charlie Williams 2.6		(3)		Cthulhu 
+Aida Higgins 0.7		(1)		research worship 
+Tara Ferguson 0.1		(1)		stories mayhem 
+Sydney Barnes 3.9		(3)		society 
+Stuart Taylor 1.3		(2)		Cthulhu app app mayhem Dagon society worship 
+Wilson Carroll 0.3		(1)		Cthulhu research worship mayhem 
+Lucia Brown 2.4		(1)		myths Cthulhu app society app research Dagon Dagon 
+Tara Murray 0.3		(1)		society 
+Camila Harper 2.9		(3)		app worship app 
+Charlie Anderson 3.5		(3)		Cthulhu stories myths research stories 
+Stuart Murray 2.5		(2)		stories research Dagon app worship stories Cthulhu 
+Deanna Harper 0.2		(1)		Miskatonic worship Miskatonic worship society 
+Preston Rogers 0.7		(1)		research worship 
+Freddie Miller 0.7		(1)		app society mayhem research Miskatonic 
+Penelope Roberts 2.3		(1)		myths worship 
+Briony Ellis 0.8		(1)		worship app research Miskatonic Cthulhu 
+Andrew Taylor 4.1		(1)		Dagon worship society Dagon mayhem worship 
+Frederick Murray 3.5		(1)		Cthulhu worship app stories Miskatonic 
+Nicole Taylor 1.8		(3)		myths mayhem society 
+Jordan Grant 1.0		(1)		mayhem Dagon Dagon worship 
+Frederick Carter 4.1		(1)		Cthulhu Dagon Cthulhu 
+Mike Thomas 0.9		(1)		worship research research society Dagon myths stories myths 
+Kristian Carter 3.4		(1)		worship myths Cthulhu Cthulhu 
+Hailey Ellis 3.8		(1)		Cthulhu research 
+John Edwards 1.0		(1)		stories worship Miskatonic Miskatonic myths mayhem 
+Ryan Taylor 0.3		(1)		stories Dagon society worship research Cthulhu Miskatonic 
+Edwin Ryan 2.0		(10)		Cthulhu myths stories app Dagon myths worship Miskatonic 
+Ashton Brooks 1.6		(1)		stories research 
+Roland Watson 3.9		(3)		society Miskatonic research app app Miskatonic stories 
+Mike Cooper 0.2		(1)		mayhem research 
+Chelsea Tucker 1.3		(3)		worship Miskatonic worship 
+Frederick Crawford 0.1		(2)		Dagon worship Miskatonic stories society 
+Amy Hunt 0.9		(1)		stories 
+Sarah Morris 1.0		(1)		society Miskatonic myths 
+Maximilian Walker 2.7		(8)		mayhem Dagon stories Dagon Dagon mayhem 
+Michael Wright 2.8		(5)		app Dagon research myths 
+Chloe Campbell 4.0		(1)		Cthulhu Dagon app mayhem worship app 
+Natalie Perkins 2.8		(7)		worship society stories worship mayhem mayhem mayhem 
+Sarah Armstrong 1.2		(9)		society app mayhem 
+Carina Baker 4.2		(1)		Cthulhu stories worship app 
+Brianna Harris 1.7		(1)		worship myths research Cthulhu Miskatonic Cthulhu app stories 
+Dexter Ellis 2.6		(10)		research worship Dagon Dagon Miskatonic app 
+Chester Thomas 1.7		(1)		app society society Dagon mayhem 
+Sarah Taylor 1.4		(1)		worship Miskatonic app Cthulhu Dagon worship 
+Natalie Brooks 0.5		(2)		stories mayhem app myths 
+Daisy Henderson 0.1		(1)		stories app 
+Chester Andrews 2.4		(1)		myths Miskatonic Cthulhu worship Dagon Cthulhu Miskatonic mayhem 
+Annabella Foster 0.7		(1)		app 
+Adelaide Hawkins 2.6		(1)		app 
+Abraham Johnston 3.2		(1)		Dagon Cthulhu 
+Byron Nelson 2.6		(2)		Cthulhu 
+Thomas Tucker 2.9		(8)		society worship research Miskatonic Dagon stories app 
+Maria Ellis 0.6		(4)		Miskatonic 
+Camila Harrison 3.5		(2)		myths Dagon Cthulhu mayhem mayhem Dagon Miskatonic 
+Adrian Wells 3.3		(1)		stories app research society research 
+Preston Adams 1.3		(1)		research 
+Oliver Miller 0.2		(4)		worship Miskatonic 
