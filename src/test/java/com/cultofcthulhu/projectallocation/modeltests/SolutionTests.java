@@ -21,7 +21,6 @@ public class SolutionTests {
         Solution solution = new Solution(map, array);
 
         assertEquals(map, solution.getSolution());
-        assertEquals(array, solution.getStudentProjectAssignmentOrder());
     }
 
     @Test

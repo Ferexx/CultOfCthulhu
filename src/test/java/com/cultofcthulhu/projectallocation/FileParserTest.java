@@ -24,7 +24,7 @@ public class FileParserTest {
         Exception exception = assertThrows(ParseException.class, () -> {
            parser.parseStaff(new File("test-files/Staff/WontWork.csv"));
         });
-        String expectedMessage = "Your file has an incorrect number of fields";
+        String expectedMessage = "has an incorrect number of fields";
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(expectedMessage));
     }
@@ -43,7 +43,7 @@ public class FileParserTest {
             StudentParsingWorks.parseStudents(new File("test-files/Student/IncorrectFields.csv"), projectDAO, studentProjectDAO);
         });
         String actualMessage = exception.getMessage();
-        String expectedMessage = "Your file has an incorrect number of fields";
+        String expectedMessage = "has an incorrect number of fields";
         assertTrue(actualMessage.contains(expectedMessage));
     }
 }

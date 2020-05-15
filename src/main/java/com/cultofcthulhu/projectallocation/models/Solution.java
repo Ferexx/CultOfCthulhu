@@ -17,7 +17,7 @@ public class Solution implements Comparable<Solution>{
 
     public Solution(Map<Integer, Integer> map, Integer[] studentProjectAssignmentOrder)
     {
-        this.studentProjectAssignmentOrder = studentProjectAssignmentOrder;
+        this.studentProjectAssignmentOrder = studentProjectAssignmentOrder.clone();
         solution = new HashMap<>(map);
     }
 

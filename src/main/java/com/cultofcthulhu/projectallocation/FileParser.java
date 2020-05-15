@@ -89,8 +89,8 @@ public class FileParser {
                 i++;
                 continue;
             }
-            if(values.length != 5) throw new ParseException(
-                    "Your staff members file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 5)");
+            if(values.length != 4) throw new ParseException(
+                    "Your staff members file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: 4)");
             staff.add(new StaffMember(Integer.parseInt(values[0]), values[1], values[2]));
             i++;
         }
@@ -132,6 +132,7 @@ public class FileParser {
             } catch (NumberFormatException e) {
                 throw new ParseException("Please ensure the numbers in row " + i + " are formatted correctly");
             }
+            i++;
         }
         systemVariables.NUMBER_OF_STUDENTS = i;
         return students;
