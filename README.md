@@ -83,4 +83,24 @@ This final sprint was a mish-mash of various tasks: cleaning up code from previo
 
 One significant optimisation we made was to our algorithms. Previously, we were using DAOs to retrieve student information, which were incredibly slow. We improved this by passing a list of all students and projects to the necessary functions, and accessing the list instead. This improved the speed of our simulated annealing algorithm massively, cutting the average runtime from 1-2 minutes down to less than 5 seconds.
 
-We also added a visual indicator of the quality of our solution. We do this by adding a color to the list we pass to Thymeleaf, based on how far down in the student's preference list their assigned project is. This updates the background color of that students' row in the solution table.
+We also added a visual indicator of the quality of our solution. We do this by adding a color to the list we pass to Thymeleaf, based on how far down in the student's preference list their assigned project is. This updates the background color of that students' row in the solution table. We also added a quality report to the bottom of the solution page, detailing how many students got their first preference, etc.
+
+Unfortunately, because we only received a sample input file in this sprint, we spent a significant amount of time bolting on new parsing, as well as having to adjust our pre-existing systems, to accommodate this new filetype. We'd been trained to expect a master projects file at every turn up until this point, so the lack of one in the sample input file was quite the nuisance. It would have been nice to have had a sample input file from the beginning of the project, so we could shape our codebase accordingly.
+
+We added a progress bar to the options page to display the current progress in the search for solutions. Unfortunately, we couldn't get this to work since the algorithm was being run on the server side of things. Despite many hours spent trawling StackOverflow and other sites, we couldn't find a definitive method for updating values after loading the page. The best we could find was AJAX, but nothing specific to Spring Boot. As such, we just left the progress bar to increment every so often.
+
+## Team Report:
+
+We are happy to split the credit for this project evenly, with each member receiving 33% of the credit.
+
+In terms of how the work was divided, Jack and Rohan handled the Java side of things, working collaboratively on the algorithms etc. Monika handled the webpage side of things, creating the UI and doing testing to make sure everything in the backend was working.
+
+As a team, we had a meeting on Monday or Tuesday every week to establish exactly what we needed to get done for that week's sprint. These meetings were usually very productive, everyone had ideas on how to improve upon what we had done previously, or how best to implement a new feature. When necessary, we also met later on in the week to discuss any issues we were having, and again, these proved to be quite fruitful.
+
+# How To Run
+
+The project folder includes a prepackaged jar for you to run in the "target" folder. To run it, you have two options.
+
+You can simply double click on it, as you would any executable and it will run quietly in the background. The trouble with this method is that to stop the program you have to go to Task Manager and find the "OpenJDK Platform binary" process and kill it from there.
+
+The method we would suggest is to run it by opening a command prompt, navigating to the folder in which the jar is contained, and typing "java -jar projectallocation-0.0.1-SNAPSHOT.jar"

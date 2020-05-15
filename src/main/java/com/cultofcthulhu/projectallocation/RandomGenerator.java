@@ -1,11 +1,12 @@
 package com.cultofcthulhu.projectallocation;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomGenerator {
 
-    static List<String> words = List.of("Cthulhu", "Dagon", "worship", "mayhem", "society", "Miskatonic", "app", "research", "myths", "stories");
+    static List<String> words = Arrays.asList("Cthulhu", "Dagon", "worship", "mayhem", "society", "Miskatonic", "app", "research", "myths", "stories");
 
     public RandomGenerator () {}
 
