@@ -1,14 +1,9 @@
 package com.cultofcthulhu.projectallocation.modeltests;
 
-import com.cultofcthulhu.projectallocation.models.Solution;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static java.util.Map.entry;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class SolutionTests {
 
