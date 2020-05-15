@@ -10,7 +10,6 @@ import java.util.Map;
 public class StaffMember implements Personable {
 
     //Variable declaration and constructors
-    //TODO: Change ID to input files ID
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

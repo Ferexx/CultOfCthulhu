@@ -13,8 +13,8 @@ import java.util.Scanner;
 public class solutionAccess {
     public solutionAccess(){}
 
-    public void solutionSaveToFile(Solution solution, String fileName, String tostring) {
-        Integer[] student_project_assignment_order = solution.getStudent_project_assignment_order();
+    public void solutionSaveToFile(Solution solution, String fileName, String toString) {
+        Integer[] student_project_assignment_order = solution.getStudentProjectAssignmentOrder();
         try {
             FileWriter writer = new FileWriter("user-files/" + fileName + ".txt");
 
@@ -24,7 +24,7 @@ public class solutionAccess {
             }
 
             writer.write("Solution:\n");
-            writer.write("\n" + tostring);
+            writer.write("\n" + toString);
 
             writer.close();
         } catch (Exception e) {

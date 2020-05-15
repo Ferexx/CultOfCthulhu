@@ -1,3 +1,7 @@
+/*
+This controller deals with storing and parsing the files uploaded by users
+ */
+
 package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.FileParser;
@@ -33,16 +37,12 @@ public class UploadController {
     public UploadController(StorageService storageService) {
         this.storageService = storageService;
     }
-
     @Autowired
     public StudentDAO studentDAO;
-
     @Autowired
     public StaffMemberDAO staffMemberDAO;
-
     @Autowired
     public ProjectDAO projectDAO;
-
     @Autowired
     public StudentProjectDAO studentProjectDAO;
 

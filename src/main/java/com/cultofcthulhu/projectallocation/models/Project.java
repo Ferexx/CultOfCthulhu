@@ -18,7 +18,6 @@ public class Project {
 
     public Project() {}
 
-
     public Project(int id, String projectTitle, int proposedBy) {
         this.id = id;
         this.projectTitle = projectTitle;
@@ -59,5 +58,4 @@ public class Project {
     public String toString() {
         return proposedBy + "," + projectTitle;
     }
-
 }
