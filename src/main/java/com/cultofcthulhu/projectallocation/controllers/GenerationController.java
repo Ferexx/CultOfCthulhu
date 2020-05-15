@@ -1,3 +1,8 @@
+/*
+This controller deals with the random generation used instead of parsing input.
+The feature is intended for developers, to allow them to test the system.
+ */
+
 package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.FileParser;
@@ -55,6 +60,7 @@ public class GenerationController {
         systemVariables.NUMBER_OF_STUDENTS = number;
         generateProjects(number);
         generateStudents(number, projectDAO.findAll());
+        //Provide option for the user to download the generated values in csv format
         model.addAttribute("download", true);
         model.addAttribute("value", 0);
         return "options";
@@ -158,7 +164,7 @@ public class GenerationController {
         for (int x = 0 ; x < NUMBER_OF_PREFERENCES ; x++) {
             int val;
             do {
-                val = (int) Math.round(rand.nextGaussian() * (projects.size() / 3) + (projects.size() / 2));
+                val = (int) Math.round(rand.nextGaussian() * (projects.size() / 3.0) + (projects.size() / 2.0));
             }while(val <= 0 || val >= projects.size()-1);
             student.addPreference(projects.get(val).getId());
         }

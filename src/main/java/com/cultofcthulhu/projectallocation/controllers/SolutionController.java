@@ -1,3 +1,7 @@
+/*
+This controller looks after generating solutions for the program
+ */
+
 package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.models.GeneticAlgorithmSolutionHerd;
@@ -15,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
@@ -68,7 +71,7 @@ public class SolutionController {
         return ResponseEntity.ok().contentType(MediaType.parseMediaType("application/txt")).header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + resource.getFilename() + "\"").body(resource);
     }
 
-    @RequestMapping(value = "solution-progress", method= RequestMethod.GET)
+    @RequestMapping(value = "solution-progress", method = RequestMethod.GET)
     public @ResponseBody int getProgress() {
         if(choice.equals("Simulated Annealing")) {
             return simulation.getProgress();

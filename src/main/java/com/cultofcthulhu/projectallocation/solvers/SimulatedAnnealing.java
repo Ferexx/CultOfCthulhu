@@ -13,9 +13,11 @@ import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class SimulatedAnnealing implements Solverable {
+
     public Solution currentBest;
     private int progress;
     int temperature = 100;
+
     public SimulatedAnnealing(Solution solution) {
         currentBest = solution;
     }
@@ -26,7 +28,7 @@ public class SimulatedAnnealing implements Solverable {
         double initialEnergy = currentBest.getEnergy();
         do {
             do {
-                newSolution = new Solution(currentBest.getSolution(), currentBest.getStudent_project_assignment_order());
+                newSolution = new Solution(currentBest.getSolution(), currentBest.getStudentProjectAssignmentOrder());
                 newSolution.change();
                 newSolution.generateSolution(studentDAO, projectDAO);
                 newSolution.setEnergy(assessSolution(newSolution, GPA_impact, studentDAO, projectDAO));
@@ -38,7 +40,7 @@ public class SimulatedAnnealing implements Solverable {
                 }
                 count++;
                 progress++;
-            }while(count < systemVariables.NUMBER_OF_STUDENTS);
+            } while(count < systemVariables.NUMBER_OF_STUDENTS);
             //Cooling Schedule
             if(initialEnergy-currentBest.getEnergy() > temperature/10.0 || count > Math.pow(systemVariables.NUMBER_OF_STUDENTS, 2)) {
                 progress = (int) (progress - count + Math.pow(systemVariables.NUMBER_OF_STUDENTS, 2));

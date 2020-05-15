@@ -1,3 +1,8 @@
+/*
+This controller deals with customising the program to change things like
+number of preferences, etc.
+ */
+
 package com.cultofcthulhu.projectallocation.controllers;
 
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
@@ -18,7 +23,7 @@ public class StudentController {
     private ProjectDAO projectDAO;
 
     @PostMapping(value = "/preferences")
-    public String preferencePage(@RequestParam long studentNum, Model model) {
+    public String preferencePage(Model model) {
         model.addAttribute("title", "Preferences");
         model.addAttribute("projects", projectDAO.findAll());
         return "preferences";
@@ -57,7 +62,8 @@ public class StudentController {
     @PostMapping(value = "/updateSettings")
     public String updateSettings(@RequestParam("noOfStudents") int students, @RequestParam("noOfPreferences") int preferences,
                                  @RequestParam("mutationChance") int mutation, @RequestParam("cullingPercentage") int cull,
-                                 @RequestParam("matingPercentage") int mating, @RequestParam("maximumPopulation") int population, HttpServletRequest request) {
+                                 @RequestParam("matingPercentage") int mating, @RequestParam("maximumPopulation") int population,
+                                 HttpServletRequest request) {
         systemVariables.NUMBER_OF_STUDENTS = students;
         systemVariables.NUMBER_OF_PREFERENCES = preferences;
         systemVariables.MUTATION_CHANCE = mutation;

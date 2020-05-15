@@ -76,9 +76,9 @@ public class GeneticAlgorithm {
 
         //Loop through students in order of first solution student assignment order
         for (int studentNo = 0 ; studentNo < systemVariables.NUMBER_OF_STUDENTS ; studentNo++){
-            int student = solution1.getStudent_project_assignment_order()[studentNo]; //Set student to look at
-            if(student % 2 == 1) currentSolutionOrder = solution1.getStudent_project_assignment_order();
-            else currentSolutionOrder = solution2.getStudent_project_assignment_order();
+            int student = solution1.getStudentProjectAssignmentOrder()[studentNo]; //Set student to look at
+            if(student % 2 == 1) currentSolutionOrder = solution1.getStudentProjectAssignmentOrder();
+            else currentSolutionOrder = solution2.getStudentProjectAssignmentOrder();
 
             //Find space where current student was in old solution
             for (int x = 0 ; x < systemVariables.NUMBER_OF_STUDENTS ; x++) {
@@ -113,8 +113,8 @@ public class GeneticAlgorithm {
             } while (!placed);
         }
 
-        System.out.println("Solution 1st" +  Arrays.toString(solution1.getStudent_project_assignment_order()));
-        System.out.println("+ Solution 2nd" + Arrays.toString(solution2.getStudent_project_assignment_order()) );
+        System.out.println("Solution 1st" +  Arrays.toString(solution1.getStudentProjectAssignmentOrder()));
+        System.out.println("+ Solution 2nd" + Arrays.toString(solution2.getStudentProjectAssignmentOrder()) );
         System.out.println("= New Solution  : " + Arrays.toString(new_solution_order));
 
         return new Solution(solution1.getSolution(), new_solution_order);

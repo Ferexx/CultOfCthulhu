@@ -5,19 +5,18 @@ import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentProjectDAO;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 
-import javax.persistence.*;
 import java.util.*;
 
 public class Solution implements Comparable<Solution>{
 
     private Map<Integer, Integer> solution;
-    private Integer[] student_project_assignment_order;
+    private Integer[] studentProjectAssignmentOrder;
     private double energy;
     private double fitness;
 
-    public Solution(Map<Integer, Integer> map, Integer[] student_project_assignment_order)
+    public Solution(Map<Integer, Integer> map, Integer[] studentProjectAssignmentOrder)
     {
-        this.student_project_assignment_order = student_project_assignment_order;
+        this.studentProjectAssignmentOrder = studentProjectAssignmentOrder;
         solution = new HashMap<>(map);
     }
 
@@ -27,9 +26,9 @@ public class Solution implements Comparable<Solution>{
         fitness = -energy;
     }
 
-    public Solution(Integer[] student_project_assignment_order)
+    public Solution(Integer[] studentProjectAssignmentOrder)
     {
-        this.student_project_assignment_order = student_project_assignment_order;
+        this.studentProjectAssignmentOrder = studentProjectAssignmentOrder;
     }
 
     public Solution(StudentDAO studentDAO, ProjectDAO projectDAO) {
@@ -52,12 +51,12 @@ public class Solution implements Comparable<Solution>{
         this.fitness = fitness;
     }
 
-    public void setStudent_project_assignment_order(Integer[] student_project_assignment_order) {
-        this.student_project_assignment_order = student_project_assignment_order;
+    public void setStudentProjectAssignmentOrder(Integer[] studentProjectAssignmentOrder) {
+        this.studentProjectAssignmentOrder = studentProjectAssignmentOrder;
     }
 
-    public Integer[] getStudent_project_assignment_order() {
-        return student_project_assignment_order;
+    public Integer[] getStudentProjectAssignmentOrder() {
+        return studentProjectAssignmentOrder;
     }
 
     public Map<Integer, Integer> getSolution() {
@@ -69,14 +68,14 @@ public class Solution implements Comparable<Solution>{
         List<Student> students = studentDao.findAll();
         List<Project> projects = projectDAO.findAll();
 
-        if(student_project_assignment_order == null) {
+        if(studentProjectAssignmentOrder == null) {
             studentAssignmentOrder = new Integer[students.size()];
 
             for(int i = 0; i < studentAssignmentOrder.length; i++) studentAssignmentOrder[i] = i + 1;
             Collections.shuffle(Arrays.asList(studentAssignmentOrder));
-            this.student_project_assignment_order = studentAssignmentOrder;
+            this.studentProjectAssignmentOrder = studentAssignmentOrder;
         }
-        else studentAssignmentOrder = student_project_assignment_order;
+        else studentAssignmentOrder = studentProjectAssignmentOrder;
         Map<Integer, Integer> solution = new HashMap<>();
         Boolean[] takenProjects = new Boolean[projects.size()];
         Arrays.fill(takenProjects, false);
@@ -108,9 +107,9 @@ public class Solution implements Comparable<Solution>{
     public void change() {
         Random rand = new Random();
 
-        int x = rand.nextInt(student_project_assignment_order.length);
-        int y = rand.nextInt(student_project_assignment_order.length);
-        Collections.swap(Arrays.asList(student_project_assignment_order),x,y);
+        int x = rand.nextInt(studentProjectAssignmentOrder.length);
+        int y = rand.nextInt(studentProjectAssignmentOrder.length);
+        Collections.swap(Arrays.asList(studentProjectAssignmentOrder),x,y);
     }
 
     public String printSolution(StudentDAO studentDAO, ProjectDAO projectDAO){
