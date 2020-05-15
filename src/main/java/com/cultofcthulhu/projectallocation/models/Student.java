@@ -15,8 +15,7 @@ public class Student implements Personable {
     private int id;
 
     private int studentID;
-    private String firstName;
-    private String lastName;
+    private String name;
     private double gpa = 0.00;
     @ElementCollection
     private Map<Integer, Integer> preferences = new HashMap<>();
@@ -24,17 +23,15 @@ public class Student implements Personable {
     private int workingUnderStaffID;
 
     public Student() {}
-    public Student(String firstName, String lastName){
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Student(String name){
+        this.name = name;
     }
-    public Student(String firstName, String lastName, double GPA) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Student(String name, double GPA) {
+        this.name = name;
         this.gpa = GPA;
     }
     public Student(String name, int studentID, double GPA) {
-        this.firstName = name;
+        this.name = name;
         this.studentID = studentID;
         this.gpa = GPA;
     }
@@ -52,19 +49,12 @@ public class Student implements Personable {
         this.studentID = studentID;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getName() { return firstName + " " + lastName; }
 
     public void setName(String name) {
-        firstName = name.substring(0,name.indexOf(" "));
-        lastName = name.substring(name.indexOf(" ") + 1);
+        this.name = name;
     }
 
     public double getGpa() { return gpa; }
@@ -101,6 +91,6 @@ public class Student implements Personable {
         StringBuilder sb = new StringBuilder();
         for(int preference : preferences.values())
             sb.append(preference).append(",");
-        return firstName + "," + id + ",\"" + sb + "\"," + gpa;
+        return name + "," + id + ",\"" + sb + "\"," + gpa;
     }
 }

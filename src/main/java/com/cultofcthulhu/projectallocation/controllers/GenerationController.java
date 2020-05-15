@@ -143,7 +143,7 @@ public class GenerationController {
         for(int i = 0; i < number; i++) {
             firstname = firstnames.get(rand.nextInt(200));
             lastname = lastnames.get(rand.nextInt(200));
-            Student student = new Student(firstname, lastname);
+            Student student = new Student(firstname + " " + lastname);
             DecimalFormat df = new DecimalFormat("#.#");
             student.setGpa(Double.parseDouble(df.format(ThreadLocalRandom.current().nextDouble(0, 4.2))));
             //Generate this student's preferences with Gaussian distribution

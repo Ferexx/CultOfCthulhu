@@ -9,10 +9,9 @@ public class StudentTests {
 
     @Test
     public void testConstructor() {
-        Student student = new Student("Jack", "Price");
+        Student student = new Student("Jack Price", 4.2);
 
-        assertEquals("Jack", student.getFirstName());
-        assertEquals("Price", student.getLastName());
         assertEquals("Jack Price", student.getName());
+        assertEquals(4.2, student.getGpa());
     }
 }
