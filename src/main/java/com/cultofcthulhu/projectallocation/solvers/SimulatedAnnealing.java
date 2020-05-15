@@ -51,6 +51,7 @@ public class SimulatedAnnealing implements Solverable {
         } while(temperature > 1);
 
         System.out.println(currentBest.printSolution(studentDAO, projectDAO));
+        System.out.println(currentBest.solutionQualityReport(studentDAO, projectDAO));
 
         new solutionAccess().solutionSaveToFile(currentBest, "solution", currentBest.printSolution(studentDAO, projectDAO));
         return currentBest;

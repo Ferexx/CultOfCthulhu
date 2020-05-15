@@ -5,6 +5,7 @@ import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentProjectDAO;
 import com.cultofcthulhu.projectallocation.system.systemVariables;
 
+import javax.persistence.*;
 import java.util.*;
 
 public class Solution implements Comparable<Solution>{
