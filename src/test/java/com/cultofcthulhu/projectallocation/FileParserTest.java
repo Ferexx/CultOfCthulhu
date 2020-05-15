@@ -2,7 +2,6 @@ package com.cultofcthulhu.projectallocation;
 
 import com.cultofcthulhu.projectallocation.exceptions.ParseException;
 import com.cultofcthulhu.projectallocation.models.data.ProjectDAO;
-import com.cultofcthulhu.projectallocation.models.data.StudentDAO;
 import com.cultofcthulhu.projectallocation.models.data.StudentProjectDAO;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +33,6 @@ public class FileParserTest {
     private StudentProjectDAO studentProjectDAO;
     @Autowired
     private ProjectDAO projectDAO;
-    private StudentDAO studentDAO;
     @Test
     public void testStudentParse() throws ParseException, IOException {
         FileParser StudentParsingWorks = new FileParser();

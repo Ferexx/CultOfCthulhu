@@ -33,7 +33,7 @@ public class FileParser {
         while((line = br.readLine()) != null) {
             String[] values = line.split(split, -1);
             //Ignore column titles
-            if(values[0].contains("Student")) {
+            if(values[0].toLowerCase().contains("student")) {
                 i++;
                 continue;
             }
@@ -41,7 +41,7 @@ public class FileParser {
                     "Your file has an incorrect number of fields on line " + i + ". (Found: " + values.length + ", Expected: >4)");
             try {
                 //Self-proposed projects
-                if(values[3].contains("student")) {
+                if(values[3].toLowerCase().contains("student")) {
                     studentProjectDAO.save(new StudentProject(values[0], Integer.parseInt(values[1]), Double.parseDouble(values[2]), values[4]));
                     continue;
                 }
@@ -85,7 +85,7 @@ public class FileParser {
         while((line = br.readLine())!=null) {
             String[] values = line.split(split, -1);
             //Ignore column titles
-            if(values[0].equals("ID")) {
+            if(values[0].toLowerCase().contains("id")) {
                 i++;
                 continue;
             }
@@ -151,7 +151,7 @@ public class FileParser {
             while ((line = br.readLine()) != null) {
                 String[] values = line.split(split, -1);
                 //Ignore column titles
-                if (values[0].equals("ID")) {
+                if (values[0].toLowerCase().contains("id")) {
                     i++;
                     continue;
                 }
